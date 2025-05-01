@@ -1,0 +1,274 @@
+{
+	"openapi": "3.0.4",
+	"info": {
+		"title": "Test API",
+		"description": "This is a test API",
+		"version": "1.0.0"
+	},
+	"paths": {
+		"/": {
+			"get": {
+				"summary": "Read Root",
+				"operationId": "read_root__get",
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Root"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/items/{item_id}": {
+			"get": {
+				"summary": "Read Item",
+				"operationId": "read_item_items__item_id__get",
+				"parameters": [
+					{
+						"name": "item_id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"title": "Item Id"
+						}
+					},
+					{
+						"name": "q",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"anyOf": [
+								{
+									"type": "string"
+								},
+								{
+									"type": "null"
+								}
+							],
+							"title": "Q"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ItemResponse"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPValidationError"
+								}
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"summary": "Update Item",
+				"operationId": "update_item_items__item_id__put",
+				"parameters": [
+					{
+						"name": "item_id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"title": "Item Id"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Item"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ItemUpdateResponse"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HTTPValidationError"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"HTTPValidationError": {
+				"properties": {
+					"detail": {
+						"items": {
+							"$ref": "#/components/schemas/ValidationError"
+						},
+						"type": "array",
+						"title": "Detail"
+					}
+				},
+				"type": "object",
+				"title": "HTTPValidationError"
+			},
+			"Item": {
+				"properties": {
+					"name": {
+						"type": "string",
+						"title": "Name"
+					},
+					"price": {
+						"type": "number",
+						"title": "Price"
+					},
+					"is_offer": {
+						"anyOf": [
+							{
+								"type": "boolean"
+							},
+							{
+								"type": "null"
+							}
+						],
+						"title": "Is Offer"
+					}
+				},
+				"type": "object",
+				"required": [
+					"name",
+					"price"
+				],
+				"title": "Item"
+			},
+			"ItemResponse": {
+				"properties": {
+					"item_id": {
+						"type": "integer",
+						"title": "Item Id"
+					},
+					"q": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "null"
+							}
+						],
+						"title": "Q"
+					}
+				},
+				"type": "object",
+				"required": [
+					"item_id"
+				],
+				"title": "ItemResponse"
+			},
+			"ItemUpdateResponse": {
+				"properties": {
+					"item_name": {
+						"type": "string",
+						"title": "Item Name"
+					},
+					"item_id": {
+						"type": "integer",
+						"title": "Item Id"
+					},
+					"price": {
+						"type": "number",
+						"title": "Price"
+					}
+				},
+				"type": "object",
+				"required": [
+					"item_name",
+					"item_id",
+					"price"
+				],
+				"title": "ItemUpdateResponse"
+			},
+			"Root": {
+				"properties": {
+					"message": {
+						"type": "string",
+						"title": "Message"
+					},
+					"version": {
+						"type": "string",
+						"title": "Version",
+						"default": "1.0.0"
+					}
+				},
+				"type": "object",
+				"required": [
+					"message"
+				],
+				"title": "Root"
+			},
+			"ValidationError": {
+				"properties": {
+					"loc": {
+						"items": {
+							"anyOf": [
+								{
+									"type": "string"
+								},
+								{
+									"type": "integer"
+								}
+							]
+						},
+						"type": "array",
+						"title": "Location"
+					},
+					"msg": {
+						"type": "string",
+						"title": "Message"
+					},
+					"type": {
+						"type": "string",
+						"title": "Error Type"
+					}
+				},
+				"type": "object",
+				"required": [
+					"loc",
+					"msg",
+					"type"
+				],
+				"title": "ValidationError"
+			}
+		}
+	}
+}

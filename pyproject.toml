@@ -1,0 +1,16 @@
+[project]
+name = "robotframework-schemathesis"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10.1"
+dependencies = [
+    "robotframework>=7.2.2",
+    "schemathesis>=3.39.16",
+]
+
+[dependency-groups]
+dev = [
+    "fastapi[standard]>=0.115.12",
+    "pytest>=8.3.5",
+]
