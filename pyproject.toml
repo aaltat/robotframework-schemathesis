@@ -6,11 +6,30 @@ readme = "README.md"
 requires-python = ">=3.10.1"
 dependencies = [
     "robotframework>=7.2.2",
+    "robotframework-datadriver>=1.11.2",
     "schemathesis>=3.39.16",
 ]
 
 [dependency-groups]
 dev = [
     "fastapi[standard]>=0.115.12",
+    "invoke>=2.2.0",
+    "mypy>=1.15.0",
     "pytest>=8.3.5",
+    "robotframework-tidy>=4.16.0",
+    "ruff>=0.11.8",
+]
+
+[tool.robotidy]
+overwrite = true
+diff = false
+src = [
+    "atest"
+]
+configure = [
+    "OrderTags:enabled=True",
+    "RenameKeywords:enabled=True",
+    "RenameTestCases:enabled=True",
+    "RenameVariables:enabled=True",
+    "ReplaceWithVAR:enabled=True",
 ]

@@ -25,6 +25,7 @@ class ItemResponse(BaseModel):
     item_id: int
     q: Union[str, None] = None
 
+
 class ItemUpdateResponse(BaseModel):
     item_name: str
     item_id: int
