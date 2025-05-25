@@ -36,3 +36,6 @@ jobs:
 
       - name: Lint code
         run: uv run inv lint
+
+      - name: Build and run docker test image
+        run: uv run inv test-app

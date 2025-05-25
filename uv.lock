@@ -1192,6 +1192,7 @@ dev = [
     { name = "invoke" },
     { name = "mypy" },
     { name = "pytest" },
+    { name = "requests" },
     { name = "robotframework-tidy" },
     { name = "ruff" },
 ]
@@ -1209,6 +1210,7 @@ dev = [
     { name = "invoke", specifier = ">=2.2.0" },
     { name = "mypy", specifier = ">=1.15.0" },
     { name = "pytest", specifier = ">=8.3.5" },
+    { name = "requests", specifier = ">=2.32.3" },
     { name = "robotframework-tidy", specifier = ">=4.16.0" },
     { name = "ruff", specifier = ">=0.11.8" },
 ]

@@ -32,6 +32,10 @@ class ItemUpdateResponse(BaseModel):
     price: float
 
 
+class ItemDeleteResponse(BaseModel):
+    message: str
+
+
 @app.get("/")
 async def read_root() -> Root:
     return Root(message="Hello World")
@@ -49,3 +53,8 @@ def update_item(item_id: int, item: Item) -> ItemUpdateResponse:
         item_id=item_id,
         price=item.price,
     )
+
+
+@app.delete("/items/{item_id}")
+def delete_item(item_id: int) -> ItemDeleteResponse:
+    return ItemDeleteResponse(message=f"Item {item_id} deleted successfully")
