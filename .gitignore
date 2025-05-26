@@ -14,3 +14,9 @@ wheels/
 
 # pytest
 .pytest_cache/
+
+# Robot Framework
+atest/output
+
+# VS Code
+.vscode/

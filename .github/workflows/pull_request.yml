@@ -39,3 +39,12 @@ jobs:
 
       - name: Build and run docker test image
         run: uv run inv test-app
+
+      - name: Create libdoc
+        run: uv run inv docs
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: SchemathesisLibrary-${{ matrix.python-version }}.html
+          path: docs/SchemathesisLibrary.html
