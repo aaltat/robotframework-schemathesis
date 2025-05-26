@@ -16,8 +16,10 @@ import time
 
 import requests
 from invoke.tasks import task
+from robot.libdoc import libdoc
 
-ROOT = Path(__file__).parent
+ROOT_DIR = Path(__file__).parent
+ATEST_OUTPUT_DIR = ROOT_DIR / "atest" / "output"
 DOCKER_IMAGE = "schemathesis-library-test"
 DOCKER_CONTAINER = "schemathesis-library-test-app"
 
@@ -69,3 +71,38 @@ def test_app(ctx):
             print(f"Connection error: {error}")
         if i == 299:
             raise RuntimeError("Test app did not start in time")
+
+
+@task
+def docs(ctx, version: str | None = None):
+    """Generate library keyword documentation.
+
+    Args:
+        version: Creates keyword documentation with version
+        suffix in the name. Documentation is moved to docs/vesions
+        folder.
+    """
+    output = ROOT_DIR / "docs" / "SchemathesisLibrary.html"
+    libdoc("SchemathesisLibrary", str(output))
+    if version is not None:
+        target = (
+            ROOT_DIR / "docs" / "versions" / f"SchemathesisLibrary-{version.replace('v', '')}.html"
+        )
+        output.rename(target)
+
+
+@task
+def atest(ctx):
+    """Run acceptance tests."""
+    args = [
+        "uv",
+        "run",
+        "robot",
+        "--pythonpath",
+        ".",
+        "--outputdir",
+        ATEST_OUTPUT_DIR.as_posix(),
+        "atest/test",
+    ]
+    ATEST_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    ctx.run(" ".join(args))
