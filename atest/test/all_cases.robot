@@ -1,5 +1,5 @@
 *** Settings ***
-Library             SchemathesisLibrary
+Library             SchemathesisLibrary    url=http://127.0.0.1/openapi.json
 
 Test Template       Wrapper
 
@@ -12,4 +12,4 @@ All Tests
 *** Keywords ***
 Wrapper
     [Arguments]    ${case}
-    Run And Validate    ${case}
+    Call And Validate    ${case}
