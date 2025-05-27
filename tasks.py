@@ -22,15 +22,17 @@ ROOT_DIR = Path(__file__).parent
 ATEST_OUTPUT_DIR = ROOT_DIR / "atest" / "output"
 DOCKER_IMAGE = "schemathesis-library-test"
 DOCKER_CONTAINER = "schemathesis-library-test-app"
+DOCKER_APP_URL = "http://127.0.0.1"
 
 
 @task
-def lint(ctx):
+def lint(ctx, fix=False):
     """Run linters."""
     print("Run ruff format")
     ctx.run("uv run ruff format .")
     print("Run ruff check")
-    ctx.run("uv run ruff check SchemathesisLibrary")
+    ruff_args = "check --fix" if fix else "check"
+    ctx.run(f"uv run ruff {ruff_args}  SchemathesisLibrary")
     print("Run mypy")
     ctx.run("uv run mypy SchemathesisLibrary")
     print("Run RoboTidy")
@@ -59,17 +61,18 @@ def test_app(ctx):
     """Build docker image and start the test app."""
     ctx.run(f"docker build -t {DOCKER_IMAGE} .")
     ctx.run(f"docker run -d --name {DOCKER_CONTAINER} -p 80:80 {DOCKER_IMAGE}")
-    for i in range(300):
+    try_count = 120
+    for i in range(try_count):
         time.sleep(1)
         try:
-            response = requests.get("http://127.0.0.1")
+            response = requests.get(DOCKER_APP_URL)
             if response.status_code == 200:
-                print("Test app is running")
+                print(f"Test app is running: {DOCKER_APP_URL}")
                 break
             time.sleep(1)
         except requests.ConnectionError as error:
             print(f"Connection error: {error}")
-        if i == 299:
+        if i == try_count - 1:
             raise RuntimeError("Test app did not start in time")
 
 
@@ -85,13 +88,11 @@ def docs(ctx, version: str | None = None):
     output = ROOT_DIR / "docs" / "SchemathesisLibrary.html"
     libdoc("SchemathesisLibrary", str(output))
     if version is not None:
-        target = (
-            ROOT_DIR / "docs" / "versions" / f"SchemathesisLibrary-{version.replace('v', '')}.html"
-        )
+        target = ROOT_DIR / "docs" / "versions" / f"SchemathesisLibrary-{version.replace('v', '')}.html"
         output.rename(target)
 
 
-@task
+@task(pre=[test_app])
 def atest(ctx):
     """Run acceptance tests."""
     args = [
