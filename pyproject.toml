@@ -35,3 +35,61 @@ configure = [
     "RenameVariables:enabled=True",
     "ReplaceWithVAR:enabled=True",
 ]
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    "FAST",
+    "ANN",
+    "ASYNC",
+    "S",
+    "BLE",
+    "FBT",
+    "B",
+    "A",
+    "C4",
+    "T10",
+    "EXE",
+    "FIX",
+    "ISC",
+    "ICN",
+    "LOG",
+    "PIE",
+    "PYI",
+    "PT",
+    "Q",
+    "RSE",
+    "RET",
+    "SIM",
+    "SLOT",
+    "TID",
+    "TC",
+    "ARG",
+    "PTH",
+    "FLY",
+    "I",
+    "C90",
+    "NPY",
+    "PD",
+    "N",
+    "PERF",
+    "E",
+    "W",
+    "F",
+    "PL",
+    "UP",
+    "FURB",
+    "RUF",
+    "TRY"
+]
+
+ignore = [
+    "ANN401",
+    "N999"
+]
+
+[tool.ruff.format]
+quote-style = "double"
