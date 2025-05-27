@@ -48,3 +48,12 @@ jobs:
         with:
           name: SchemathesisLibrary-${{ matrix.python-version }}.html
           path: docs/SchemathesisLibrary.html
+
+      - name: Run acceptance tests
+        run: uv run inv atest
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: atest-result-${{ matrix.python-version }}
+          path: atest/output/
