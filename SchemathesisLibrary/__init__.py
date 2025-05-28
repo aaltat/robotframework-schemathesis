@@ -44,11 +44,16 @@ class SchemathesisReader(AbstractReaderClass):
         all_cases = []
         for op in schema.get_all_operations():
             op_as_strategy = op.ok().as_strategy()  # type: ignore
-            for case in generate_examples(op_as_strategy, 10):
+            for case in generate_examples(op_as_strategy, 5):
                 args = {
                     "${case}": case,
                 }
-                all_cases.append(TestCaseData(test_case_name=str(case.id), arguments=args))
+                path_params = case.path_parameters if case.path_parameters else ""
+                all_cases.append(
+                    TestCaseData(
+                        test_case_name=f"{case.method} {case.full_path} {path_params}", arguments=args
+                    )
+                )
         return all_cases
 
 

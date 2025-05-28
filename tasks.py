@@ -11,12 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from collections import defaultdict
 from pathlib import Path
 import time
 
 import requests
 from invoke.tasks import task
 from robot.libdoc import libdoc
+from robot.api import ExecutionResult, ResultVisitor
+from robot.result.model import TestCase
 
 ROOT_DIR = Path(__file__).parent
 ATEST_OUTPUT_DIR = ROOT_DIR / "atest" / "output"
@@ -92,6 +95,39 @@ def docs(ctx, version: str | None = None):
         output.rename(target)
 
 
+class ExecutionTimeChecker(ResultVisitor):
+    def __init__(self, names: dict[str, int]):
+        self.names = names
+        self.visited_names = defaultdict(int)
+
+    def visit_test(self, test: TestCase):
+        if name := self._test_found(test):
+            self.visited_names[name] += 1
+            if self.visited_names[name] > self.names[name]:
+                test.status = "FAIL"
+        else:
+            test.status = "FAIL"
+
+    def _test_found(self, test: TestCase):
+        for name in self.names:
+            if name in test.name:
+                return name
+        return False
+
+
+
+def check_tests(output_xml):
+    result = ExecutionResult(output_xml)
+    test = {
+        "DELETE /": 5,
+        "PUT /": 5,
+        "GET / ": 1,
+        "GET /items/{item_id}": 5,
+    }
+    result.visit(ExecutionTimeChecker(test))
+    result.save(output_xml)
+
+
 @task(pre=[test_app])
 def atest(ctx):
     """Run acceptance tests."""
@@ -105,7 +141,26 @@ def atest(ctx):
         ".",
         "--outputdir",
         ATEST_OUTPUT_DIR.as_posix(),
+        "--log",
+        "NONE",
+        "--report",
+        "NONE",
         "atest/test",
     ]
     ATEST_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     ctx.run(" ".join(args))
+    output_xml = ATEST_OUTPUT_DIR / "output.xml"
+    check_tests(output_xml.as_posix())
+    log_file = ATEST_OUTPUT_DIR / "log.html"
+    report_file = ATEST_OUTPUT_DIR / "report.html"
+    rebot_args = [
+        "uv",
+        "run",
+        "rebot",
+        "--log",
+        log_file.as_posix(),
+        "--report",
+        report_file.as_posix(),
+        output_xml.as_posix(),
+    ]
+    ctx.run(" ".join(rebot_args))
