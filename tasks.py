@@ -99,6 +99,8 @@ def atest(ctx):
         "uv",
         "run",
         "robot",
+        "--loglevel",
+        "DEBUG",
         "--pythonpath",
         ".",
         "--outputdir",
