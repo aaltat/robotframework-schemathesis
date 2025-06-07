@@ -8,7 +8,7 @@ dependencies = [
     "robotframework>=7.2.2",
     "robotframework-datadriver>=1.11.2",
     "robotframework-pythonlibcore>=4.4.1",
-    "schemathesis>=3.39.16",
+    "schemathesis>=4.0.0-beta.1",
 ]
 
 [dependency-groups]
