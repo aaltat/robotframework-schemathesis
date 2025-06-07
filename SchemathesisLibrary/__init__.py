@@ -25,6 +25,7 @@ from robot.result.model import TestCase as ResultTestCase  # type: ignore
 from robot.result.model import TestSuite as ResultTestSuite  # type: ignore
 from robot.running.model import TestCase, TestSuite  # type: ignore
 from robotlibcore import DynamicCore  # type: ignore
+from schemathesis.core.result import Ok  # type: ignore
 
 __version__ = "0.1.0"
 
@@ -32,29 +33,31 @@ __version__ = "0.1.0"
 @dataclass
 class Options:
     url: "str|None" = None
+    max_examples: int = 5
 
 
 class SchemathesisReader(AbstractReaderClass):
     options: "Options|None" = None
 
-    def get_data_from_source(
-        self,
-    ) -> list[TestCaseData]:
-        schema = schemathesis.from_uri(self.options.url)  # type: ignore
+    def get_data_from_source(self) -> list[TestCaseData]:
+        # NOTE: (dd): It would be nice to support other schema loaders too
+        schema = schemathesis.openapi.from_url(self.options.url)  # type: ignore
         all_cases = []
         for op in schema.get_all_operations():
-            op_as_strategy = op.ok().as_strategy()  # type: ignore
-            for case in generate_examples(op_as_strategy, 5):
-                args = {
-                    "${case}": case,
-                }
-                path_params = case.path_parameters if case.path_parameters else ""
-                all_cases.append(
-                    TestCaseData(
-                        test_case_name=f"{case.method} {case.full_path} {path_params}", arguments=args
-                    )
-                )
+            if isinstance(op, Ok):
+                # NOTE: (dd): `as_strategy` also accepts GenerationMode
+                #             It could be used to produce positive / negative tests
+                strategy = op.ok().as_strategy().map(from_case)  # type: ignore
+                add_examples(strategy, all_cases, self.options.max_examples)  # type: ignore
         return all_cases
+
+
+def from_case(case: schemathesis.Case) -> TestCaseData:
+    return TestCaseData(
+        # NOTE: (dd): Not sure if a random `id` is useful here
+        test_case_name=f"{case.operation.label} - {case.id}",
+        arguments={"${case}": case},
+    )
 
 
 class SchemathesisLibrary(DynamicCore):
@@ -80,20 +83,17 @@ class SchemathesisLibrary(DynamicCore):
         case.call_and_validate()
 
 
-def generate_examples(strategy: st.SearchStrategy, number: int) -> list[schemathesis.Case]:
-    examples = []
-
+def add_examples(strategy: st.SearchStrategy, container: list[TestCaseData], max_examples: int) -> None:
     @given(strategy)
     @settings(
         database=None,
-        max_examples=number,
+        max_examples=max_examples,
         deadline=None,
         verbosity=Verbosity.quiet,
         phases=(Phase.generate,),
         suppress_health_check=list(HealthCheck),
     )
     def example_generating_inner_function(ex: Any) -> None:
-        examples.append(ex)
+        container.append(ex)
 
     example_generating_inner_function()
-    return examples
