@@ -969,11 +969,11 @@ wheels = [
 
 [[package]]
 name = "robotframework"
-version = "7.2.2"
+version = "7.3"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/01/55/e6decd3155929c1ae0156df0219c991377b6e1c19b7c4a2ef88560069724/robotframework-7.2.2.tar.gz", hash = "sha256:9c420f6d35e9c8cd4b75b77cc78e36407604534ec4ab0cbddf699d7c0b2fc435", size = 624811, upload-time = "2025-02-07T20:58:03.053Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b4/8b/7c58ab2c93cf2a2eaa4bd1db2cd617032dc6a41592df4ef924fe839a22e7/robotframework-7.3.tar.gz", hash = "sha256:676f75a58e34db04cde91922c0bc68d4d73f091b6be753809ce16e9579412323", size = 640490, upload-time = "2025-05-30T14:35:26.855Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4a/9a/7498a0a40a32ba522840da2b8c0ecb4794114ec332992fda09a0733c25a0/robotframework-7.2.2-py3-none-any.whl", hash = "sha256:1cb4ec69d52aae515bf6037cee66a2a2d8dc3256368081c0f4b3d4578d40904e", size = 777676, upload-time = "2025-02-07T20:57:59.796Z" },
+    { url = "https://files.pythonhosted.org/packages/ab/f0/aae76dffd55a2dee5727bf3d8f7699f8c910eb0c07ce0c9dfc4d4aba49e2/robotframework-7.3-py3-none-any.whl", hash = "sha256:68631cc3115760c00f2e4b2822636cbb4c242e1fd8671ce3e88021b3202556fe", size = 792711, upload-time = "2025-05-30T14:35:23.881Z" },
 ]
 
 [[package]]
@@ -1042,7 +1042,7 @@ dev = [
 
 [[package]]
 name = "robotframework-tidy"
-version = "4.16.0"
+version = "4.17.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
@@ -1053,9 +1053,9 @@ dependencies = [
     { name = "robotframework" },
     { name = "tomli" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/57/50/921886cad1bdc8d40f16b1984b02198bfc60d39cc2ebf66ddd9d3c3a9a39/robotframework_tidy-4.16.0.tar.gz", hash = "sha256:08c6ff7636e1b6a9194e695128f3edbd5edb2c332c590cb078f9b5e31d88f1ab", size = 83670, upload-time = "2025-01-13T08:05:38.222Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/38/30/4911020b52e3f7f89c8872b511a3bee65c52b2a5aaff652c16a1010bc92e/robotframework_tidy-4.17.0.tar.gz", hash = "sha256:d4247c460e79aee2efdbef9377cb41ae24142f97c3f2e4101c901232d9703e68", size = 83871, upload-time = "2025-05-14T07:35:18.39Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/30/ca/26b4484700c84db3bee024e98992da0b86ae36dbe4f40f748bf646d113f0/robotframework_tidy-4.16.0-py3-none-any.whl", hash = "sha256:768905564fb2ff4677034beff5952718fdbd1716392470db7ff3dde44d067279", size = 110925, upload-time = "2025-01-13T08:05:35.939Z" },
+    { url = "https://files.pythonhosted.org/packages/4b/19/236b876b0a4f1fe65cbd532b6a931bde23373e4bdd90598b8644463e6f7e/robotframework_tidy-4.17.0-py3-none-any.whl", hash = "sha256:6eb0026963e9cf2ed1f43fa212e43ad94dc1cf29c1fa832c057317e6a7779955", size = 111139, upload-time = "2025-05-14T07:35:17.223Z" },
 ]
 
 [[package]]
