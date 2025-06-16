@@ -26,6 +26,7 @@ from robot.result.model import TestSuite as ResultTestSuite  # type: ignore
 from robot.running.model import TestCase, TestSuite  # type: ignore
 from robotlibcore import DynamicCore  # type: ignore
 from schemathesis.core.result import Ok  # type: ignore
+from schemathesis.core.transport import Response
 
 __version__ = "0.1.0"
 
@@ -42,7 +43,7 @@ class SchemathesisReader(AbstractReaderClass):
     def get_data_from_source(self) -> list[TestCaseData]:
         # NOTE: (dd): It would be nice to support other schema loaders too
         schema = schemathesis.openapi.from_url(self.options.url)  # type: ignore
-        all_cases = []
+        all_cases: list[TestCaseData] = []
         for op in schema.get_all_operations():
             if isinstance(op, Ok):
                 # NOTE: (dd): `as_strategy` also accepts GenerationMode
@@ -78,7 +79,7 @@ class SchemathesisLibrary(DynamicCore):
         self.data_driver._start_test(data, result)
 
     @keyword
-    def call_and_validate(self, case: schemathesis.Case) -> None:
+    def call_and_validate(self, case: schemathesis.Case) -> Response:
         """Validate a Schemathesis case."""
         return case.call_and_validate()
 

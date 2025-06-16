@@ -115,7 +115,6 @@ class ExecutionTimeChecker(ResultVisitor):
         return False
 
 
-
 def check_tests(output_xml):
     result = ExecutionResult(output_xml)
     test = {
