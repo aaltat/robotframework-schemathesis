@@ -20,12 +20,13 @@ from DataDriver.AbstractReaderClass import AbstractReaderClass  # type: ignore
 from DataDriver.ReaderConfig import TestCaseData  # type: ignore
 from hypothesis import HealthCheck, Phase, Verbosity, given, settings
 from hypothesis import strategies as st
+from robot.api import logger
 from robot.api.deco import keyword
 from robot.result.model import TestCase as ResultTestCase  # type: ignore
 from robot.result.model import TestSuite as ResultTestSuite  # type: ignore
 from robot.running.model import TestCase, TestSuite  # type: ignore
 from robotlibcore import DynamicCore  # type: ignore
-from schemathesis.core.result import Ok  # type: ignore
+from schemathesis.core.result import Ok
 from schemathesis.core.transport import Response
 
 __version__ = "0.1.0"
@@ -81,7 +82,20 @@ class SchemathesisLibrary(DynamicCore):
     @keyword
     def call_and_validate(self, case: schemathesis.Case) -> Response:
         """Validate a Schemathesis case."""
-        return case.call_and_validate()
+        self.info(f"Case: {case.path} | {case.method} | {case.path_parameters}")
+        self.debug(
+            f"Case headers {case.headers!r} body {case.body!r} "
+            f"cookies {case.cookies!r} path parameters {case.path_parameters!r}"
+        )
+        response = case.call_and_validate()
+        self.debug(f"Response: {response.headers} | {response.status_code} | {response.text}")
+        return response
+
+    def info(self, message: str) -> None:
+        logger.info(message)
+
+    def debug(self, message: str) -> None:
+        logger.debug(message)
 
 
 def add_examples(strategy: st.SearchStrategy, container: list[TestCaseData], max_examples: int) -> None:

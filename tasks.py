@@ -135,7 +135,7 @@ def atest(ctx):
         "run",
         "robot",
         "--loglevel",
-        "DEBUG",
+        "DEBUG:INFO",
         "--pythonpath",
         ".",
         "--outputdir",
