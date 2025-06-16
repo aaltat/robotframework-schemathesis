@@ -12,4 +12,5 @@ All Tests
 *** Keywords ***
 Wrapper
     [Arguments]    ${case}
-    Call And Validate    ${case}
+    ${r} =    Call And Validate    ${case}
+    Log    ${r.json()}

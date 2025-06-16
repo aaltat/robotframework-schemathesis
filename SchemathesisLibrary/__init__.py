@@ -80,7 +80,7 @@ class SchemathesisLibrary(DynamicCore):
     @keyword
     def call_and_validate(self, case: schemathesis.Case) -> None:
         """Validate a Schemathesis case."""
-        case.call_and_validate()
+        return case.call_and_validate()
 
 
 def add_examples(strategy: st.SearchStrategy, container: list[TestCaseData], max_examples: int) -> None:
