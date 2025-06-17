@@ -37,13 +37,10 @@ jobs:
       - name: Lint code
         run: uv run inv lint
 
-      - name: Build and run docker test image
-        run: uv run inv test-app
-
       - name: Create libdoc
         run: uv run inv docs
 
-      - name: Upload artifacts
+      - name: Upload libdoc
         uses: actions/upload-artifact@v4
         with:
           name: SchemathesisLibrary-${{ matrix.python-version }}.html
@@ -52,8 +49,14 @@ jobs:
       - name: Run acceptance tests
         run: uv run inv atest
 
-      - name: Upload test results
+      - name: Upload runner test results
         uses: actions/upload-artifact@v4
         with:
-          name: atest-result-${{ matrix.python-version }}
-          path: atest/output/
+          name: atest-result-runner-${{ matrix.python-version }}
+          path: atest/output_runner/
+
+      - name: Upload runner test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: atest-result-library-${{ matrix.python-version }}
+          path: atest/output_library/
