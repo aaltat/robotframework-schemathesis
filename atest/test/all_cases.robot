@@ -1,16 +1,14 @@
 *** Settings ***
-Library             SchemathesisLibrary    url=http://127.0.0.1/openapi.json
+Resource        runner.resource
 
-Test Template       Wrapper
+Suite Setup     Run Suite
 
 
 *** Test Cases ***
-All Tests
-    Wrapper    test_case_1
-
-
-*** Keywords ***
-Wrapper
-    [Arguments]    ${case}
-    ${r} =    Call And Validate    ${case}
-    Log    ${r.json()}
+Check All Cases
+    VAR    &{test_description}
+    ...    DELETE /=${5}
+    ...    PUT /=${5}
+    ...    GET / =${1}
+    ...    GET /items/{item_id}=${5}
+    Check Suite    ${LIBRARY_OUTPUT_XML}    16    ${test_description}

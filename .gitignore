@@ -16,7 +16,8 @@ wheels/
 .pytest_cache/
 
 # Robot Framework
-atest/output
+atest/output_library
+atest/output_runner
 
 # VS Code
 .vscode/
