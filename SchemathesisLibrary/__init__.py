@@ -15,6 +15,7 @@ from dataclasses import dataclass
 from typing import Any
 
 import schemathesis
+import schemathesis.core
 from DataDriver import DataDriver  # type: ignore
 from DataDriver.AbstractReaderClass import AbstractReaderClass  # type: ignore
 from DataDriver.ReaderConfig import TestCaseData  # type: ignore
@@ -34,8 +35,8 @@ __version__ = "0.1.0"
 
 @dataclass
 class Options:
+    max_examples: int
     url: "str|None" = None
-    max_examples: int = 5
 
 
 class SchemathesisReader(AbstractReaderClass):
@@ -67,9 +68,9 @@ class SchemathesisLibrary(DynamicCore):
     ROBOT_LISTENER_API_VERSION = 3
     ROBOT_LIBRARY_SCOPE = "TEST SUITE"
 
-    def __init__(self, *, url: "str|None" = None) -> None:
+    def __init__(self, *, url: "str|None" = None, max_examples: int = 5) -> None:
         self.ROBOT_LIBRARY_LISTENER = self
-        SchemathesisReader.options = Options(url=url)
+        SchemathesisReader.options = Options(max_examples, url=url)
         self.data_driver = DataDriver(reader_class=SchemathesisReader)
         DynamicCore.__init__(self, [])
 
@@ -83,8 +84,9 @@ class SchemathesisLibrary(DynamicCore):
     def call_and_validate(self, case: schemathesis.Case) -> Response:
         """Validate a Schemathesis case."""
         self.info(f"Case: {case.path} | {case.method} | {case.path_parameters}")
+        body = case.body if not isinstance(case.body, schemathesis.core.NotSet) else "Not set"
         self.debug(
-            f"Case headers {case.headers!r} body {case.body!r} "
+            f"Case headers {case.headers!r} body {body!r} "
             f"cookies {case.cookies!r} path parameters {case.path_parameters!r}"
         )
         response = case.call_and_validate()
