@@ -1,4 +1,5 @@
 *** Settings ***
+Library         Collections
 Library         Process
 Library         os_wrapper.py
 Library         TestSuiteChecker.py
