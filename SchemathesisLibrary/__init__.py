@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 import schemathesis
@@ -37,6 +38,7 @@ __version__ = "0.1.0"
 class Options:
     max_examples: int
     url: "str|None" = None
+    path: "Path|None" = None
 
 
 class SchemathesisReader(AbstractReaderClass):
@@ -57,7 +59,6 @@ class SchemathesisReader(AbstractReaderClass):
 
 def from_case(case: schemathesis.Case) -> TestCaseData:
     return TestCaseData(
-        # NOTE: (dd): Not sure if a random `id` is useful here
         test_case_name=f"{case.operation.label} - {case.id}",
         arguments={"${case}": case},
     )
@@ -68,7 +69,11 @@ class SchemathesisLibrary(DynamicCore):
     ROBOT_LISTENER_API_VERSION = 3
     ROBOT_LIBRARY_SCOPE = "TEST SUITE"
 
-    def __init__(self, *, url: "str|None" = None, max_examples: int = 5) -> None:
+    def __init__(self, *, max_examples: int = 5, path: "Path|None" = None, url: "str|None" = None) -> None:
+        if not (url or path):
+            raise ValueError("Either 'url' or 'path' must be provided to SchemathesisLibrary.")
+        if path and not Path(path).is_file():
+            raise ValueError(f"Provided path '{path}' is not a valid file.")
         self.ROBOT_LIBRARY_LISTENER = self
         SchemathesisReader.options = Options(max_examples, url=url)
         self.data_driver = DataDriver(reader_class=SchemathesisReader)
