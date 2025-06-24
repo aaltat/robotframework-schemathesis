@@ -6,6 +6,7 @@ from robot.api import ExecutionResult, ResultVisitor, logger
 from robot.libraries.BuiltIn import BuiltIn
 from robot.model import Keyword, Message
 from robot.result.model import TestCase, Keyword
+from robot.result.executionerrors import ExecutionErrors
 
 
 @dataclass
@@ -20,6 +21,16 @@ class TestCaseData:
     count: int
     kw_logs_to_collect: str
     logs: LogsDescription
+
+
+class ExecutionSuiteChecker(ResultVisitor):
+    def __init__(self):
+        self.suite_errors = []
+
+    def visit_errors(self, errors: ExecutionErrors):
+        for error in errors:
+            logger.info(f"Errors found in the suite: {error}")
+            self.suite_errors.append(error.message)
 
 
 class ExecutionChecker(ResultVisitor):
@@ -130,3 +141,21 @@ class TestSuiteChecker:
             return False
         logger.info(f"Log '{log}' matches expected log '{except_log}'")
         return True
+
+    def check_suite_with_logs(self, output_xml: str, logs: list[str]):
+        """Check the test suite for test cases names and logs."""
+        result = ExecutionResult(output_xml)
+        checker = ExecutionSuiteChecker()
+        result.visit(checker)
+        result.save(output_xml)
+        should_match = BuiltIn().should_match
+        for suite_error in checker.suite_errors:
+            for log in logs:
+                try:
+                    return should_match(suite_error, log)
+                except AssertionError:
+                    pass
+        raise AssertionError(
+            f"Expected one of the logs to match suite error messages, but found none. "
+            f"Suite errors: {checker.suite_errors}, logs: {logs}"
+        )

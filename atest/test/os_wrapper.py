@@ -10,3 +10,11 @@ def get_suite_path(suite_source: str) -> str:
     suite_file = suite_source.name
     library_path = suite_source.parent.parent / "library" / suite_file
     return str(library_path)
+
+
+def get_suite_output_path(suite_source: str, output_dir: str) -> str:
+    suite_source = suite_source.replace(".robot", "")
+    suite_source = Path(suite_source)
+    suite_source = suite_source.parts[-1]
+    output_dir = Path(output_dir)
+    return str(output_dir / suite_source)
