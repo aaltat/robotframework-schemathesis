@@ -19,11 +19,10 @@ import time
 import requests
 from invoke.tasks import task
 from robot.libdoc import libdoc
-from robot.api import ExecutionResult, ResultVisitor
-from robot.result.model import TestCase
 
 ROOT_DIR = Path(__file__).parent
 ATEST_OUTPUT_DIR = ROOT_DIR / "atest" / "output_runner"
+SPEC_FOLDER = ROOT_DIR / "atest" / "specs"
 ATEST_OUTPUT_DIR_LIB = ROOT_DIR / "atest" / "output_library"
 DOCKER_IMAGE = "schemathesis-library-test"
 DOCKER_CONTAINER = "schemathesis-library-test-app"
@@ -99,7 +98,25 @@ def docs(ctx, version: str | None = None):
         output.rename(target)
 
 
-@task(pre=[test_app])
+@task
+def spec_file(ctx):
+    """Download test app open api specification file"""
+    url = f"{DOCKER_APP_URL}/openapi.json"
+    local_filename = url.split("/")[-1]
+    if SPEC_FOLDER.is_dir():
+        shutil.rmtree(SPEC_FOLDER)
+    SPEC_FOLDER.mkdir(parents=True, exist_ok=True)
+    local_filename = SPEC_FOLDER / local_filename
+    with requests.get(url, stream=True) as response:
+        response.raise_for_status()
+        local_filename.open
+        with local_filename.open("wb") as file:
+            for chunk in response.iter_content(chunk_size=8192):
+                file.write(chunk)
+    print(f"Test app open api spec file {local_filename} downloaded successfully.")
+
+
+@task(pre=[test_app, spec_file])
 def atest(ctx):
     """Run acceptance tests."""
     args = [

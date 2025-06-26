@@ -49,12 +49,15 @@ class SchemathesisReader(AbstractReaderClass):
             raise ValueError("Options must be set before calling get_data_from_source.")
         url = self.options.url
         path = self.options.path
-        if not url and not path:
-            raise ValueError("Either 'url' or 'path' must be provided to SchemathesisLibrary.")
         if path and not Path(path).is_file():
             raise ValueError(f"Provided path '{path}' is not a valid file.")
         # NOTE: (dd): It would be nice to support other schema loaders too
-        schema = openapi.from_url(self.options.url)  # type: ignore
+        if path:
+            schema = openapi.from_path(path)
+        elif url:
+            schema = openapi.from_url(url)
+        else:
+            raise ValueError("Either 'url' or 'path' must be provided to SchemathesisLibrary.")
         all_cases: list[TestCaseData] = []
         for op in schema.get_all_operations():
             if isinstance(op, Ok):
@@ -90,7 +93,7 @@ class SchemathesisLibrary(DynamicCore):
         self.data_driver._start_test(data, result)
 
     @keyword
-    def call_and_validate(self, case: Case) -> Response:
+    def call_and_validate(self, case: Case, *, base_url: "str|None" = None) -> Response:
         """Validate a Schemathesis case."""
         self.info(f"Case: {case.path} | {case.method} | {case.path_parameters}")
         body = case.body if not isinstance(case.body, NotSet) else "Not set"
@@ -98,7 +101,7 @@ class SchemathesisLibrary(DynamicCore):
             f"Case headers {case.headers!r} body {body!r} "
             f"cookies {case.cookies!r} path parameters {case.path_parameters!r}"
         )
-        response = case.call_and_validate()
+        response = case.call_and_validate(base_url=base_url)
         self.debug(f"Response: {response.headers} | {response.status_code} | {response.text}")
         return response
 
