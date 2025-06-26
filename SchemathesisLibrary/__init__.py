@@ -45,6 +45,14 @@ class SchemathesisReader(AbstractReaderClass):
     options: "Options|None" = None
 
     def get_data_from_source(self) -> list[TestCaseData]:
+        if not self.options:
+            raise ValueError("Options must be set before calling get_data_from_source.")
+        url = self.options.url
+        path = self.options.path
+        if not url and not path:
+            raise ValueError("Either 'url' or 'path' must be provided to SchemathesisLibrary.")
+        if path and not Path(path).is_file():
+            raise ValueError(f"Provided path '{path}' is not a valid file.")
         # NOTE: (dd): It would be nice to support other schema loaders too
         schema = schemathesis.openapi.from_url(self.options.url)  # type: ignore
         all_cases: list[TestCaseData] = []
@@ -70,12 +78,8 @@ class SchemathesisLibrary(DynamicCore):
     ROBOT_LIBRARY_SCOPE = "TEST SUITE"
 
     def __init__(self, *, max_examples: int = 5, path: "Path|None" = None, url: "str|None" = None) -> None:
-        if not (url or path):
-            raise ValueError("Either 'url' or 'path' must be provided to SchemathesisLibrary.")
-        if path and not Path(path).is_file():
-            raise ValueError(f"Provided path '{path}' is not a valid file.")
         self.ROBOT_LIBRARY_LISTENER = self
-        SchemathesisReader.options = Options(max_examples, url=url)
+        SchemathesisReader.options = Options(max_examples=max_examples, url=url, path=path)
         self.data_driver = DataDriver(reader_class=SchemathesisReader)
         DynamicCore.__init__(self, [])
 
