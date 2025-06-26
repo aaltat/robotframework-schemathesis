@@ -92,6 +92,8 @@ def docs(ctx, version: str | None = None):
     """
     output = ROOT_DIR / "docs" / "SchemathesisLibrary.html"
     libdoc("SchemathesisLibrary", str(output))
+    if not output.is_file():
+        raise RuntimeError(f"Documentation generation failed, file not found: {output}")
     if version is not None:
         target = ROOT_DIR / "docs" / "versions" / f"SchemathesisLibrary-{version.replace('v', '')}.html"
         output.rename(target)
