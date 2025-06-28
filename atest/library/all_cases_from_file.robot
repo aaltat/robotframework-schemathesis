@@ -1,6 +1,6 @@
 *** Settings ***
 Variables           authentication.py
-Library             SchemathesisLibrary    url=http://127.0.0.1/openapi.json    max_examples=4    headers=${BASIC_AUTH_HEADERS}
+Library             SchemathesisLibrary    path=${CURDIR}/../specs/openapi.json
 
 Test Template       Wrapper
 
@@ -18,5 +18,5 @@ Wrapper
     ELSE
         VAR    &{headers}
     END
-    ${r} =    Call And Validate    ${case}    headers=${headers}
+    ${r} =    Call And Validate    ${case}    base_url=http://127.0.0.1/    headers=${headers}
     Log    ${r.json()}

@@ -1,8 +1,11 @@
-from typing import Union
+from typing import Annotated, Union
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from pydantic import BaseModel
 
+
+security = HTTPBasic()
 app = FastAPI()
 app.title = "Test API"
 app.description = "This is a test API"
@@ -36,6 +39,13 @@ class ItemDeleteResponse(BaseModel):
     message: str
 
 
+class User(BaseModel):
+    username: str
+    full_name: str
+    email: str
+    user_id: int
+
+
 @app.get("/")
 async def read_root() -> Root:
     return Root(message="Hello World")
@@ -58,3 +68,19 @@ def update_item(item_id: int, item: Item) -> ItemUpdateResponse:
 @app.delete("/items/{item_id}")
 def delete_item(item_id: int) -> ItemDeleteResponse:
     return ItemDeleteResponse(message=f"Item {item_id} deleted successfully")
+
+
+@app.get("/user/{userid}")
+def get_user(credentials: Annotated[HTTPBasicCredentials, Depends(security)], userid: int) -> User:
+    if credentials.username == "joulu" and credentials.password == "pukki":
+        return User(
+            username=credentials.username,
+            full_name=f"Joulu Pukki",
+            email="joulu.pukki@korvatuntiri.fi",
+            user_id=userid,
+        )
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Invalid credentials",
+        headers={"WWW-Authenticate": "Basic"},
+    )

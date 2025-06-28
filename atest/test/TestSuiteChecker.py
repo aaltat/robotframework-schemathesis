@@ -73,12 +73,15 @@ class ExecutionChecker(ResultVisitor):
         if not hasattr(message.parent, "kwname"):
             return False
         kw_name = str(message.parent.kwname)
-        kw_name = kw_name.replace(" ", "").replace("_", "").lower()
+        kw_name = self._normalize_kw_name(kw_name)
         for test in self.test_description:
-            kw_logs_to_collect = test.kw_logs_to_collect.replace(" ", "").replace("_", "").lower()
+            kw_logs_to_collect = self._normalize_kw_name(test.kw_logs_to_collect)
             if kw_name == kw_logs_to_collect:
                 return True
         return False
+
+    def _normalize_kw_name(self, name: str) -> str:
+        return name.replace(" ", "").replace("_", "").lower()
 
 
 class TestSuiteChecker:
@@ -119,27 +122,43 @@ class TestSuiteChecker:
         matcher: Callable,
     ):
         received_logs_count = 0
+        except_count = -1
         for test in received_logs:
+            received_logs_count = 0
             if test.startswith(test_name):
                 logger.info(f"Checking logs for test '{test}'")
                 logs = received_logs[test]
-                except_logs.count
-
+                except_count = len(except_logs.logs)
                 for expect_log in except_logs.logs:
                     for received_log in logs:
                         if self._match_found(expect_log, received_log, matcher):
                             received_logs_count += 1
-        if not received_logs_count == int(except_logs.count):
-            raise AssertionError(
-                f"Expected {except_logs.count} logs for test '{test_name}', but found {received_logs_count}."
-            )
+                            break
+                    else:
+                        line = "\n".join(logs)
+                        parts = [
+                            "from:\n",
+                            line,
+                            f"\n\tfor test '",
+                            test_name,
+                            "'",
+                        ]
+                        line = "".join(parts)
+                        raise AssertionError(
+                            f"The expected log '{expect_log}' is not found {line}"
+                        )
+                logger.info(f"Logs for test '{test}' are OK.")
+                if received_logs_count != except_count:
+                    raise AssertionError(
+                        f"Expected {except_count} logs for test '{test_name}', but found {received_logs_count}."
+                    )
 
     def _match_found(self, except_log: str, log: str, matcher: Callable) -> bool:
         try:
             matcher(log, except_log)
         except AssertionError:
             return False
-        logger.info(f"Log '{log}' matches expected log '{except_log}'")
+        logger.debug(f"Log '{log}' matches expected log '{except_log}'")
         return True
 
     def check_suite_with_logs(self, output_xml: str, logs: list[str]):
