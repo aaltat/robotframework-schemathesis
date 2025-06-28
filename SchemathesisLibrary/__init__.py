@@ -37,8 +37,9 @@ __version__ = "0.1.0"
 @dataclass
 class Options:
     max_examples: int
-    url: "str|None" = None
+    headers: dict[str, Any] | None = None
     path: "Path|None" = None
+    url: "str|None" = None
 
 
 class SchemathesisReader(AbstractReaderClass):
@@ -51,11 +52,11 @@ class SchemathesisReader(AbstractReaderClass):
         path = self.options.path
         if path and not Path(path).is_file():
             raise ValueError(f"Provided path '{path}' is not a valid file.")
-        # NOTE: (dd): It would be nice to support other schema loaders too
         if path:
             schema = openapi.from_path(path)
         elif url:
-            schema = openapi.from_url(url)
+            headers = self.options.headers or {}
+            schema = openapi.from_url(url, headers=headers)
         else:
             raise ValueError("Either 'url' or 'path' must be provided to SchemathesisLibrary.")
         all_cases: list[TestCaseData] = []
@@ -80,9 +81,17 @@ class SchemathesisLibrary(DynamicCore):
     ROBOT_LISTENER_API_VERSION = 3
     ROBOT_LIBRARY_SCOPE = "TEST SUITE"
 
-    def __init__(self, *, max_examples: int = 5, path: "Path|None" = None, url: "str|None" = None) -> None:
+    def __init__(
+        self,
+        *,
+        headers: "dict[str, Any]|None" = None,
+        max_examples: int = 5,
+        path: "Path|None" = None,
+        url: "str|None" = None,
+    ) -> None:
         self.ROBOT_LIBRARY_LISTENER = self
-        SchemathesisReader.options = Options(max_examples=max_examples, url=url, path=path)
+        logger.warn(f"headers: {headers}")
+        SchemathesisReader.options = Options(headers=headers, max_examples=max_examples, path=path, url=url)
         self.data_driver = DataDriver(reader_class=SchemathesisReader)
         DynamicCore.__init__(self, [])
 
@@ -93,15 +102,18 @@ class SchemathesisLibrary(DynamicCore):
         self.data_driver._start_test(data, result)
 
     @keyword
-    def call_and_validate(self, case: Case, *, base_url: "str|None" = None) -> Response:
+    def call_and_validate(
+        self, case: Case, *, base_url: "str|None" = None, headers: "dict[str, Any]|None" = None
+    ) -> Response:
         """Validate a Schemathesis case."""
         self.info(f"Case: {case.path} | {case.method} | {case.path_parameters}")
         body = case.body if not isinstance(case.body, NotSet) else "Not set"
+        case_headers = headers if headers else case.headers
         self.debug(
-            f"Case headers {case.headers!r} body {body!r} "
+            f"Case headers {case_headers!r} body {body!r} "
             f"cookies {case.cookies!r} path parameters {case.path_parameters!r}"
         )
-        response = case.call_and_validate(base_url=base_url)
+        response = case.call_and_validate(base_url=base_url, headers=headers)
         self.debug(f"Response: {response.headers} | {response.status_code} | {response.text}")
         return response
 
