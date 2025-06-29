@@ -90,7 +90,6 @@ class SchemathesisLibrary(DynamicCore):
         url: "str|None" = None,
     ) -> None:
         self.ROBOT_LIBRARY_LISTENER = self
-        logger.warn(f"headers: {headers}")
         SchemathesisReader.options = Options(headers=headers, max_examples=max_examples, path=path, url=url)
         self.data_driver = DataDriver(reader_class=SchemathesisReader)
         DynamicCore.__init__(self, [])

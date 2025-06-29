@@ -989,7 +989,7 @@ wheels = [
 ]
 
 [[package]]
-name = "robotframework-schemathesis"
+name = "robotframework-schemathesislibrary"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

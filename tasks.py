@@ -24,6 +24,7 @@ ROOT_DIR = Path(__file__).parent
 ATEST_OUTPUT_DIR = ROOT_DIR / "atest" / "output_runner"
 SPEC_FOLDER = ROOT_DIR / "atest" / "specs"
 ATEST_OUTPUT_DIR_LIB = ROOT_DIR / "atest" / "output_library"
+DIST_DIR = ROOT_DIR / "dist"
 DOCKER_IMAGE = "schemathesis-library-test"
 DOCKER_CONTAINER = "schemathesis-library-test-app"
 DOCKER_APP_URL = "http://127.0.0.1"
@@ -36,9 +37,9 @@ def lint(ctx, fix=False):
     ctx.run("uv run ruff format .")
     print("Run ruff check")
     ruff_args = "check --fix" if fix else "check"
-    ctx.run(f"uv run ruff {ruff_args}  SchemathesisLibrary")
+    ctx.run(f"uv run ruff {ruff_args}  src/SchemathesisLibrary")
     print("Run mypy")
-    ctx.run("uv run mypy SchemathesisLibrary")
+    ctx.run("uv run mypy src/SchemathesisLibrary")
     print("Run RoboTidy")
     ctx.run("uv run robotidy")
 
@@ -90,7 +91,8 @@ def docs(ctx, version: str | None = None):
         folder.
     """
     output = ROOT_DIR / "docs" / "SchemathesisLibrary.html"
-    libdoc("SchemathesisLibrary", str(output))
+    libdir = ROOT_DIR / "src" / "SchemathesisLibrary"
+    libdoc(str(libdir), str(output))
     if not output.is_file():
         raise RuntimeError(f"Documentation generation failed, file not found: {output}")
     if version is not None:
@@ -126,7 +128,7 @@ def atest(ctx):
         "--loglevel",
         "DEBUG:INFO",
         "--pythonpath",
-        ".",
+        "./src",
         "--outputdir",
         ATEST_OUTPUT_DIR.as_posix(),
         "atest/test",
@@ -137,3 +139,14 @@ def atest(ctx):
     ATEST_OUTPUT_DIR_LIB.mkdir(parents=True, exist_ok=True)
     print(f"Running {args}")
     ctx.run(" ".join(args))
+
+
+@task
+def clean(ctx):
+    """Clean up the output and dist directories."""
+    print("Cleaning up output directories...")
+    shutil.rmtree(ATEST_OUTPUT_DIR, ignore_errors=True)
+    shutil.rmtree(ATEST_OUTPUT_DIR_LIB, ignore_errors=True)
+    print("Cleaning up dist directories...")
+    shutil.rmtree(DIST_DIR, ignore_errors=True)
+    print("directories cleaned.")
