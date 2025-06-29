@@ -144,9 +144,7 @@ class TestSuiteChecker:
                             "'",
                         ]
                         line = "".join(parts)
-                        raise AssertionError(
-                            f"The expected log '{expect_log}' is not found {line}"
-                        )
+                        raise AssertionError(f"The expected log '{expect_log}' is not found {line}")
                 logger.info(f"Logs for test '{test}' are OK.")
                 if received_logs_count != except_count:
                     raise AssertionError(
