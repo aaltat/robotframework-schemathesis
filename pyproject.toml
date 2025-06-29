@@ -19,7 +19,7 @@ dev = [
     "pytest>=8.3.5",
     "requests>=2.32.3",
     "robotframework-tidy>=4.17.0",
-    "ruff>=0.11.8",
+    "ruff==0.12.1",
 ]
 
 [tool.robotidy]
