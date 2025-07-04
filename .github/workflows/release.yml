@@ -1,0 +1,55 @@
+name: release
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    concurrency: release
+    permissions:
+      id-token: write
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Python 3.13
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.13
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install uv
+          uv sync --locked --all-extras --dev
+      - name: Lint code
+        run: |
+          uv run inv lint
+      - name: Run tests
+        run: |
+          uv run inv atest
+      - name: Upload runner test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: atest-result-runner-python-3.13
+          path: atest/output_runner/
+      - name: Upload runner test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: atest-result-library-python-3.13
+          path: atest/output_library/
+
+      - name: Python Semantic Release
+        id: release
+        uses: python-semantic-release/python-semantic-release@v10.1.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create keyword documentation
+        run: |
+          uv run inv docs
+          uv run inv docs ${{ steps.release.outputs.version }}
+        if: steps.release.outputs.released == 'true'
