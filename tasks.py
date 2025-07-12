@@ -113,7 +113,7 @@ def old_version_docs(ctx, version: str | None = None):
     index = ROOT_DIR / "docs" / "versions" / "index.md"
     with index.open("a") as file:
         url = (
-            "https://github.com/aaltat/robotframework-schemathesis/docs/versions/"
+            "https://aaltat.github.io/robotframework-schemathesis/versions/"
             f"SchemathesisLibrary-{version}.html"
         )
         file.write(f"\n[{version}]({url})\n")
