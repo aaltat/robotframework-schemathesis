@@ -52,7 +52,7 @@ jobs:
         run: |
           uv run inv docs --set-version ${{ steps.release.outputs.version }}
           uv run inv docs
-          uv run inv inv -version-docs --version ${{ steps.release.outputs.version }}
+          uv run inv old-version-docs --version ${{ steps.release.outputs.version }}
         if: steps.release.outputs.released == 'true'
       - uses: EndBug/add-and-commit@v9
         name: Save keyword documentation
@@ -68,3 +68,4 @@ jobs:
           uv build
           ls -l dist/
           uv publish
+        if: steps.release.outputs.released == 'true'
