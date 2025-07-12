@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v0.9.0 (2025-07-12)
+
+### Bug Fixes
+
+- Versions links
+  ([`d9a0eba`](https://github.com/aaltat/robotframework-schemathesis/commit/d9a0eba6ecc9eb16c7ac4ab5f923b256d1bbf382))
+
+
 ## v0.8.0 (2025-07-12)
 
 ### Documentation
