@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v0.7.0 (2025-07-12)
+
+### Bug Fixes
+
+- Kw docs should have correct version
+  ([`c34d241`](https://github.com/aaltat/robotframework-schemathesis/commit/c34d241f405ff9b73d89c0ff46e1e1efd671fb4d))
+
+
 ## v0.6.0 (2025-07-12)
 
 ### Bug Fixes
