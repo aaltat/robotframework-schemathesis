@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v0.3.0 (2025-07-12)
+
+### Bug Fixes
+
+- Add library documentation
+  ([`ca93797`](https://github.com/aaltat/robotframework-schemathesis/commit/ca93797417cd443cc42acb92dd876687d4635a49))
+
+
 ## v0.2.0 (2025-07-12)
 
 ### Chores
