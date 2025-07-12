@@ -22,7 +22,8 @@ pip install robotframework-schemathesislibrary
 # Keyword documentation
 See
 [keyword documentation](https://aaltat.github.io/robotframework-schemathesis/SchemathesisLibrary.html)
-for more details. 
+for more details. A link older keyword documentation can be found from
+[versions page](https://aaltat.github.io/robotframework-schemathesis/versions/)
 
 # Usage
 Test are automatically generated based your API specification, SchemathesisLibrary uses
