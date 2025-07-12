@@ -106,6 +106,18 @@ def docs(ctx, set_version: str | None = None):
 
 
 @task
+def old_version_docs(ctx, version: str | None = None):
+    """Generate old version documentation index."""
+    index = ROOT_DIR / "docs" / "versions" / "index.md"
+    with index.open("a") as file:
+        url = (
+            "https://github.com/aaltat/robotframework-schemathesis/docs/versions/"
+            f"SchemathesisLibrary-{version}.html"
+        )
+        file.write(f"\n[{version}]({url})\n")
+
+
+@task
 def spec_file(ctx):
     """Download test app open api specification file"""
     url = f"{DOCKER_APP_URL}/openapi.json"

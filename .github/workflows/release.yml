@@ -52,11 +52,12 @@ jobs:
         run: |
           uv run inv docs --set-version ${{ steps.release.outputs.version }}
           uv run inv docs
+          uv run inv inv -version-docs --version ${{ steps.release.outputs.version }}
         if: steps.release.outputs.released == 'true'
       - uses: EndBug/add-and-commit@v9
         name: Save keyword documentation
         with:
-          add: "['docs/SchemathesisLibrary.html', 'docs/versions/SchemathesisLibrary-${{ steps.release.outputs.version }}.html']"
+          add: "['docs/SchemathesisLibrary.html', 'docs/versions/SchemathesisLibrary-${{ steps.release.outputs.version }}.html', 'docs/versions/index.md']"
           author_name: Schemathesis Library
           author_email: Schemathesis@Library
           message: "Update keyword documentation for version ${{ steps.release.outputs.version }}"
