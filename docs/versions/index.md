@@ -8,3 +8,5 @@
 [0.6.0](https://github.com/aaltat/robotframework-schemathesis/docs/versions/SchemathesisLibrary-0.6.0.html)
 
 [0.7.0](https://github.com/aaltat/robotframework-schemathesis/docs/versions/SchemathesisLibrary-0.7.0.html)
+
+[0.8.0](https://github.com/aaltat/robotframework-schemathesis/docs/versions/SchemathesisLibrary-0.8.0.html)
