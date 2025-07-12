@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v0.6.0 (2025-07-12)
+
+### Bug Fixes
+
+- Save version to repo
+  ([`95bd8d2`](https://github.com/aaltat/robotframework-schemathesis/commit/95bd8d29d17f7dce7dd63e925bcb1ad25984faf5))
+
+
 ## v0.5.0 (2025-07-12)
 
 ### Bug Fixes
