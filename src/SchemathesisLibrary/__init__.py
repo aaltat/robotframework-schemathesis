@@ -31,7 +31,7 @@ from schemathesis.core import NotSet
 from schemathesis.core.result import Ok
 from schemathesis.core.transport import Response
 
-__version__ = "0.8.0"
+__version__ = "0.9.0"
 
 
 @dataclass
