@@ -42,14 +42,14 @@ jobs:
         with:
           name: atest-result-library-python-3.13
           path: atest/output_library/
-
       - name: Python Semantic Release
         id: release
         uses: python-semantic-release/python-semantic-release@v10.1.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: minor
       - name: Create keyword documentation
         run: |
           uv run inv docs
-          uv run inv docs ${{ steps.release.outputs.version }}
+          uv run inv docs --version ${{ steps.release.outputs.version }}
         if: steps.release.outputs.released == 'true'
