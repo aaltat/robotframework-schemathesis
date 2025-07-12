@@ -108,6 +108,8 @@ def docs(ctx, set_version: str | None = None):
 @task
 def old_version_docs(ctx, version: str | None = None):
     """Generate old version documentation index."""
+    if not version:
+        raise ValueError("Version must be provided to generate old version documentation index.")
     index = ROOT_DIR / "docs" / "versions" / "index.md"
     with index.open("a") as file:
         url = (
