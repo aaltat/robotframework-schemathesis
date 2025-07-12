@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v0.8.0 (2025-07-12)
+
+### Documentation
+
+- Add link to older kw docs versions
+  ([`ecd9360`](https://github.com/aaltat/robotframework-schemathesis/commit/ecd93609412333901d26c3b856487e3f82b9145b))
+
+
 ## v0.7.0 (2025-07-12)
 
 ### Bug Fixes
