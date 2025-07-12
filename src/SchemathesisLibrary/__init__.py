@@ -80,6 +80,7 @@ class SchemathesisLibrary(DynamicCore):
     ROBOT_LIBRARY_VERSION = __version__
     ROBOT_LISTENER_API_VERSION = 3
     ROBOT_LIBRARY_SCOPE = "TEST SUITE"
+    """SchemathesisLibrary is a library for validating API cases using Schemathesis."""
 
     def __init__(
         self,
