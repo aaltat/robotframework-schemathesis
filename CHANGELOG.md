@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v0.5.0 (2025-07-12)
+
+### Bug Fixes
+
+- Docs generation
+  ([`40272a6`](https://github.com/aaltat/robotframework-schemathesis/commit/40272a649178e4182e990734fa58eb186928655a))
+
+
 ## v0.4.0 (2025-07-12)
 
 
