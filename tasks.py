@@ -120,6 +120,21 @@ def old_version_docs(ctx, version: str | None = None):
 
 
 @task
+def version(ctx, version: str):
+    """Set the version of the library __init__.py."""
+    init_file = ROOT_DIR / "src" / "SchemathesisLibrary" / "__init__.py"
+    with init_file.open("r") as file:
+        lines = file.readlines()
+    for index, line in enumerate(lines):
+        if line.startswith("__version__"):
+            lines[index] = f'__version__ = "{version}"\n'
+            break
+    with init_file.open("w") as file:
+        file.writelines(lines)
+    print(f"Library version set to {version} in {init_file}.")
+
+
+@task
 def spec_file(ctx):
     """Download test app open api specification file"""
     url = f"{DOCKER_APP_URL}/openapi.json"
