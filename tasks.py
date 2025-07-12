@@ -82,24 +82,27 @@ def test_app(ctx):
 
 
 @task
-def docs(ctx, version: str | None = None):
+def docs(ctx, set_version: str | None = None):
     """Generate library keyword documentation.
 
     Args:
-        version: Creates keyword documentation with version
+        set_version: Creates keyword documentation with version
         suffix in the name. Documentation is moved to docs/vesions
         folder.
     """
-    output = ROOT_DIR / "docs" / "SchemathesisLibrary.html"
-    libdir = ROOT_DIR / "src" / "SchemathesisLibrary"
-    libdoc(str(libdir), str(output))
-    if not output.is_file():
-        raise RuntimeError(f"Documentation generation failed, file not found: {output}")
-    if version is not None:
-        versions_dir = ROOT_DIR / "docs" / "versions"
+    docs_dir = ROOT_DIR / "docs"
+    if not set_version:
+        target = docs_dir / "SchemathesisLibrary.html"
+    else:
+        versions_dir = docs_dir / "versions"
         versions_dir.mkdir(parents=True, exist_ok=True)
-        target = versions_dir / f"SchemathesisLibrary-{version.replace('v', '')}.html"
-        output.rename(target)
+        target = versions_dir / f"SchemathesisLibrary-{set_version}.html"
+    libdir = ROOT_DIR / "src" / "SchemathesisLibrary"
+
+    print(f"Generating documentation for {libdir} to {target}")
+    libdoc(str(libdir), str(target))
+    if not target.is_file():
+        raise RuntimeError(f"Documentation generation failed, file not found: {target}")
 
 
 @task

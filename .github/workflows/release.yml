@@ -50,6 +50,20 @@ jobs:
           force: minor
       - name: Create keyword documentation
         run: |
+          uv run inv docs --set-version ${{ steps.release.outputs.version }}
           uv run inv docs
-          uv run inv docs --version ${{ steps.release.outputs.version }}
         if: steps.release.outputs.released == 'true'
+      - uses: EndBug/add-and-commit@v9
+        name: Save keyword documentation
+        with:
+          add: "['docs/SchemathesisLibrary.html', 'docs/versions/SchemathesisLibrary-${{ steps.release.outputs.version }}.html']"
+          author_name: Schemathesis Library
+          author_email: Schemathesis@Library
+          message: "Update keyword documentation for version ${{ steps.release.outputs.version }}"
+        if: steps.release.outputs.released == 'true'
+      - name: Create release
+        run: |
+          uv version ${{ steps.release.outputs.version }}
+          uv build
+          ls -l dist/
+          uv publish
