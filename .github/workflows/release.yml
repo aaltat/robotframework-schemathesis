@@ -65,7 +65,16 @@ jobs:
       - name: Create release
         run: |
           uv version ${{ steps.release.outputs.version }}
+          uv run inv version ${{ steps.release.outputs.version }}
           uv build
           ls -l dist/
           uv publish
+        if: steps.release.outputs.released == 'true'
+      - uses: EndBug/add-and-commit@v9
+        name: Save version
+        with:
+          add: "['pyproject.toml', 'uv.lock', 'src/SchemathesisLibrary/__init__.py']"
+          author_name: Schemathesis Library
+          author_email: Schemathesis@Library
+          message: "Update version information to ${{ steps.release.outputs.version }}"
         if: steps.release.outputs.released == 'true'
