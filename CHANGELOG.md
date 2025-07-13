@@ -2,6 +2,24 @@
 
 <!-- version list -->
 
+## v0.10.0 (2025-07-13)
+
+### Chores
+
+- Simplify test log check logic
+  ([`bfd2498`](https://github.com/aaltat/robotframework-schemathesis/commit/bfd2498e7c2a0f7e4351a9208a25a7dd47135ea6))
+
+### Documentation
+
+- Improve library keyword documentation
+  ([`6c7fade`](https://github.com/aaltat/robotframework-schemathesis/commit/6c7fadedc63d690dd61544663c80e2609038bfab))
+
+### Features
+
+- Create seperate keyword call and validate
+  ([`422d8bf`](https://github.com/aaltat/robotframework-schemathesis/commit/422d8bfa9dd8048ad7ee7aa513d826379e7c432c))
+
+
 ## v0.9.0 (2025-07-12)
 
 ### Bug Fixes
