@@ -12,3 +12,5 @@
 [0.8.0](https://aaltat.github.io/robotframework-schemathesis/versions/SchemathesisLibrary-0.8.0.html)
 
 [0.9.0](https://aaltat.github.io/robotframework-schemathesis/versions/SchemathesisLibrary-0.9.0.html)
+
+[0.10.0](https://aaltat.github.io/robotframework-schemathesis/versions/SchemathesisLibrary-0.10.0.html)
