@@ -2,6 +2,19 @@
 
 <!-- version list -->
 
+## v0.11.0 (2025-07-13)
+
+### Bug Fixes
+
+- Correct linking in keyword docs
+  ([`ac284be`](https://github.com/aaltat/robotframework-schemathesis/commit/ac284be4751892cd92f07fdc66e4cf2ba0ac7814))
+
+### Chores
+
+- Clean CHANGELOG from not valid releases
+  ([`0e85b19`](https://github.com/aaltat/robotframework-schemathesis/commit/0e85b1965b968ce6f3b51f6b54c712c29bdaee66))
+
+
 ## v0.10.0 (2025-07-13)
 
 ### Chores
