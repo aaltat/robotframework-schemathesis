@@ -85,12 +85,12 @@ class SchemathesisLibrary(DynamicCore):
 
     Library must be imported with the `url` or `path` argument to specify the
     OpenAPI schema. The library uses
-    [DataDriver|https://github.com/Snooz82/robotframework-datadriver] to generate
+    [https://github.com/Snooz82/robotframework-datadriver|DataDriver] to generate
     test cases from the OpenAPI schema by using
-    [Schemathesis|https://github.com/schemathesis/schemathesis/]. The library
+    [https://github.com/schemathesis/schemathesis|Schemathesis]. The library
     creates test cases that takes one argument, `${case}`, which is a
     Schemathesis
-    [Case|https://schemathesis.readthedocs.io/en/stable/reference/python/#schemathesis.Case]
+    [https://schemathesis.readthedocs.io/en/stable/reference/python/#schemathesis.Case|Case]
     object. The `Call And Validate` keyword can be used to call and validate
     the case. The keyword will log the request and response details.
 
