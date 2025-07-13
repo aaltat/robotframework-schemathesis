@@ -10,17 +10,11 @@ from robot.result.executionerrors import ExecutionErrors
 
 
 @dataclass
-class LogsDescription:
-    count: int
-    logs: list[str]
-
-
-@dataclass
 class TestCaseData:
     name: str
     count: int
     kw_logs_to_collect: str
-    logs: LogsDescription
+    logs: list[str]
 
 
 class ExecutionSuiteChecker(ResultVisitor):
@@ -117,7 +111,7 @@ class TestSuiteChecker:
     def _check_test_logs(
         self,
         test_name: str,
-        except_logs: LogsDescription,
+        except_logs: list[str],
         received_logs: dict[str, list[str]],
         matcher: Callable,
     ):
@@ -128,8 +122,8 @@ class TestSuiteChecker:
             if test.startswith(test_name):
                 logger.info(f"Checking logs for test '{test}'")
                 logs = received_logs[test]
-                except_count = len(except_logs.logs)
-                for expect_log in except_logs.logs:
+                except_count = len(except_logs)
+                for expect_log in except_logs:
                     for received_log in logs:
                         if self._match_found(expect_log, received_log, matcher):
                             received_logs_count += 1
