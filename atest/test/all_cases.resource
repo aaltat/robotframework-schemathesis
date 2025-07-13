@@ -68,6 +68,9 @@ Get All Cases Test Description Separate
     [Arguments]    ${count: int}=${5}
     ${test_description} =    Get All Cases Test Description    ${COUNT}
     FOR    ${description}    IN    @{test_description}
-        Log    ${description}
+        Append To List    ${description}[logs]    Response validation passed.
+        Append To List
+        ...    ${description}[logs]
+        ...    Validating response: 200 | {'date': *, 'server': *, 'content-length': *, 'content-type': *'application/json'*}
     END
     RETURN    ${test_description}
