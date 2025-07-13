@@ -110,13 +110,50 @@ class SchemathesisLibrary(DynamicCore):
         base_url: "str|None" = None,
         headers: "dict[str, Any]|None" = None,
     ) -> Response:
-        """Validate a Schemathesis case."""
+        """Call and validate a Schemathesis case."""
         self.info(f"Case: {case.path} | {case.method} | {case.path_parameters}")
         self._log_case(case, headers)
         response = case.call_and_validate(base_url=base_url, headers=headers, auth=auth)
         self._log_request(response)
         self.debug(f"Response: {response.headers} | {response.status_code} | {response.text}")
         return response
+
+    @keyword
+    def call(
+        self,
+        case: Case,
+        *,
+        auth: "Any|None" = None,
+        base_url: "str|None" = None,
+        headers: "dict[str, Any]|None" = None,
+    ) -> Response:
+        """Call a Schemathesis case without validation.
+
+        The `Call` and `Validate Response` keywords can be used together
+        to call a case and validate the response.
+
+        Example:
+        | ${response} =    Call Case    ${case}
+        | Validate Response    ${case}    ${response}
+        """
+        self.info(f"Calling case: {case.path} | {case.method} | {case.path_parameters}")
+        self._log_case(case)
+        response = case.call(base_url=base_url, headers=headers, auth=auth)
+        self._log_request(response)
+        return response
+
+    @keyword
+    def validate_response(self, case: Case, response: Response) -> None:
+        """Validate a Schemathesis response.
+
+        The response is validated against the case's expectations.
+        The `Call` and `Validate Response` keywords can be used together
+        to call a case and validate the response. See the example from
+        `Call` keyword documentation.
+        """
+        self.info(f"Validating response: {response.status_code} | {response.headers}")
+        case.validate_response(response)
+        self.info("Response validation passed.")
 
     def info(self, message: str) -> None:
         logger.info(message)
