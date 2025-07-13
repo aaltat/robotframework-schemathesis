@@ -1,9 +1,8 @@
 *** Settings ***
-Library         Collections
-Library         Process
 Library         os_wrapper.py
 Library         TestSuiteChecker.py
 Variables       variables.py
+Resource        libs.resource
 
 
 *** Variables ***
