@@ -77,10 +77,42 @@ def from_case(case: Case) -> TestCaseData:
 
 
 class SchemathesisLibrary(DynamicCore):
+    """SchemathesisLibrary is a library for validating API cases using Schemathesis.
+
+    %TOC%
+
+    Example usage of the library and the `Call And Validate` keyword
+
+    Library must be imported with the `url` or `path` argument to specify the
+    OpenAPI schema. The library uses
+    [DataDriver|https://github.com/Snooz82/robotframework-datadriver] to generate
+    test cases from the OpenAPI schema by using
+    [Schemathesis|https://github.com/schemathesis/schemathesis/]. The library
+    creates test cases that takes one argument, `${case}`, which is a
+    Schemathesis
+    [Case|https://schemathesis.readthedocs.io/en/stable/reference/python/#schemathesis.Case]
+    object. The `Call And Validate` keyword can be used to call and validate
+    the case. The keyword will log the request and response details.
+
+    Example:
+    | *** Settings ***
+    | Library             SchemathesisLibrary    url=http://127.0.0.1/openapi.json
+    |
+    | Test Template       Wrapper
+    |
+    | *** Test Cases ***
+    | All Tests   # This test is deleted by DataDriver
+    |     Wrapper    test_case_1
+    |
+    | *** Keywords ***
+    | Wrapper
+    |     [Arguments]    ${case}
+    |     Call And Validate    ${case}
+    """
+
     ROBOT_LIBRARY_VERSION = __version__
     ROBOT_LISTENER_API_VERSION = 3
     ROBOT_LIBRARY_SCOPE = "TEST SUITE"
-    """SchemathesisLibrary is a library for validating API cases using Schemathesis."""
 
     def __init__(
         self,
@@ -90,6 +122,14 @@ class SchemathesisLibrary(DynamicCore):
         path: "Path|None" = None,
         url: "str|None" = None,
     ) -> None:
+        """The SchemathesisLibrary can be initialized with the following arguments:
+
+        | =Argument=                        | =Description= |
+        | `headers`                         | Optional HTTP headers to be used schema is downloaded from `url`. |
+        | `max_examples`                    | Maximum number of examples to generate for each operation. Default is 5. |
+        | `path`                            | Path to the OpenAPI schema file. Using either `path` or `url` is mandatory. |
+        | `url`                             | URL where the OpenAPI schema can be downloaded. |
+        """
         self.ROBOT_LIBRARY_LISTENER = self
         SchemathesisReader.options = Options(headers=headers, max_examples=max_examples, path=path, url=url)
         self.data_driver = DataDriver(reader_class=SchemathesisReader)
@@ -110,7 +150,11 @@ class SchemathesisLibrary(DynamicCore):
         base_url: "str|None" = None,
         headers: "dict[str, Any]|None" = None,
     ) -> Response:
-        """Call and validate a Schemathesis case."""
+        """Call and validate a Schemathesis case.
+
+        Example:
+        | ${response} =    Call And Validate Case    ${case}
+        """
         self.info(f"Case: {case.path} | {case.method} | {case.path_parameters}")
         self._log_case(case, headers)
         response = case.call_and_validate(base_url=base_url, headers=headers, auth=auth)
