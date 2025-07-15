@@ -2,6 +2,20 @@
 
 <!-- version list -->
 
+## v0.12.0 (2025-07-15)
+
+### Chores
+
+- **deps**: Bump actions/setup-python from 4 to 5
+  ([`0dccb3d`](https://github.com/aaltat/robotframework-schemathesis/commit/0dccb3defbbedbf1682c4dcf1e131e13a5052fca))
+
+- **deps**: Bump python-semantic-release/python-semantic-release
+  ([`797c91c`](https://github.com/aaltat/robotframework-schemathesis/commit/797c91c5b4530e88e268fe25852ac349feeb1857))
+
+- **deps**: Bump schemathesis from 4.0.8 to 4.0.9
+  ([`b11973a`](https://github.com/aaltat/robotframework-schemathesis/commit/b11973a9aad65bb9f7afcc5669ab10fa7ba44ffd))
+
+
 ## v0.11.0 (2025-07-13)
 
 ### Bug Fixes
