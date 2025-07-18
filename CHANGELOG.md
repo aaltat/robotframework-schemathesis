@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v0.13.0 (2025-07-18)
+
+### Chores
+
+- **deps**: Bump schemathesis from 4.0.9 to 4.0.10
+  ([`8d26dcb`](https://github.com/aaltat/robotframework-schemathesis/commit/8d26dcba23efd920d2e1f53f5e702bf5438e0cc1))
+
+
 ## v0.12.0 (2025-07-15)
 
 ### Chores
