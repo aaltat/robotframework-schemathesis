@@ -1173,7 +1173,7 @@ wheels = [
 
 [[package]]
 name = "schemathesis"
-version = "4.0.12"
+version = "4.0.13"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "backoff" },
@@ -1197,9 +1197,9 @@ dependencies = [
     { name = "typing-extensions" },
     { name = "werkzeug" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/80/82/fd4ca53de46ab1cdc4d161fee1744fc7032f32b37c608d2ef05bd7eb7e07/schemathesis-4.0.12.tar.gz", hash = "sha256:1b8cf1eb84bb31e4cb3d04d6cc736605f52c7ba7d7e4790b8c78ea0f582e9fc0", size = 57711222, upload-time = "2025-07-20T22:16:25.916Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1a/03/de9079a6bf997a5874b5235061f14a624da39791771122f68c29a06119ad/schemathesis-4.0.13.tar.gz", hash = "sha256:e17426888891e4288e195c0109732f3314f88335ef83436df2ca7253861ca25a", size = 57711599, upload-time = "2025-07-24T18:06:36.426Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1b/ab/b91f2db76f5abc9d890db46551521056b4ea1892227a08f720221fd91901/schemathesis-4.0.12-py3-none-any.whl", hash = "sha256:577e92a95aeea1d811677d484477c41a712a43f8da22cb09d5c5ec1fd6fedfcb", size = 306335, upload-time = "2025-07-20T22:16:22.315Z" },
+    { url = "https://files.pythonhosted.org/packages/38/54/38f49bdbf8c276dda9eef777e7dcd40a355325d435d2cf3501c433a4be37/schemathesis-4.0.13-py3-none-any.whl", hash = "sha256:3b3b44b2fb318db4d4b3223ebe6a591ce3b77417cab0bd0e4683b7aa897c18a7", size = 306462, upload-time = "2025-07-24T18:06:32.969Z" },
 ]
 
 [[package]]
