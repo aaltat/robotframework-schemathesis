@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.10.1"
 
 [[package]]
@@ -990,7 +990,7 @@ wheels = [
 
 [[package]]
 name = "robotframework-schemathesislibrary"
-version = "0.17.0"
+version = "0.18.0"
 source = { virtual = "." }
 dependencies = [
     { name = "robotframework" },
