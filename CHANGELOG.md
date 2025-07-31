@@ -2,6 +2,23 @@
 
 <!-- version list -->
 
+## v0.18.0 (2025-07-31)
+
+### Chores
+
+- **deps**: Bump mypy from 1.16.0 to 1.17.0
+  ([`4ac87c0`](https://github.com/aaltat/robotframework-schemathesis/commit/4ac87c0dbeb24bd5ad35e4c6ccbaf082f843701b))
+
+- **deps**: Bump pytest from 8.4.0 to 8.4.1
+  ([`0b34d21`](https://github.com/aaltat/robotframework-schemathesis/commit/0b34d21f2c2b193107c903d5721298af7129b3d9))
+
+- **deps**: Bump robotframework-tidy from 4.17.0 to 4.18.0
+  ([`da0983d`](https://github.com/aaltat/robotframework-schemathesis/commit/da0983d12c8a1a7e2045080c26ac54259ef67c54))
+
+- **deps**: Bump ruff from 0.12.1 to 0.12.7
+  ([`dcca852`](https://github.com/aaltat/robotframework-schemathesis/commit/dcca852e114a10b21fea9a1dab37ac430ed8c4b3))
+
+
 ## v0.17.0 (2025-07-26)
 
 ### Chores
