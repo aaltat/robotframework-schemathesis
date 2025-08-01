@@ -2,6 +2,17 @@
 
 <!-- version list -->
 
+## v0.19.0 (2025-08-01)
+
+### Chores
+
+- **deps**: Bump mypy from 1.17.0 to 1.17.1
+  ([`defb8fe`](https://github.com/aaltat/robotframework-schemathesis/commit/defb8fe4f0be727072080297c4bb5f54c472644f))
+
+- **deps**: Bump schemathesis from 4.0.15 to 4.0.16
+  ([`f8e30fc`](https://github.com/aaltat/robotframework-schemathesis/commit/f8e30fc1ab9bb1e84e88efe552764f8e594ade1e))
+
+
 ## v0.18.0 (2025-07-31)
 
 ### Chores
