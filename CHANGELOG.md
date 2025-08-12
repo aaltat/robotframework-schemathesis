@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v0.24.0 (2025-08-12)
+
+### Chores
+
+- **deps**: Bump actions/checkout from 4 to 5
+  ([`7afdb16`](https://github.com/aaltat/robotframework-schemathesis/commit/7afdb16f8a82817729d5d2de2b3aa24101a8e4f7))
+
+
 ## v0.23.0 (2025-08-12)
 
 ### Chores
