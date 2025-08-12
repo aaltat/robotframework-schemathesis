@@ -2,6 +2,17 @@
 
 <!-- version list -->
 
+## v0.23.0 (2025-08-12)
+
+### Chores
+
+- **deps**: Bump python-semantic-release/python-semantic-release
+  ([`64150d4`](https://github.com/aaltat/robotframework-schemathesis/commit/64150d483cbe878d0e26ff898629becb1cc5e5a3))
+
+- **deps**: Bump schemathesis from 4.0.23 to 4.0.25
+  ([`ce8d5e9`](https://github.com/aaltat/robotframework-schemathesis/commit/ce8d5e9d1aee6008b8a29958e0c15d443fb7b7ae))
+
+
 ## v0.22.0 (2025-08-08)
 
 ### Chores
