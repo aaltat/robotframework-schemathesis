@@ -1,6 +1,6 @@
 [project]
 name = "robotframework-schemathesislibrary"
-version = "0.24.0"
+version = "0.25.0"
 description = "Robot Framework SchemathesisLibrary to automatically create test cases from API specifications."
 authors = [
   { name="Tatu Aalto", email="aalto.tatu@gmail.com" },
