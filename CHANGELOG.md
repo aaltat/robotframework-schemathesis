@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v0.27.0 (2025-08-20)
+
+### Chores
+
+- **deps**: Bump requests from 2.32.4 to 2.32.5
+  ([`c74ad65`](https://github.com/aaltat/robotframework-schemathesis/commit/c74ad659e73337d7f923c8b814ef444582119b0f))
+
+
 ## v0.26.0 (2025-08-15)
 
 ### Chores
