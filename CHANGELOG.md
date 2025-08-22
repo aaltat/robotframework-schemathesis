@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v0.29.0 (2025-08-22)
+
+### Chores
+
+- **deps**: Bump ruff from 0.12.9 to 0.12.10
+  ([`a9face5`](https://github.com/aaltat/robotframework-schemathesis/commit/a9face501b0b2089e97da99836d66172b8eac04b))
+
+
 ## v0.28.0 (2025-08-20)
 
 ### Chores
