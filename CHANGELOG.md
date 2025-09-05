@@ -2,6 +2,17 @@
 
 <!-- version list -->
 
+## v0.33.0 (2025-09-05)
+
+### Chores
+
+- **deps**: Bump pytest from 8.4.1 to 8.4.2
+  ([`a8935de`](https://github.com/aaltat/robotframework-schemathesis/commit/a8935deac466992be402b8c7cd8f0a380703baae))
+
+- **deps**: Bump ruff from 0.12.11 to 0.12.12
+  ([`c5fd824`](https://github.com/aaltat/robotframework-schemathesis/commit/c5fd8244d372c9782c1cbb2fae5b812b69a4e7c5))
+
+
 ## v0.32.0 (2025-09-02)
 
 ### Chores
