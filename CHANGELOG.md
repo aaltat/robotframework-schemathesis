@@ -2,6 +2,17 @@
 
 <!-- version list -->
 
+## v0.34.0 (2025-09-09)
+
+### Chores
+
+- **deps**: Bump actions/setup-python from 5 to 6
+  ([`8c65c0e`](https://github.com/aaltat/robotframework-schemathesis/commit/8c65c0e00d0d6296fa7865cb2e1c756497a1b5e2))
+
+- **deps**: Bump python-semantic-release/python-semantic-release
+  ([`7308bc5`](https://github.com/aaltat/robotframework-schemathesis/commit/7308bc53559351be1e7b5b8f1abb4d2daf3b17f7))
+
+
 ## v0.33.0 (2025-09-05)
 
 ### Chores
