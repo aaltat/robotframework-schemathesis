@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v0.38.0 (2025-09-19)
+
+### Chores
+
+- **deps**: Bump ruff from 0.13.0 to 0.13.1
+  ([`b6353e4`](https://github.com/aaltat/robotframework-schemathesis/commit/b6353e452776fe0704b84349e2371c2404a4cf8d))
+
+
 ## v0.37.0 (2025-09-15)
 
 ### Chores
