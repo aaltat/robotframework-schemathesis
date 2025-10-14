@@ -2,6 +2,20 @@
 
 <!-- version list -->
 
+## v0.45.0 (2025-10-14)
+
+### Chores
+
+- **deps**: Bump astral-sh/setup-uv from 6 to 7
+  ([`27fe7a8`](https://github.com/aaltat/robotframework-schemathesis/commit/27fe7a8ea28c709c59c971ce46bda670035da171))
+
+- **deps**: Bump invoke from 2.2.0 to 2.2.1
+  ([`3ca2f73`](https://github.com/aaltat/robotframework-schemathesis/commit/3ca2f7355dd605a80a01955be03fa9d486deab22))
+
+- **deps**: Bump schemathesis from 4.2.1 to 4.3.0
+  ([`b0bfe41`](https://github.com/aaltat/robotframework-schemathesis/commit/b0bfe419af29e1d78ff5f86ba0b23d0b5a64b109))
+
+
 ## v0.44.0 (2025-10-10)
 
 ### Chores
