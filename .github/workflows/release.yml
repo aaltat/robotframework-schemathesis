@@ -38,7 +38,7 @@ jobs:
         with:
           name: atest-result-runner-python-3.13
           path: atest/output_runner/
-      - name: Upload runner test results
+      - name: Upload library test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
