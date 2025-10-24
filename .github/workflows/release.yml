@@ -34,10 +34,12 @@ jobs:
           uv run inv atest
       - name: Upload runner test results
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: atest-result-runner-python-3.13
           path: atest/output_runner/
       - name: Upload runner test results
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: atest-result-library-python-3.13

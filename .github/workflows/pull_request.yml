@@ -51,12 +51,14 @@ jobs:
 
       - name: Upload runner test results
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: atest-result-runner-${{ matrix.python-version }}
           path: atest/output_runner/
 
       - name: Upload runner test results
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: atest-result-library-${{ matrix.python-version }}
           path: atest/output_library/
