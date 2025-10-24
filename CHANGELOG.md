@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v0.51.0 (2025-10-24)
+
+### Chores
+
+- Tune CI steps names
+  ([`513ceb0`](https://github.com/aaltat/robotframework-schemathesis/commit/513ceb094bd3aa5e87747bbfe0e2edb1f09d2caa))
+
+
 ## v0.50.0 (2025-10-24)
 
 
