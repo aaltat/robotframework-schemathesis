@@ -41,7 +41,7 @@ jobs:
         run: uv run inv docs
 
       - name: Upload libdoc
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: SchemathesisLibrary-${{ matrix.python-version }}.html
           path: docs/SchemathesisLibrary.html
@@ -50,14 +50,14 @@ jobs:
         run: uv run inv atest
 
       - name: Upload runner test results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: atest-result-runner-${{ matrix.python-version }}
           path: atest/output_runner/
 
       - name: Upload library test results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: atest-result-library-${{ matrix.python-version }}
