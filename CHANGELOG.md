@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v0.52.0 (2025-10-28)
+
+### Chores
+
+- **deps**: Bump actions/upload-artifact from 4 to 5
+  ([`4acbc10`](https://github.com/aaltat/robotframework-schemathesis/commit/4acbc100192e0b4f8ce9a90f852b6b4847089ae7))
+
+
 ## v0.51.0 (2025-10-24)
 
 ### Chores
