@@ -1,6 +1,5 @@
 *** Settings ***
-Variables           authentication.py
-Library             SchemathesisLibrary    url=http://127.0.0.1/openapi.json
+Library             SchemathesisLibrary    url=http://127.0.0.1/openapi.json    auth=${CURDIR}/AuthExtension.py
 
 Test Template       Wrapper
 
@@ -13,10 +12,5 @@ All Tests
 *** Keywords ***
 Wrapper
     [Arguments]    ${case}
-    IF    ${{'${case.path}'.startswith('/user')}}
-        VAR    ${auth}    ${BASIC_AUTH_TUPLE}
-    ELSE
-        VAR    ${auth}    ${None}
-    END
-    ${r} =    Call And Validate    ${case}    auth=${auth}
+    ${r} =    Call And Validate    ${case}
     Log    ${r.json()}

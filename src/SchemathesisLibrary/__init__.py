@@ -11,69 +11,25 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from dataclasses import dataclass
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from DataDriver import DataDriver  # type: ignore
-from DataDriver.AbstractReaderClass import AbstractReaderClass  # type: ignore
-from DataDriver.ReaderConfig import TestCaseData  # type: ignore
-from hypothesis import HealthCheck, Phase, Verbosity, given, settings
-from hypothesis import strategies as st
 from robot.api import logger
 from robot.api.deco import keyword
 from robot.result.model import TestCase as ResultTestCase  # type: ignore
 from robot.result.model import TestSuite as ResultTestSuite  # type: ignore
 from robot.running.model import TestCase, TestSuite  # type: ignore
 from robotlibcore import DynamicCore  # type: ignore
-from schemathesis import Case, openapi
+from schemathesis import Case
 from schemathesis.core import NotSet
-from schemathesis.core.result import Ok
 from schemathesis.core.transport import Response
 
+from .schemathesisreader import Options, SchemathesisReader
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
 __version__ = "0.53.0"
-
-
-@dataclass
-class Options:
-    max_examples: int
-    headers: dict[str, Any] | None = None
-    path: "Path|None" = None
-    url: "str|None" = None
-
-
-class SchemathesisReader(AbstractReaderClass):
-    options: "Options|None" = None
-
-    def get_data_from_source(self) -> list[TestCaseData]:
-        if not self.options:
-            raise ValueError("Options must be set before calling get_data_from_source.")
-        url = self.options.url
-        path = self.options.path
-        if path and not Path(path).is_file():
-            raise ValueError(f"Provided path '{path}' is not a valid file.")
-        if path:
-            schema = openapi.from_path(path)
-        elif url:
-            headers = self.options.headers or {}
-            schema = openapi.from_url(url, headers=headers)
-        else:
-            raise ValueError("Either 'url' or 'path' must be provided to SchemathesisLibrary.")
-        all_cases: list[TestCaseData] = []
-        for op in schema.get_all_operations():
-            if isinstance(op, Ok):
-                # NOTE: (dd): `as_strategy` also accepts GenerationMode
-                #             It could be used to produce positive / negative tests
-                strategy = op.ok().as_strategy().map(from_case)  # type: ignore
-                add_examples(strategy, all_cases, self.options.max_examples)  # type: ignore
-        return all_cases
-
-
-def from_case(case: Case) -> TestCaseData:
-    return TestCaseData(
-        test_case_name=f"{case.operation.label} - {case.id}",
-        arguments={"${case}": case},
-    )
 
 
 class SchemathesisLibrary(DynamicCore):
@@ -121,17 +77,21 @@ class SchemathesisLibrary(DynamicCore):
         max_examples: int = 5,
         path: "Path|None" = None,
         url: "str|None" = None,
+        auth: str | None = None,
     ) -> None:
         """The SchemathesisLibrary can be initialized with the following arguments:
 
         | =Argument=                        | =Description= |
-        | `headers`                         | Optional HTTP headers to be used schema is downloaded from `url`. |
+        | `headers`                         | Optional HTTP headers to be used when schema is downloaded from `url`. |
         | `max_examples`                    | Maximum number of examples to generate for each operation. Default is 5. |
         | `path`                            | Path to the OpenAPI schema file. Using either `path` or `url` is mandatory. |
         | `url`                             | URL where the OpenAPI schema can be downloaded. |
+        | `auth`                            | Optional authentication class to be used passed for Schemathesis authentication when test cases are executed. |
         """
         self.ROBOT_LIBRARY_LISTENER = self
-        SchemathesisReader.options = Options(headers=headers, max_examples=max_examples, path=path, url=url)
+        SchemathesisReader.options = Options(
+            headers=headers, max_examples=max_examples, path=path, url=url, auth=auth
+        )
         self.data_driver = DataDriver(reader_class=SchemathesisReader)
         DynamicCore.__init__(self, [])
 
@@ -146,9 +106,8 @@ class SchemathesisLibrary(DynamicCore):
         self,
         case: Case,
         *,
-        auth: "Any|None" = None,
-        base_url: "str|None" = None,
-        headers: "dict[str, Any]|None" = None,
+        base_url: str | None = None,
+        headers: dict[str, Any] | None = None,
     ) -> Response:
         """Call and validate a Schemathesis case.
 
@@ -157,7 +116,7 @@ class SchemathesisLibrary(DynamicCore):
         """
         self.info(f"Case: {case.path} | {case.method} | {case.path_parameters}")
         self._log_case(case, headers)
-        response = case.call_and_validate(base_url=base_url, headers=headers, auth=auth)
+        response = case.call_and_validate(base_url=base_url, headers=headers)
         self._log_request(response)
         self.debug(f"Response: {response.headers} | {response.status_code} | {response.text}")
         return response
@@ -167,9 +126,8 @@ class SchemathesisLibrary(DynamicCore):
         self,
         case: Case,
         *,
-        auth: "Any|None" = None,
-        base_url: "str|None" = None,
-        headers: "dict[str, Any]|None" = None,
+        base_url: str | None = None,
+        headers: dict[str, Any] | None = None,
     ) -> Response:
         """Call a Schemathesis case without validation.
 
@@ -182,7 +140,7 @@ class SchemathesisLibrary(DynamicCore):
         """
         self.info(f"Calling case: {case.path} | {case.method} | {case.path_parameters}")
         self._log_case(case)
-        response = case.call(base_url=base_url, headers=headers, auth=auth)
+        response = case.call(base_url=base_url, headers=headers)
         self._log_request(response)
         return response
 
@@ -222,19 +180,3 @@ class SchemathesisLibrary(DynamicCore):
             f"Request: {resposen.request.method} {resposen.request.url} "
             f"headers: {resposen.request.headers!r} body: {resposen.request.body!r}"
         )
-
-
-def add_examples(strategy: st.SearchStrategy, container: list[TestCaseData], max_examples: int) -> None:
-    @given(strategy)
-    @settings(
-        database=None,
-        max_examples=max_examples,
-        deadline=None,
-        verbosity=Verbosity.quiet,
-        phases=(Phase.generate,),
-        suppress_health_check=list(HealthCheck),
-    )
-    def example_generating_inner_function(ex: Any) -> None:
-        container.append(ex)
-
-    example_generating_inner_function()

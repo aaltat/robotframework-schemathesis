@@ -153,7 +153,7 @@ def spec_file(ctx):
 
 
 @task(pre=[test_app, spec_file])
-def atest(ctx):
+def atest(ctx, suite: str | None = None):
     """Run acceptance tests."""
     args = [
         "uv",
@@ -167,6 +167,32 @@ def atest(ctx):
         ATEST_OUTPUT_DIR.as_posix(),
         "atest/test",
     ]
+    shutil.rmtree(ATEST_OUTPUT_DIR, ignore_errors=True)
+    shutil.rmtree(ATEST_OUTPUT_DIR_LIB, ignore_errors=True)
+    ATEST_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    ATEST_OUTPUT_DIR_LIB.mkdir(parents=True, exist_ok=True)
+    print(f"Running {args}")
+    ctx.run(" ".join(args))
+
+
+@task(pre=[test_app, spec_file])
+def atest_lib(ctx, suite: str | None = None):
+    """Run library tests."""
+    args = [
+        "uv",
+        "run",
+        "robot",
+        "--loglevel",
+        "DEBUG:INFO",
+        "--pythonpath",
+        "./src",
+        "--outputdir",
+        ATEST_OUTPUT_DIR_LIB.as_posix(),
+    ]
+    if suite:
+        args.append(f"--suite")
+        args.append(suite)
+    args.append("atest/library")
     shutil.rmtree(ATEST_OUTPUT_DIR, ignore_errors=True)
     shutil.rmtree(ATEST_OUTPUT_DIR_LIB, ignore_errors=True)
     ATEST_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
