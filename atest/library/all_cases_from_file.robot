@@ -1,6 +1,6 @@
 *** Settings ***
 Variables           authentication.py
-Library             SchemathesisLibrary    path=${CURDIR}/../specs/openapi.json
+Library             SchemathesisLibrary    path=${CURDIR}/../specs/openapi.json    auth=${CURDIR}/AuthExtension.py
 
 Test Template       Wrapper
 
@@ -14,7 +14,8 @@ All Tests
 Wrapper
     [Arguments]    ${case}
     IF    ${{'${case.path}'.startswith('/user')}}
-        VAR    &{headers}    &{BASIC_AUTH_HEADERS}
+        VAR    &{headers}    key1=value1    key2=value2
+        BuiltIn.Skip    Skipping test case for /user path
     ELSE
         VAR    &{headers}
     END

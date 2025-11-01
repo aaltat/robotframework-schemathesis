@@ -49,7 +49,6 @@ jobs:
         uses: python-semantic-release/python-semantic-release@v10.4.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          force: minor
       - name: Create release
         run: |
           uv version ${{ steps.release.outputs.version }}
