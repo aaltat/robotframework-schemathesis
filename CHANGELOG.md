@@ -2,6 +2,20 @@
 
 <!-- version list -->
 
+## v1.0.0 (2025-11-02)
+
+### Features
+
+- New schemathesis support
+  ([`b9c8982`](https://github.com/aaltat/robotframework-schemathesis/commit/b9c8982702f8ce4a6ede0cbe87e96cc29f700b11))
+
+### Breaking Changes
+
+- Call* keywords have removed the auth argumement because it did not work properly anymore with
+  latest Schemathesis versions. Instead use auth argument in library import and implement a class
+  with Schemathesis auth section: https://schemathesis.readthedocs.io/en/stable/guides/auth/
+
+
 ## v0.53.0 (2025-11-01)
 
 ### Chores
