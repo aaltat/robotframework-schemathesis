@@ -29,7 +29,7 @@ from .schemathesisreader import Options, SchemathesisReader
 if TYPE_CHECKING:
     from pathlib import Path
 
-__version__ = "0.53.0"
+__version__ = "1.0.0"
 
 
 class SchemathesisLibrary(DynamicCore):
