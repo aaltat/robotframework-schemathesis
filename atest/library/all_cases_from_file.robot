@@ -14,10 +14,10 @@ All Tests
 Wrapper
     [Arguments]    ${case}
     IF    ${{'${case.path}'.startswith('/user')}}
-        VAR    &{headers}    key1=value1    key2=value2
+        VAR    &{headers} =    key1=value1    key2=value2
         BuiltIn.Skip    Skipping test case for /user path
     ELSE
-        VAR    &{headers}
+        VAR    &{headers} =
     END
     ${r} =    Call And Validate    ${case}    base_url=http://127.0.0.1/    headers=${headers}
     Log    ${r.json()}

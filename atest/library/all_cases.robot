@@ -14,9 +14,9 @@ All Tests
 Wrapper
     [Arguments]    ${case}
     IF    ${{'${case.path}'.startswith('/user')}}
-        VAR    &{headers}    &{BASIC_AUTH_HEADERS}
+        VAR    &{headers} =    &{BASIC_AUTH_HEADERS}
     ELSE
-        VAR    &{headers}
+        VAR    &{headers} =
     END
     ${r} =    Call And Validate    ${case}    headers=${headers}
     Log    ${r.json()}

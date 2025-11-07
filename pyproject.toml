@@ -23,25 +23,25 @@ dev = [
     "mypy>=1.15.0",
     "pytest>=8.3.5",
     "requests>=2.32.3",
-    "robotframework-tidy>=4.17.0",
+    "robotframework-robocop>=6.9.2",
     "ruff==0.14.4",
 ]
 
 [tool.semantic_release.settings]
 allow_zero_version = true
 
-[tool.robotidy]
+[tool.robocop.format]
 overwrite = true
+color = false
 diff = false
-src = [
-    "atest"
-]
+
 configure = [
-    "OrderTags:enabled=True",
-    "RenameKeywords:enabled=True",
-    "RenameTestCases:enabled=True",
-    "RenameVariables:enabled=True",
-    "ReplaceWithVAR:enabled=True",
+    "OrderTags.enabled=True",
+    "NormalizeAssignments.equal_sign_type=space_and_equal_sign",
+    "RenameKeywords.enabled=True",
+    "RenameTestCases.enabled=True",
+    "RenameVariables.enabled=True",
+    "ReplaceWithVAR.enabled=True",
 ]
 
 [tool.ruff]

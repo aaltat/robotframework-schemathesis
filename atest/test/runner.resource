@@ -16,7 +16,7 @@ Run Suite
     ${library_output_dir} =    Get Suite Output Path    ${SUITE_SOURCE}    ${LIBRARY_OUTPUT_DIR_BASE}
     Log    ${LIBRARY_PYTHON_PATH}
     Log    ${library_output_dir}
-    VAR    @{args}
+    VAR    @{args} =
     ...    run
     ...    robot
     ...    --loglevel
@@ -33,8 +33,8 @@ Run Suite
     ${result} =    Run Process    uv    @{args}    cwd=${LIBRARY_PYTHON_PATH}
     Log    ${result.stdout}
     Log    ${result.stderr}
-    Should Be Equal As Integers    ${result.rc}    ${RC}
-    VAR    @{rebot_args}
+    Should Be Equal As Integers    ${result.rc}    ${rc}
+    VAR    @{rebot_args} =
     ...    uv
     ...    run
     ...    rebot
@@ -47,4 +47,4 @@ Run Suite
     Log    ${result.stdout}
     Log    ${result.stderr}
     Should Be True    ${result.rc < 251}
-    VAR    ${LIBRARY_OUTPUT_XML}    ${library_output_dir}/output.xml    scope=SUITE
+    VAR    ${LIBRARY_OUTPUT_XML} =    ${library_output_dir}/output.xml    scope=SUITE
