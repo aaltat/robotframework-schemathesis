@@ -7,5 +7,5 @@ Suite Setup     Run Suite
 
 *** Test Cases ***
 Check All Cases
-    ${test_description}=    Get All Cases Test Description    4
+    ${test_description} =    Get All Cases Test Description    4
     Check Suite    ${LIBRARY_OUTPUT_XML}    ${test_description}

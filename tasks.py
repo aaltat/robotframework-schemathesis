@@ -41,7 +41,7 @@ def lint(ctx, fix=False):
     print("Run mypy")
     ctx.run("uv run mypy src/SchemathesisLibrary")
     print("Run RoboTidy")
-    ctx.run("uv run robotidy")
+    ctx.run("uv run robocop format")
 
 
 @task
