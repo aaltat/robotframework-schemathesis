@@ -4,11 +4,11 @@ requires-python = ">=3.10.1"
 
 [[package]]
 name = "annotated-doc"
-version = "0.0.3"
+version = "0.0.4"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/d7/a6/dc46877b911e40c00d395771ea710d5e77b6de7bacd5fdcd78d70cc5a48f/annotated_doc-0.0.3.tar.gz", hash = "sha256:e18370014c70187422c33e945053ff4c286f453a984eba84d0dbfa0c935adeda", size = 5535, upload-time = "2025-10-24T14:57:10.718Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/57/ba/046ceea27344560984e26a590f90bc7f4a75b06701f653222458922b558c/annotated_doc-0.0.4.tar.gz", hash = "sha256:fbcda96e87e9c92ad167c2e53839e57503ecfda18804ea28102353485033faa4", size = 7288, upload-time = "2025-11-10T22:07:42.062Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/02/b7/cf592cb5de5cb3bade3357f8d2cf42bf103bbe39f459824b4939fd212911/annotated_doc-0.0.3-py3-none-any.whl", hash = "sha256:348ec6664a76f1fd3be81f43dffbee4c7e8ce931ba71ec67cc7f4ade7fbbb580", size = 5488, upload-time = "2025-10-24T14:57:09.462Z" },
+    { url = "https://files.pythonhosted.org/packages/1e/d3/26bf1008eb3d2daa8ef4cacc7f3bfdc11818d111f7e2d0201bc6e3b49d45/annotated_doc-0.0.4-py3-none-any.whl", hash = "sha256:571ac1dc6991c450b25a9c2d84a3705e2ae7a53467b5d111c24fa8baabbed320", size = 5303, upload-time = "2025-11-10T22:07:40.673Z" },
 ]
 
 [[package]]
@@ -59,11 +59,11 @@ wheels = [
 
 [[package]]
 name = "certifi"
-version = "2025.10.5"
+version = "2025.11.12"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/4c/5b/b6ce21586237c77ce67d01dc5507039d444b630dd76611bbca2d8e5dcd91/certifi-2025.10.5.tar.gz", hash = "sha256:47c09d31ccf2acf0be3f701ea53595ee7e0b8fa08801c6624be771df09ae7b43", size = 164519, upload-time = "2025-10-05T04:12:15.808Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a2/8c/58f469717fa48465e4a50c014a0400602d3c437d7c0c468e17ada824da3a/certifi-2025.11.12.tar.gz", hash = "sha256:d8ab5478f2ecd78af242878415affce761ca6bc54a22a27e026d7c25357c3316", size = 160538, upload-time = "2025-11-12T02:54:51.517Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e4/37/af0d2ef3967ac0d6113837b44a4f0bfe1328c2b9763bd5b1744520e5cfed/certifi-2025.10.5-py3-none-any.whl", hash = "sha256:0f212c2744a9bb6de0c56639a6f68afe01ecd92d91f14ae897c4fe7bbeeef0de", size = 163286, upload-time = "2025-10-05T04:12:14.03Z" },
+    { url = "https://files.pythonhosted.org/packages/70/7d/9bc192684cea499815ff478dfcdc13835ddf401365057044fb721ec6bddb/certifi-2025.11.12-py3-none-any.whl", hash = "sha256:97de8790030bbd5c2d96b7ec782fc2f7820ef8dba6db909ccf95449f2d062d4b", size = 159438, upload-time = "2025-11-12T02:54:49.735Z" },
 ]
 
 [[package]]
@@ -221,7 +221,7 @@ wheels = [
 
 [[package]]
 name = "fastapi"
-version = "0.121.0"
+version = "0.121.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "annotated-doc" },
@@ -229,9 +229,9 @@ dependencies = [
     { name = "starlette" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/8c/e3/77a2df0946703973b9905fd0cde6172c15e0781984320123b4f5079e7113/fastapi-0.121.0.tar.gz", hash = "sha256:06663356a0b1ee93e875bbf05a31fb22314f5bed455afaaad2b2dad7f26e98fa", size = 342412, upload-time = "2025-11-03T10:25:54.818Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/6b/a4/29e1b861fc9017488ed02ff1052feffa40940cb355ed632a8845df84ce84/fastapi-0.121.1.tar.gz", hash = "sha256:b6dba0538fd15dab6fe4d3e5493c3957d8a9e1e9257f56446b5859af66f32441", size = 342523, upload-time = "2025-11-08T21:48:14.068Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/dd/2c/42277afc1ba1a18f8358561eee40785d27becab8f80a1f945c0a3051c6eb/fastapi-0.121.0-py3-none-any.whl", hash = "sha256:8bdf1b15a55f4e4b0d6201033da9109ea15632cb76cf156e7b8b4019f2172106", size = 109183, upload-time = "2025-11-03T10:25:53.27Z" },
+    { url = "https://files.pythonhosted.org/packages/94/fd/2e6f7d706899cc08690c5f6641e2ffbfffe019e8f16ce77104caa5730910/fastapi-0.121.1-py3-none-any.whl", hash = "sha256:2c5c7028bc3a58d8f5f09aecd3fd88a000ccc0c5ad627693264181a3c33aa1fc", size = 109192, upload-time = "2025-11-08T21:48:12.458Z" },
 ]
 
 [package.optional-dependencies]
@@ -246,16 +246,17 @@ standard = [
 
 [[package]]
 name = "fastapi-cli"
-version = "0.0.14"
+version = "0.0.16"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "rich-toolkit" },
+    { name = "tomli", marker = "python_full_version < '3.11'" },
     { name = "typer" },
     { name = "uvicorn", extra = ["standard"] },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/cc/13/11e43d630be84e51ba5510a6da6a11eb93b44b72caa796137c5dddda937b/fastapi_cli-0.0.14.tar.gz", hash = "sha256:ddfb5de0a67f77a8b3271af1460489bd4d7f4add73d11fbfac613827b0275274", size = 17994, upload-time = "2025-10-20T16:33:21.054Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/99/75/9407a6b452be4c988feacec9c9d2f58d8f315162a6c7258d5a649d933ebe/fastapi_cli-0.0.16.tar.gz", hash = "sha256:e8a2a1ecf7a4e062e3b2eec63ae34387d1e142d4849181d936b23c4bdfe29073", size = 19447, upload-time = "2025-11-10T19:01:07.856Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/40/e8/bc8bbfd93dcc8e347ce98a3e654fb0d2e5f2739afb46b98f41a30c339269/fastapi_cli-0.0.14-py3-none-any.whl", hash = "sha256:e66b9ad499ee77a4e6007545cde6de1459b7f21df199d7f29aad2adaab168eca", size = 11151, upload-time = "2025-10-20T16:33:19.318Z" },
+    { url = "https://files.pythonhosted.org/packages/55/43/678528c19318394320ee43757648d5e0a8070cf391b31f69d931e5c840d2/fastapi_cli-0.0.16-py3-none-any.whl", hash = "sha256:addcb6d130b5b9c91adbbf3f2947fe115991495fdb442fe3e51b5fc6327df9f4", size = 12312, upload-time = "2025-11-10T19:01:06.728Z" },
 ]
 
 [package.optional-dependencies]
@@ -893,7 +894,7 @@ wheels = [
 
 [[package]]
 name = "pytest"
-version = "8.4.2"
+version = "9.0.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "colorama", marker = "sys_platform == 'win32'" },
@@ -904,9 +905,9 @@ dependencies = [
     { name = "pygments" },
     { name = "tomli", marker = "python_full_version < '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a3/5c/00a0e072241553e1a7496d638deababa67c5058571567b92a7eaa258397c/pytest-8.4.2.tar.gz", hash = "sha256:86c0d0b93306b961d58d62a4db4879f27fe25513d4b969df351abdddb3c30e01", size = 1519618, upload-time = "2025-09-04T14:34:22.711Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/07/56/f013048ac4bc4c1d9be45afd4ab209ea62822fb1598f40687e6bf45dcea4/pytest-9.0.1.tar.gz", hash = "sha256:3e9c069ea73583e255c3b21cf46b8d3c56f6e3a1a8f6da94ccb0fcf57b9d73c8", size = 1564125, upload-time = "2025-11-12T13:05:09.333Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a8/a4/20da314d277121d6534b3a980b29035dcd51e6744bd79075a6ce8fa4eb8d/pytest-8.4.2-py3-none-any.whl", hash = "sha256:872f880de3fc3a5bdc88a11b39c9710c3497a547cfa9320bc3c5e62fbf272e79", size = 365750, upload-time = "2025-09-04T14:34:20.226Z" },
+    { url = "https://files.pythonhosted.org/packages/0b/8b/6300fb80f858cda1c51ffa17075df5d846757081d11ab4aa35cef9e6258b/pytest-9.0.1-py3-none-any.whl", hash = "sha256:67be0030d194df2dfa7b556f2e56fb3c3315bd5c8822c6951162b92b32ce7dad", size = 373668, upload-time = "2025-11-12T13:05:07.379Z" },
 ]
 
 [[package]]
@@ -1257,7 +1258,7 @@ wheels = [
 
 [[package]]
 name = "robotframework-robocop"
-version = "6.9.2"
+version = "6.10.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jinja2" },
@@ -1270,9 +1271,9 @@ dependencies = [
     { name = "tomli-w" },
     { name = "typer-slim" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a9/b7/a5524d1600f111c2457429d674bb6fdfe99eb02757268009c580ec7734e4/robotframework_robocop-6.9.2.tar.gz", hash = "sha256:461b1ae8ad9a43ae1a29ba343ec9b626c65cd8615938e94b76c3f32c0eee39f6", size = 688462, upload-time = "2025-11-01T17:35:02.189Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e4/4a/4eb16fbfb36c735d4a61e530fcd861d336b728df8848498d13ba700b53c6/robotframework_robocop-6.10.0.tar.gz", hash = "sha256:9cfd0f058995a172350fd7b8fb60bf5d9c5d4755cab12a846442bc1035af9f73", size = 814404, upload-time = "2025-11-12T09:14:13.143Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/8e/b3/9e5e5a385606738866988948e8fa0558deaca1b152bb7900f45232244a85/robotframework_robocop-6.9.2-py3-none-any.whl", hash = "sha256:1b6111c614cce67af33998aa35cac60ccc8a1e495b0be44b6b8892a7cdcc7cf9", size = 243245, upload-time = "2025-11-01T17:35:00.98Z" },
+    { url = "https://files.pythonhosted.org/packages/8e/0e/2253fb10abd56818fc1cb232bc0f5fad92088d83c0fae758b5c070bce795/robotframework_robocop-6.10.0-py3-none-any.whl", hash = "sha256:d216a30a632f8e416a708d1a2e811c89a970edb38e52d3d4081422f209459658", size = 244034, upload-time = "2025-11-12T09:14:11.076Z" },
 ]
 
 [[package]]
@@ -1302,12 +1303,12 @@ requires-dist = [
     { name = "robotframework", specifier = ">=7.2.2" },
     { name = "robotframework-datadriver", specifier = ">=1.11.2" },
     { name = "robotframework-pythonlibcore", specifier = ">=4.4.1" },
-    { name = "schemathesis", specifier = ">=4.4.3" },
+    { name = "schemathesis", specifier = ">=4.5.1" },
 ]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "fastapi", extras = ["standard"], specifier = ">=0.115.12" },
+    { name = "fastapi", extras = ["standard"], specifier = ">=0.121.0" },
     { name = "invoke", specifier = ">=2.2.0" },
     { name = "mypy", specifier = ">=1.15.0" },
     { name = "pytest", specifier = ">=8.3.5" },
@@ -1466,7 +1467,7 @@ wheels = [
 
 [[package]]
 name = "schemathesis"
-version = "4.4.3"
+version = "4.5.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
@@ -1490,22 +1491,22 @@ dependencies = [
     { name = "typing-extensions" },
     { name = "werkzeug" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4b/f7/9565f0b3b5877abec9d23b3db82cd7810ab7cafc772748688bbaafecf59a/schemathesis-4.4.3.tar.gz", hash = "sha256:d58962a602ee66039fd0c3e50de3fa32aaf7fc56cc0e2677ed6159ba3c2e54e8", size = 57892233, upload-time = "2025-11-07T18:02:47.928Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/88/12/9dbd8c72a9f121a65c44c4d0a67c38eebbbd71ae6662563a63e9d0c33f83/schemathesis-4.5.1.tar.gz", hash = "sha256:c7ab2ee28d4f3b317f0f85e837f68e553dfa9e1cf5e5ad016c7ae98059ed4787", size = 57919136, upload-time = "2025-11-12T15:27:32.882Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/86/69/4fb222e990efcb3ba45ba18198e73ee11cd226a09794de10cb92058e4059/schemathesis-4.4.3-py3-none-any.whl", hash = "sha256:c47a4067c8b4a794af78abc50265310c2a2b2361e1994a0fe857bac990688960", size = 382146, upload-time = "2025-11-07T18:02:45.235Z" },
+    { url = "https://files.pythonhosted.org/packages/25/1c/f8d3069657d9f662d3665365b2795c5a392e7aa40cc991c07e234bfdb91e/schemathesis-4.5.1-py3-none-any.whl", hash = "sha256:f65ac7d0b20314d213cc03635f14a4b67f4b1ddb5f59dacbf8c955be1d9732f6", size = 393545, upload-time = "2025-11-12T15:27:30.492Z" },
 ]
 
 [[package]]
 name = "sentry-sdk"
-version = "2.43.0"
+version = "2.44.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "certifi" },
     { name = "urllib3" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b3/18/09875b4323b03ca9025bae7e6539797b27e4fc032998a466b4b9c3d24653/sentry_sdk-2.43.0.tar.gz", hash = "sha256:52ed6e251c5d2c084224d73efee56b007ef5c2d408a4a071270e82131d336e20", size = 368953, upload-time = "2025-10-29T11:26:08.156Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/62/26/ff7d93a14a0ec309021dca2fb7c62669d4f6f5654aa1baf60797a16681e0/sentry_sdk-2.44.0.tar.gz", hash = "sha256:5b1fe54dfafa332e900b07dd8f4dfe35753b64e78e7d9b1655a28fd3065e2493", size = 371464, upload-time = "2025-11-11T09:35:56.075Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/69/31/8228fa962f7fd8814d634e4ebece8780e2cdcfbdf0cd2e14d4a6861a7cd5/sentry_sdk-2.43.0-py2.py3-none-any.whl", hash = "sha256:4aacafcf1756ef066d359ae35030881917160ba7f6fc3ae11e0e58b09edc2d5d", size = 400997, upload-time = "2025-10-29T11:26:05.77Z" },
+    { url = "https://files.pythonhosted.org/packages/a8/56/c16bda4d53012c71fa1b588edde603c6b455bc8206bf6de7b83388fcce75/sentry_sdk-2.44.0-py2.py3-none-any.whl", hash = "sha256:9e36a0372b881e8f92fdbff4564764ce6cec4b7f25424d0a3a8d609c9e4651a7", size = 402352, upload-time = "2025-11-11T09:35:54.1Z" },
 ]
 
 [[package]]

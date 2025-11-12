@@ -13,12 +13,12 @@ dependencies = [
     "robotframework>=7.2.2",
     "robotframework-datadriver>=1.11.2",
     "robotframework-pythonlibcore>=4.4.1",
-    "schemathesis>=4.4.3",
+    "schemathesis>=4.5.1",
 ]
 
 [dependency-groups]
 dev = [
-    "fastapi[standard]>=0.115.12",
+    "fastapi[standard]>=0.121.0",
     "invoke>=2.2.0",
     "mypy>=1.15.0",
     "pytest>=8.3.5",

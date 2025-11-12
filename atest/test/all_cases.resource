@@ -74,3 +74,21 @@ Get All Cases Test Description Separate
         ...    Validating response: 200 | {'date': *, 'server': *, 'content-length': *, 'content-type': *'application/json'*}
     END
     RETURN    ${test_description}
+
+Get All Cases Test Description With Set Headers
+    [Arguments]    ${count: int}=${5}
+    ${test_description} =    Get All Cases Test Description    ${count}
+    FOR    ${description}    IN    @{test_description}
+        IF    "${description}[name]" == "GET /user/{userid} -"
+            VAR    ${logs} =    ${description}[logs]
+            FOR    ${i}    ${log}    IN ENUMERATE    @{logs}
+                IF    $log.startswith("Case headers")
+                    Log    Original log: ${log}
+                    VAR    ${new_log} =    Case headers {'key1': 'value1', 'key2': 'value2'} body 'Not set' cookies {} path parameters {'userid': *}
+                    Log    Modified log: ${new_log}
+                    Set List Value    ${logs}    ${i}    ${new_log}
+                END
+            END
+        END
+    END
+    RETURN    ${test_description}
