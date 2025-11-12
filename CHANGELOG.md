@@ -2,6 +2,51 @@
 
 <!-- version list -->
 
+## v1.1.0 (2025-11-12)
+
+### Bug Fixes
+
+- Use latest schemathesis
+  ([`0bd2166`](https://github.com/aaltat/robotframework-schemathesis/commit/0bd2166025464682efb91214817a6aa1b71bee17))
+
+### Chores
+
+- Lint fixes
+  ([`973eb96`](https://github.com/aaltat/robotframework-schemathesis/commit/973eb9600b2dafe7eeb469d3ecf588f0d1529311))
+
+- Use robocop
+  ([`855abc4`](https://github.com/aaltat/robotframework-schemathesis/commit/855abc42f0ba839edeebeeda92a26faa186631a5))
+
+- **deps**: Bump python-semantic-release/python-semantic-release
+  ([`3e3ddc6`](https://github.com/aaltat/robotframework-schemathesis/commit/3e3ddc6986c70a8fb7820108376a68c7f0a228e2))
+
+- **deps**: Bump ruff from 0.14.3 to 0.14.4
+  ([`33fdaeb`](https://github.com/aaltat/robotframework-schemathesis/commit/33fdaebf90181cdfaa99c6945756beb5a53bbc79))
+
+- **deps**: Bump schemathesis from 4.3.17 to 4.3.18
+  ([`d7be02d`](https://github.com/aaltat/robotframework-schemathesis/commit/d7be02deb16f24753d6dd7abb9aeb655c50cbca7))
+
+- **deps**: Bump schemathesis from 4.3.18 to 4.4.0
+  ([`92dac71`](https://github.com/aaltat/robotframework-schemathesis/commit/92dac71e0b4f6355839c18ab062877f0220dd0fc))
+
+- **deps**: Bump schemathesis from 4.3.4 to 4.3.16
+  ([`d909636`](https://github.com/aaltat/robotframework-schemathesis/commit/d9096364177bf49d495a0666cf6de404a8e4a2d5))
+
+- **deps**: Bump schemathesis from 4.4.0 to 4.4.1
+  ([`edec0f6`](https://github.com/aaltat/robotframework-schemathesis/commit/edec0f6ef93ee15e8c7884a94448f2db4553f01d))
+
+- **deps**: Bump schemathesis from 4.4.1 to 4.4.3
+  ([`f250ece`](https://github.com/aaltat/robotframework-schemathesis/commit/f250ece421b986037486138afbed9030a57a09be))
+
+- **deps**: Bump schemathesis from 4.4.3 to 4.4.4
+  ([`de523c4`](https://github.com/aaltat/robotframework-schemathesis/commit/de523c49aaf2b58c62983ad19f224f59c64fdb97))
+
+### Features
+
+- Support latest schemathesis to fix base_url
+  ([`ebd5349`](https://github.com/aaltat/robotframework-schemathesis/commit/ebd5349f223f74b8df8a371989229b6618abd391))
+
+
 ## v1.0.0 (2025-11-02)
 
 ### Features
