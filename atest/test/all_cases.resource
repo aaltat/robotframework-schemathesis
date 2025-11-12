@@ -84,7 +84,8 @@ Get All Cases Test Description With Set Headers
             FOR    ${i}    ${log}    IN ENUMERATE    @{logs}
                 IF    $log.startswith("Case headers")
                     Log    Original log: ${log}
-                    VAR    ${new_log} =    Case headers {'key1': 'value1', 'key2': 'value2'} body 'Not set' cookies {} path parameters {'userid': *}
+                    VAR    ${new_log} =
+                    ...    Case headers {'key1': 'value1', 'key2': 'value2'} body 'Not set' cookies {} path parameters {'userid': *}
                     Log    Modified log: ${new_log}
                     Set List Value    ${logs}    ${i}    ${new_log}
                 END
