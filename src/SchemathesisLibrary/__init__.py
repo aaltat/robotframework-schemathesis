@@ -19,6 +19,7 @@ from robot.api.deco import keyword
 from robot.result.model import TestCase as ResultTestCase  # type: ignore
 from robot.result.model import TestSuite as ResultTestSuite  # type: ignore
 from robot.running.model import TestCase, TestSuite  # type: ignore
+from robot.utils.dotdict import DotDict  # type: ignore
 from robotlibcore import DynamicCore  # type: ignore
 from schemathesis import Case
 from schemathesis.core import NotSet
@@ -114,6 +115,7 @@ class SchemathesisLibrary(DynamicCore):
         Example:
         | ${response} =    Call And Validate Case    ${case}
         """
+        headers = self._dot_dict_to_dict(headers) if headers else None
         self.info(f"Case: {case.path} | {case.method} | {case.path_parameters}")
         self._log_case(case, headers)
         response = case.call_and_validate(base_url=base_url, headers=headers)
@@ -138,6 +140,7 @@ class SchemathesisLibrary(DynamicCore):
         | ${response} =    Call Case    ${case}
         | Validate Response    ${case}    ${response}
         """
+        headers = self._dot_dict_to_dict(headers) if headers else None
         self.info(f"Calling case: {case.path} | {case.method} | {case.path_parameters}")
         self._log_case(case)
         response = case.call(base_url=base_url, headers=headers)
@@ -180,3 +183,8 @@ class SchemathesisLibrary(DynamicCore):
             f"Request: {resposen.request.method} {resposen.request.url} "
             f"headers: {resposen.request.headers!r} body: {resposen.request.body!r}"
         )
+
+    def _dot_dict_to_dict(self, dot_dict: dict[str, Any]) -> dict[str, Any]:
+        if isinstance(dot_dict, DotDict):
+            return dict(dot_dict)
+        return dot_dict

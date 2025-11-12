@@ -15,7 +15,6 @@ Wrapper
     [Arguments]    ${case}
     IF    ${{'${case.path}'.startswith('/user')}}
         VAR    &{headers} =    key1=value1    key2=value2
-        BuiltIn.Skip    Skipping test case for /user path
     ELSE
         VAR    &{headers} =
     END
