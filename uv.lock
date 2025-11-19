@@ -1258,7 +1258,7 @@ wheels = [
 
 [[package]]
 name = "robotframework-robocop"
-version = "6.10.1"
+version = "6.11.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jinja2" },
@@ -1271,9 +1271,9 @@ dependencies = [
     { name = "tomli-w" },
     { name = "typer-slim" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/36/fb/aa930604d91ed65a6d34e6d46a57532da5f68c37f775516f8f85b9679184/robotframework_robocop-6.10.1.tar.gz", hash = "sha256:9c2d72db4bf1fec6fbc2cca97e9443c4ee6fa04fecd39a679056476393dc9259", size = 816331, upload-time = "2025-11-17T10:16:03.471Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a8/19/2349316edac4ba71ea42cb879b0e185fb20f9593aff2e543bf2cde4e9036/robotframework_robocop-6.11.0.tar.gz", hash = "sha256:ff84976864e53791cd577284d9311d2d95929928ae23cce5b37413490bbb51e7", size = 820764, upload-time = "2025-11-19T17:51:16.263Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/65/1f/e8e45754c56be795f1033b5c60e8177860dfce801c5711794e1c0df1c473/robotframework_robocop-6.10.1-py3-none-any.whl", hash = "sha256:b9e124f40178af1ba239d5889dac77d917946b8e89d31ae420895eb019bc5e07", size = 243969, upload-time = "2025-11-17T10:16:01.94Z" },
+    { url = "https://files.pythonhosted.org/packages/5e/42/bfd83711033e6dadb16d93ad9e3bd5fda99e943c7ae60a759b41ebbcacde/robotframework_robocop-6.11.0-py3-none-any.whl", hash = "sha256:ffd2e59496069ba30c8316e9ac14721a1f7a45efc3a5f1d578148d1114887422", size = 245114, upload-time = "2025-11-19T17:51:14.581Z" },
 ]
 
 [[package]]
