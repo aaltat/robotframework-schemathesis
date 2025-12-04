@@ -24,7 +24,7 @@ dev = [
     "pytest>=8.3.5",
     "requests>=2.32.3",
     "robotframework-robocop>=6.9.2",
-    "ruff==0.14.7",
+    "ruff==0.14.8",
 ]
 
 [tool.semantic_release.settings]
