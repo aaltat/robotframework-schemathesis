@@ -18,12 +18,12 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "fastapi[standard]>=0.121.0",
-    "invoke>=2.2.0",
-    "mypy>=1.15.0",
-    "pytest>=8.3.5",
-    "requests>=2.32.3",
-    "robotframework-robocop>=6.9.2",
+    "fastapi[standard]>=0.123.10",
+    "invoke>=2.2.1",
+    "mypy>=1.19.0",
+    "pytest>=9.0.1",
+    "requests>=2.32.5",
+    "robotframework-robocop>=6.13.0",
     "ruff==0.14.8",
 ]
 

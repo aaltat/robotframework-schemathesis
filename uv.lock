@@ -221,7 +221,7 @@ wheels = [
 
 [[package]]
 name = "fastapi"
-version = "0.121.1"
+version = "0.123.10"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "annotated-doc" },
@@ -229,9 +229,9 @@ dependencies = [
     { name = "starlette" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/6b/a4/29e1b861fc9017488ed02ff1052feffa40940cb355ed632a8845df84ce84/fastapi-0.121.1.tar.gz", hash = "sha256:b6dba0538fd15dab6fe4d3e5493c3957d8a9e1e9257f56446b5859af66f32441", size = 342523, upload-time = "2025-11-08T21:48:14.068Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/22/ff/e01087de891010089f1620c916c0c13130f3898177955c13e2b02d22ec4a/fastapi-0.123.10.tar.gz", hash = "sha256:624d384d7cda7c096449c889fc776a0571948ba14c3c929fa8e9a78cd0b0a6a8", size = 356360, upload-time = "2025-12-05T21:27:46.237Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/94/fd/2e6f7d706899cc08690c5f6641e2ffbfffe019e8f16ce77104caa5730910/fastapi-0.121.1-py3-none-any.whl", hash = "sha256:2c5c7028bc3a58d8f5f09aecd3fd88a000ccc0c5ad627693264181a3c33aa1fc", size = 109192, upload-time = "2025-11-08T21:48:12.458Z" },
+    { url = "https://files.pythonhosted.org/packages/d7/f0/7cb92c4a720def85240fd63fbbcf147ce19e7a731c8e1032376bb5a486ac/fastapi-0.123.10-py3-none-any.whl", hash = "sha256:0503b7b7bc71bc98f7c90c9117d21fdf6147c0d74703011b87936becc86985c1", size = 111774, upload-time = "2025-12-05T21:27:44.78Z" },
 ]
 
 [package.optional-dependencies]
@@ -1382,12 +1382,12 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "fastapi", extras = ["standard"], specifier = ">=0.121.0" },
-    { name = "invoke", specifier = ">=2.2.0" },
-    { name = "mypy", specifier = ">=1.15.0" },
-    { name = "pytest", specifier = ">=8.3.5" },
-    { name = "requests", specifier = ">=2.32.3" },
-    { name = "robotframework-robocop", specifier = ">=6.9.2" },
+    { name = "fastapi", extras = ["standard"], specifier = ">=0.123.10" },
+    { name = "invoke", specifier = ">=2.2.1" },
+    { name = "mypy", specifier = ">=1.19.0" },
+    { name = "pytest", specifier = ">=9.0.1" },
+    { name = "requests", specifier = ">=2.32.5" },
+    { name = "robotframework-robocop", specifier = ">=6.13.0" },
     { name = "ruff", specifier = "==0.14.8" },
 ]
 
