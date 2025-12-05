@@ -2,6 +2,73 @@
 
 <!-- version list -->
 
+## v1.1.1 (2025-12-05)
+
+### Bug Fixes
+
+- Use latest schemathesis 4.6.8
+  ([`7abf58e`](https://github.com/aaltat/robotframework-schemathesis/commit/7abf58e2354b51cabbe7be5cc2368ad622e3a7fe))
+
+### Chores
+
+- Update dev deps
+  ([`c647726`](https://github.com/aaltat/robotframework-schemathesis/commit/c64772605c0d99a0a1e14bb31fa2bbfebaef8bca))
+
+- **deps**: Bump actions/checkout from 5 to 6
+  ([`76b820c`](https://github.com/aaltat/robotframework-schemathesis/commit/76b820c86cfd36d70ef55ed4f39f3c2c3d3926e4))
+
+- **deps**: Bump mypy from 1.18.2 to 1.19.0
+  ([`6ebc13a`](https://github.com/aaltat/robotframework-schemathesis/commit/6ebc13a07d8480d5599c62fe66ca356bd0d4d555))
+
+- **deps**: Bump robotframework-robocop from 6.10.0 to 6.10.1
+  ([`c65698f`](https://github.com/aaltat/robotframework-schemathesis/commit/c65698ffd5476b7fbab0345f6ef3b56faab2fa0c))
+
+- **deps**: Bump robotframework-robocop from 6.10.1 to 6.11.0
+  ([`34aea47`](https://github.com/aaltat/robotframework-schemathesis/commit/34aea47670cf58f602419d930ec22ce3c4b72c09))
+
+- **deps**: Bump robotframework-robocop from 6.11.0 to 6.12.0
+  ([`cf88e5a`](https://github.com/aaltat/robotframework-schemathesis/commit/cf88e5a95f7ece920eab1a7272a22a4f76bd8073))
+
+- **deps**: Bump robotframework-robocop from 6.12.0 to 6.13.0
+  ([`bf1c786`](https://github.com/aaltat/robotframework-schemathesis/commit/bf1c7860fddaf306ca5cde7253dd426477cb0a16))
+
+- **deps**: Bump ruff from 0.14.4 to 0.14.5
+  ([`5bc4dc0`](https://github.com/aaltat/robotframework-schemathesis/commit/5bc4dc04e02c6409048969222269b471a8c0dd82))
+
+- **deps**: Bump ruff from 0.14.5 to 0.14.6
+  ([`a70446d`](https://github.com/aaltat/robotframework-schemathesis/commit/a70446d9b34572a31d96489d8d9f0da613cfc21e))
+
+- **deps**: Bump ruff from 0.14.6 to 0.14.7
+  ([`ba41084`](https://github.com/aaltat/robotframework-schemathesis/commit/ba410848d977f2723c7cdea8c8f4df103e29b36c))
+
+- **deps**: Bump ruff from 0.14.7 to 0.14.8
+  ([`f9438eb`](https://github.com/aaltat/robotframework-schemathesis/commit/f9438eb6e03b0650b804fef78984a64f1d496df8))
+
+- **deps**: Bump schemathesis from 4.5.1 to 4.5.3
+  ([`154c868`](https://github.com/aaltat/robotframework-schemathesis/commit/154c868430218dc0c728e2b3d3e54b8e0f6bdc28))
+
+- **deps**: Bump schemathesis from 4.5.3 to 4.5.4
+  ([`68b0f8a`](https://github.com/aaltat/robotframework-schemathesis/commit/68b0f8a6d81aba6d6226d6c21bdb45b4e657f59d))
+
+- **deps**: Bump schemathesis from 4.5.4 to 4.6.1
+  ([`f1da50d`](https://github.com/aaltat/robotframework-schemathesis/commit/f1da50d728baedd69bef54ab67bf15bf28b5ff51))
+
+- **deps**: Bump schemathesis from 4.6.1 to 4.6.2
+  ([`c7de967`](https://github.com/aaltat/robotframework-schemathesis/commit/c7de967d3fc9e1e99c0959910718290495ed629f))
+
+- **deps**: Bump schemathesis from 4.6.2 to 4.6.3
+  ([`944fd56`](https://github.com/aaltat/robotframework-schemathesis/commit/944fd563393c146ddc49fd0b6f8840724b0b5810))
+
+- **deps**: Bump schemathesis from 4.6.3 to 4.6.4
+  ([`322cecc`](https://github.com/aaltat/robotframework-schemathesis/commit/322cecc23ed65f620f9dc58195f0ffe49ca4d0dd))
+
+- **deps**: Bump schemathesis from 4.6.4 to 4.6.6
+  ([`c4e8e63`](https://github.com/aaltat/robotframework-schemathesis/commit/c4e8e637d97d8354fc7e91d60dcb7671737fdc42))
+
+- **deps**: Bump schemathesis from 4.6.6 to 4.6.8
+  ([`e0c9f75`](https://github.com/aaltat/robotframework-schemathesis/commit/e0c9f756f72fe249c631fd75a90eee38b6bddd8d))
+
+
 ## v1.1.0 (2025-11-12)
 
 ### Bug Fixes
