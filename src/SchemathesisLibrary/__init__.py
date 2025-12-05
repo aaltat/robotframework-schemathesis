@@ -14,6 +14,7 @@
 from typing import TYPE_CHECKING, Any
 
 from DataDriver import DataDriver  # type: ignore
+from requests.auth import HTTPDigestAuth
 from robot.api import logger
 from robot.api.deco import keyword
 from robot.result.model import TestCase as ResultTestCase  # type: ignore
@@ -125,16 +126,18 @@ class SchemathesisLibrary(DynamicCore):
         *,
         base_url: str | None = None,
         headers: dict[str, Any] | None = None,
+        auth: tuple[str, str] | HTTPDigestAuth | None = None,
     ) -> Response:
         """Call and validate a Schemathesis case.
 
         Example:
         | ${response} =    Call And Validate Case    ${case}
         """
+        logger.info(f"auth: {auth} {type(auth)}")
         headers = self._dot_dict_to_dict(headers) if headers else None
         self.info(f"Case: {case.path} | {case.method} | {case.path_parameters}")
         self._log_case(case, headers)
-        response = case.call_and_validate(base_url=base_url, headers=headers)
+        response = case.call_and_validate(base_url=base_url, headers=headers, auth=auth)
         self._log_request(response)
         self.debug(f"Response: {response.headers} | {response.status_code} | {response.text}")
         return response
@@ -146,6 +149,7 @@ class SchemathesisLibrary(DynamicCore):
         *,
         base_url: str | None = None,
         headers: dict[str, Any] | None = None,
+        auth: tuple[str, str] | HTTPDigestAuth | None = None,
     ) -> Response:
         """Call a Schemathesis case without validation.
 
@@ -159,12 +163,18 @@ class SchemathesisLibrary(DynamicCore):
         headers = self._dot_dict_to_dict(headers) if headers else None
         self.info(f"Calling case: {case.path} | {case.method} | {case.path_parameters}")
         self._log_case(case)
-        response = case.call(base_url=base_url, headers=headers)
+        response = case.call(base_url=base_url, headers=headers, auth=auth)
         self._log_request(response)
         return response
 
     @keyword
-    def validate_response(self, case: Case, response: Response) -> None:
+    def validate_response(
+        self,
+        case: Case,
+        response: Response,
+        headers: dict[str, Any] | None = None,
+        auth: tuple[str, str] | HTTPDigestAuth | None = None,
+    ) -> None:
         """Validate a Schemathesis response.
 
         The response is validated against the case's expectations.
@@ -173,7 +183,12 @@ class SchemathesisLibrary(DynamicCore):
         `Call` keyword documentation.
         """
         self.info(f"Validating response: {response.status_code} | {response.headers}")
-        case.validate_response(response)
+        transport_kwargs: dict[str, Any] = {}
+        if auth:
+            transport_kwargs["auth"] = auth
+        if headers:
+            transport_kwargs["headers"] = headers
+        case.validate_response(response=response, transport_kwargs=transport_kwargs)
         self.info("Response validation passed.")
 
     def info(self, message: str) -> None:
