@@ -25,6 +25,7 @@ dev = [
     "requests>=2.32.5",
     "robotframework-robocop>=6.13.0",
     "ruff==0.14.8",
+    "types-requests>=2.32.4.20250913",
 ]
 
 [tool.semantic_release.settings]
