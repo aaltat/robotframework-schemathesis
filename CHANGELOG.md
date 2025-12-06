@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.1.2 (2025-12-06)
+
+### Bug Fixes
+
+- Added example for dynamic token auth
+  ([`2e0ddcb`](https://github.com/aaltat/robotframework-schemathesis/commit/2e0ddcb3beb5febcc71c4816d92781d7a1891c47))
+
+
 ## v1.1.1 (2025-12-05)
 
 ### Bug Fixes
