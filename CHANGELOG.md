@@ -2,6 +2,19 @@
 
 <!-- version list -->
 
+## v1.2.0 (2025-12-06)
+
+### Bug Fixes
+
+- Update schemathesis to 4.7.0
+  ([`47590f5`](https://github.com/aaltat/robotframework-schemathesis/commit/47590f596c062d0b6c3653f483b26b4c0f9f2de7))
+
+### Features
+
+- Add support for auth in Call keywords
+  ([`9e516eb`](https://github.com/aaltat/robotframework-schemathesis/commit/9e516eba75c1b44eff5a34f20b17cc31572148de))
+
+
 ## v1.1.2 (2025-12-06)
 
 ### Bug Fixes
