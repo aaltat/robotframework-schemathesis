@@ -19,4 +19,5 @@ Wrapper
         VAR    &{headers} =
     END
     ${r} =    Call And Validate    ${case}    headers=${headers}
-    Log    ${r.json()}
+    VAR    ${body} =    ${r.json()}
+    Should Be True    ${body}
