@@ -88,6 +88,22 @@ class SchemathesisLibrary(DynamicCore):
         | `path`                            | Path to the OpenAPI schema file. Using either `path` or `url` is mandatory. |
         | `url`                             | URL where the OpenAPI schema can be downloaded. |
         | `auth`                            | Optional authentication class to be used passed for Schemathesis authentication when test cases are executed. |
+
+        The `headers` argument is only needed when the schema is downloaded from a URL and there is need to pass example
+        authentication headers to the endpoint. `headers` is not used the API calls are made during test execution.
+
+        `path` and `url` are mutually exclusive, only one of them should be used to specify the OpenAPI schema location.
+
+        `auth` can be used create Schemathesis
+        [https://schemathesis.readthedocs.io/en/stable/guides/auth/#dynamic-token-authentication|dynamic token]
+        authentication for the test cases. The dynamic token generation class should
+        follow the Schemathesis documentation. The only addition is the import. Importing
+        the class must follow the Robot Framework library
+        [https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#specifying-library-to-import|import rules]
+        , example if importing with filename, filename much match to the class name.
+        See example from
+        [https://github.com/aaltat/robotframework-schemathesis?tab=readme-ov-file##dynamic-token-authentication|README.md]
+        file
         """
         self.ROBOT_LIBRARY_LISTENER = self
         SchemathesisReader.options = Options(
