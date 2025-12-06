@@ -209,4 +209,6 @@ def clean(ctx):
     shutil.rmtree(ATEST_OUTPUT_DIR_LIB, ignore_errors=True)
     print("Cleaning up dist directories...")
     shutil.rmtree(DIST_DIR, ignore_errors=True)
+    print("Clean specs directory...")
+    shutil.rmtree(SPEC_FOLDER, ignore_errors=True)
     print("directories cleaned.")
