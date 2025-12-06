@@ -1378,7 +1378,7 @@ requires-dist = [
     { name = "robotframework", specifier = ">=7.2.2" },
     { name = "robotframework-datadriver", specifier = ">=1.11.2" },
     { name = "robotframework-pythonlibcore", specifier = ">=4.4.1" },
-    { name = "schemathesis", specifier = ">=4.6.8" },
+    { name = "schemathesis", specifier = ">=4.7.0" },
 ]
 
 [package.metadata.requires-dev]
@@ -1543,7 +1543,7 @@ wheels = [
 
 [[package]]
 name = "schemathesis"
-version = "4.6.8"
+version = "4.7.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
@@ -1567,9 +1567,9 @@ dependencies = [
     { name = "typing-extensions" },
     { name = "werkzeug" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/17/8e/e32dd20b578f03d16cfaa3dc732a2f1ba4bb0c7d7db4baa8b2ef876b3625/schemathesis-4.6.8.tar.gz", hash = "sha256:eb7e3f004714f1df3a11dd11c07b2340110197c73315ba264505fbd56914bc49", size = 57957696, upload-time = "2025-12-04T17:09:33.68Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/4a/2e/7a8e1302f0fedfea1032b721aeb9de354783a2c216ab6edebb40df72dd92/schemathesis-4.7.0.tar.gz", hash = "sha256:5e236ac40f135e36ec4240f5afbe212d2090cc920e2e2e265a4dff3798f9e7bd", size = 57961918, upload-time = "2025-12-06T17:51:57.414Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/0e/4f/1dcf07c6a1dfc7dea4bef2bda0b22454b9a27f4d1e1e222310225679006c/schemathesis-4.6.8-py3-none-any.whl", hash = "sha256:5a67b7b64904487c7a60a810b077bc3cd13da047a613a29c4fe9fd9374fa20fb", size = 416177, upload-time = "2025-12-04T17:09:31.176Z" },
+    { url = "https://files.pythonhosted.org/packages/6f/43/aa26556440f84ca5bc7679e86758804476494bd64371c0eb4b9cf7a8e16e/schemathesis-4.7.0-py3-none-any.whl", hash = "sha256:ba79b13ed37d5aecb39c2da33c9e6b5554a33291f906b590334fa977bfbcf4b8", size = 417902, upload-time = "2025-12-06T17:51:55.063Z" },
 ]
 
 [[package]]
