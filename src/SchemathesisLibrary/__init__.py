@@ -14,7 +14,6 @@
 from typing import TYPE_CHECKING, Any
 
 from DataDriver import DataDriver  # type: ignore
-from requests.auth import HTTPDigestAuth
 from robot.api import logger
 from robot.api.deco import keyword
 from robot.result.model import TestCase as ResultTestCase  # type: ignore
@@ -35,18 +34,18 @@ __version__ = "1.1.2"
 
 
 class SchemathesisLibrary(DynamicCore):
-    """SchemathesisLibrary is a library for validating API cases using Schemathesis.
+    """SchemathesisLibrary is a library for validating API schema using Schemathesis.
 
     %TOC%
 
     Example usage of the library and the `Call And Validate` keyword
 
-    Library must be imported with the `url` or `path` argument to specify the
+    Library must be imported with the ``url`` or ``path`` argument to specify the
     OpenAPI schema. The library uses
     [https://github.com/Snooz82/robotframework-datadriver|DataDriver] to generate
     test cases from the OpenAPI schema by using
     [https://github.com/schemathesis/schemathesis|Schemathesis]. The library
-    creates test cases that takes one argument, `${case}`, which is a
+    creates test cases that takes one argument, ``${case}``, which is a
     Schemathesis
     [https://schemathesis.readthedocs.io/en/stable/reference/python/#schemathesis.Case|Case]
     object. The `Call And Validate` keyword can be used to call and validate
@@ -83,25 +82,25 @@ class SchemathesisLibrary(DynamicCore):
     ) -> None:
         """The SchemathesisLibrary can be initialized with the following arguments:
 
-        | =Argument=                        | =Description= |
-        | `headers`                         | Optional HTTP headers to be used when schema is downloaded from `url`. |
-        | `max_examples`                    | Maximum number of examples to generate for each operation. Default is 5. |
-        | `path`                            | Path to the OpenAPI schema file. Using either `path` or `url` is mandatory. |
-        | `url`                             | URL where the OpenAPI schema can be downloaded. |
-        | `auth`                            | Optional authentication class to be used passed for Schemathesis authentication when test cases are executed. |
+        | =Argument= | =Description= |
+        | ``headers`` | Optional HTTP headers to be used when schema is downloaded from ``url``. |
+        | ``max_examples`` | Maximum number of examples to generate for each operation. Default is 5. |
+        | ``path`` | Path to the OpenAPI schema file. Using either ``path`` or ``url`` is mandatory. |
+        | ``url`` | URL where the OpenAPI schema can be downloaded. |
+        | ``auth`` | Optional authentication class to be used passed for Schemathesis authentication when test cases are executed. |
 
-        The `headers` argument is only needed when the schema is downloaded from a URL and there is need to pass example
-        authentication headers to the endpoint. `headers` is not used the API calls are made during test execution.
+        The ``headers`` argument is only needed when the schema is downloaded from a URL and there is need to pass example
+        authentication headers to the endpoint. The ``headers`` is not used in the API calls are made during test execution.
 
-        `path` and `url` are mutually exclusive, only one of them should be used to specify the OpenAPI schema location.
+        ``path`` and ``url`` are mutually exclusive, only one of them should be used to specify the OpenAPI schema location.
 
-        `auth` can be used create Schemathesis
+        ``auth`` can be used create Schemathesis
         [https://schemathesis.readthedocs.io/en/stable/guides/auth/#dynamic-token-authentication|dynamic token]
         authentication for the test cases. The dynamic token generation class should
-        follow the Schemathesis documentation. The only addition is the import. Importing
+        follow the Schemathesis documentation. The only addition is the import and importing
         the class must follow the Robot Framework library
         [https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#specifying-library-to-import|import rules]
-        , example if importing with filename, filename much match to the class name.
+        . Example if importing with filename, filename much match to the class name.
         See example from
         [https://github.com/aaltat/robotframework-schemathesis?tab=readme-ov-file##dynamic-token-authentication|README.md]
         file
@@ -126,12 +125,31 @@ class SchemathesisLibrary(DynamicCore):
         *,
         base_url: str | None = None,
         headers: dict[str, Any] | None = None,
-        auth: tuple[str, str] | HTTPDigestAuth | None = None,
+        auth: tuple[str, str] | Any | None = None,
     ) -> Response:
         """Call and validate a Schemathesis case.
 
+        | Argument   | Description |
+        | ``case``     | The Schemathesis [https://schemathesis.readthedocs.io/en/stable/reference/python/#schemathesis.Case|Case] to be called and validated. |
+        | ``base_url`` | Optional base URL to override the one defined in the schema. Need mostly when schema is read from a file. |
+        | ``headers``  | Optional HTTP headers to be added when calling the API endpoint. |
+        | ``auth``     | Optional authentication to be used when calling the case. |
+
+        ``auth`` can be any authentication supported by
+        [https://www.python-httpx.org/advanced/authentication/|httpx authentication].
+        Example a tuple containing username and password for basic authentication or
+        and instance of
+        [https://www.python-httpx.org/advanced/authentication/#digest-authentication|Digest authentication]
+
+        Returns a
+        [https://schemathesis.readthedocs.io/en/stable/reference/python/#schemathesis.Response|Schemathesis Response]
+        object. Can be used to further validate the response, example check specific headers
+        or response body.
+
         Example:
-        | ${response} =    Call And Validate Case    ${case}
+        | ${response} =    `Call And Validate`    ${case}
+        | VAR     ${body}    ${response.json()}
+        | Should Be True    ${body}    # Or whatever validation is needed by users
         """
         logger.info(f"auth: {auth} {type(auth)}")
         headers = self._dot_dict_to_dict(headers) if headers else None
@@ -149,16 +167,34 @@ class SchemathesisLibrary(DynamicCore):
         *,
         base_url: str | None = None,
         headers: dict[str, Any] | None = None,
-        auth: tuple[str, str] | HTTPDigestAuth | None = None,
+        auth: tuple[str, str] | Any | None = None,
     ) -> Response:
         """Call a Schemathesis case without validation.
+
+        | =Argument=   | =Description= |
+        | ``case``     | The Schemathesis [https://schemathesis.readthedocs.io/en/stable/reference/python/#schemathesis.Case|Case] to be called and validated. |
+        | ``base_url`` | Optional base URL to override the one defined in the schema. Need mostly when schema is read from a file. |
+        | ``headers``  | Optional HTTP headers to be added when calling the API endpoint. |
+        | ``auth``     | Optional authentication to be used when calling the case. |
+
+        ``auth`` can be any authentication supported by
+        [https://www.python-httpx.org/advanced/authentication/|httpx authentication].
+        Example a tuple containing username and password for basic authentication or
+        and instance of
+        [https://www.python-httpx.org/advanced/authentication/#digest-authentication|Digest authentication]
+
+        Returns a
+        [https://schemathesis.readthedocs.io/en/stable/reference/python/#schemathesis.Response|Schemathesis Response]
+        object. Can be used to further validate the response, example check specific headers
+        or response body.
 
         The `Call` and `Validate Response` keywords can be used together
         to call a case and validate the response.
 
         Example:
-        | ${response} =    Call Case    ${case}
-        | Validate Response    ${case}    ${response}
+        | ${response} =    `Call`    ${case}
+        | `Validate Response`    ${case}    ${response}
+
         """
         headers = self._dot_dict_to_dict(headers) if headers else None
         self.info(f"Calling case: {case.path} | {case.method} | {case.path_parameters}")
@@ -173,9 +209,21 @@ class SchemathesisLibrary(DynamicCore):
         case: Case,
         response: Response,
         headers: dict[str, Any] | None = None,
-        auth: tuple[str, str] | HTTPDigestAuth | None = None,
+        auth: tuple[str, str] | Any | None = None,
     ) -> None:
         """Validate a Schemathesis response.
+
+        | Argument   | Description |
+        | ``case``     | The Schemathesis case to be validated against. |
+        | ``response`` | The Schemathesis response to be validated. Returned by ``Call`` keyword. |
+        | ``headers``  | Optional HTTP headers to be added when calling the API endpoint. |
+        | ``auth``     | Optional authentication to be used when calling the case. |
+
+        ``auth`` can be any authentication supported by
+        [https://www.python-httpx.org/advanced/authentication/|httpx authentication].
+        Example a tuple containing username and password for basic authentication or
+        and instance of
+        [https://www.python-httpx.org/advanced/authentication/#digest-authentication|Digest authentication]
 
         The response is validated against the case's expectations.
         The `Call` and `Validate Response` keywords can be used together
