@@ -1361,11 +1361,11 @@ wheels = [
 
 [[package]]
 name = "robotframework"
-version = "7.4"
+version = "7.4.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/8e/e4/3b945f1dce19258d03a124fc68f9310453b6dad0c6d6231bf9d1ed50c309/robotframework-7.4.tar.gz", hash = "sha256:d559c8152cb39df8e62e6224d0c2c9146826ac74c0aa6fd51c82b843f05f0071", size = 653870, upload-time = "2025-12-12T11:10:04.396Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/93/0e/08078c015d564d6a587e10e0b285620781c1a91b27230ec5b582994e421b/robotframework-7.4.1.tar.gz", hash = "sha256:d645487248a86db1e1a865ce792502792edf5342873f4e4f35d333219cd246c5", size = 653746, upload-time = "2025-12-23T17:08:02.497Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4b/51/ddb8389daf889c5f82c08f3cac89a6b866db01b6c3d536ce3c33eec8fb06/robotframework-7.4-py3-none-any.whl", hash = "sha256:5225ab52198001df4bb642b1a6869c046d726a61f3dd1a84b768587b7230d845", size = 806481, upload-time = "2025-12-12T11:10:00.878Z" },
+    { url = "https://files.pythonhosted.org/packages/f3/f9/a5f59b75c92be85b18b9dc8a7fd20c52ace79b53e358f9a8402c8721ad7e/robotframework-7.4.1-py3-none-any.whl", hash = "sha256:3f75cae8a24797f1953efdb51399569767d742bb31f549ee9856db5545062728", size = 806871, upload-time = "2025-12-23T17:07:57.579Z" },
 ]
 
 [[package]]
