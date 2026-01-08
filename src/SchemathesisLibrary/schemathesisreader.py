@@ -32,6 +32,7 @@ class Options:
     path: "Path|None" = None
     url: str | None = None
     auth: str | None = None
+    hook: str | None = None
 
 
 class SchemathesisReader(AbstractReaderClass):
@@ -55,7 +56,7 @@ class SchemathesisReader(AbstractReaderClass):
         if self.options.auth:
             import_extensions(self.options.auth)
             logger.info(f"Using auth extension from: {self.options.auth}")
-
+        self._import_hooks()
         for op in schema.get_all_operations():
             if isinstance(op, Ok):
                 # NOTE: (dd): `as_strategy` also accepts GenerationMode
@@ -63,6 +64,15 @@ class SchemathesisReader(AbstractReaderClass):
                 strategy = op.ok().as_strategy().map(from_case)  # type: ignore
                 add_examples(strategy, all_cases, self.options.max_examples)  # type: ignore
         return all_cases
+
+    def _import_hooks(self) -> None:
+        if not self.options:
+            return
+        if not self.options.hook:
+            return
+        for hook in self.options.hook.split(";"):
+            logger.info(f"Using hook extension from: {hook}")
+            import_extensions(hook)
 
 
 def from_case(case: Case) -> TestCaseData:

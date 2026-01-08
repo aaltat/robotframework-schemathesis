@@ -1,6 +1,7 @@
 from collections import defaultdict
 from collections.abc import Callable
 from dataclasses import dataclass
+from typing import TypedDict
 
 from robot.api import ExecutionResult, ResultVisitor, logger
 from robot.libraries.BuiltIn import BuiltIn
@@ -78,6 +79,44 @@ class ExecutionChecker(ResultVisitor):
         return name.replace(" ", "").replace("_", "").lower()
 
 
+class ExecutionCountChecker(ResultVisitor):
+    def __init__(self):
+        self.test_names_counts = defaultdict(int)
+        self.test_count = 0
+
+    def visit_test(self, test: TestCase):
+        self.test_count += 1
+        test_name = test.name.split(" ")[0]
+        self.test_names_counts[test_name] += 1
+        return super().visit_test(test)
+
+
+class ExecutionLogChecker(ResultVisitor):
+    def __init__(self, match_start: str, kw_name: str = "Call And Validate"):
+        self.match_start = match_start
+        self.kw_name = kw_name.lower()
+        self.test_logs = {}
+
+    def visit_message(self, message: Message):
+        if not message.message.startswith(self.match_start):
+            return super().visit_message(message)
+        if not (
+            message.parent
+            and isinstance(message.parent, Keyword)
+            and message.parent.name.lower() == self.kw_name
+        ):
+            return super().visit_message(message)
+        parent = message.parent
+        while not isinstance(parent, TestCase):
+            if not parent.parent:
+                return super().visit_message(message)
+            parent = parent.parent
+        test = parent
+        logger.debug(f"test case: {test}, message: {message.message}")
+        self.test_logs[test.name] = message.message
+        return super().visit_message(message)
+
+
 class TestSuiteChecker:
     def check_suite(self, output_xml: str, test_description: list[TestCaseData]):
         """Check the test suite for test cases names."""
@@ -107,6 +146,55 @@ class TestSuiteChecker:
             logger.info(f"Checking logs for all tests starting with '{test.name}'")
             self._check_test_logs(test.name, test.logs, checker.received_test_logs, should_match)
         logger.info(f"Checked test suite in {output_xml}")
+
+    def check_test_names_and_counts(
+        self, output_xml: str, min_count: int, max_count: int, expected_names_and_counts: dict[str, int]
+    ):
+        """Check the test case start with correct names and has correct number of test cases."""
+        result = ExecutionResult(output_xml)
+        checker = ExecutionCountChecker()
+        result.visit(checker)
+        result.save(output_xml)
+        logger.info(f"Checked test suite in {output_xml}")
+        assert checker.test_count >= min_count, (
+            f"Expected at least {min_count} tests, but found {checker.test_count}."
+        )
+        assert checker.test_count <= max_count, (
+            f"Expected at most {max_count} tests, but found {checker.test_count}."
+        )
+        for test_name, count in expected_names_and_counts.items():
+            assert test_name in checker.test_names_counts, (
+                f"Expected test name {test_name} not found in {checker.test_names_counts.keys()} "
+            )
+            assert checker.test_names_counts[test_name] >= count, (
+                f"Expected {count} for test name {test_name} but it was {checker.test_names_counts[test_name]}"
+            )
+
+    def check_specific_test_logs(
+        self,
+        output_xml: str,
+        log_message_start: str,
+        kw_name: str = "Call And Validate",
+        number_of_tests: int = 15,
+        string_in_log: None | str = None,
+    ):
+        assert number_of_tests > 0, "number_of_tests must be greater than 0"
+        assert string_in_log, "string_in_log must be provided"
+        result = ExecutionResult(output_xml)
+        checker = ExecutionLogChecker(log_message_start, kw_name)
+        result.visit(checker)
+        result.save(output_xml)
+        logger.info(f"Checked test suite in {output_xml}")
+        assert len(checker.test_logs) == number_of_tests, (
+            f"Expected {number_of_tests} tests with logs starting with '{log_message_start}', "
+            f"but found {len(checker.test_logs)}."
+        )
+        for test, log in checker.test_logs.items():
+            logger.info(f"Checking log for test '{test}': {log}")
+            assert string_in_log in log, (
+                f"Expected log to contain '{string_in_log}', but it was not found in log: {log} in test '{test}'."
+            )
+        logger.debug(f"Found logs for tests: {checker.test_logs}")
 
     def _check_test_logs(
         self,
