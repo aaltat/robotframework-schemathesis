@@ -93,3 +93,20 @@ Get All Cases Test Description With Set Headers
         END
     END
     RETURN    ${test_description}
+
+Get All Cases Test Description With Map Headers
+    [Arguments]    ${count: int}=${5}
+    ${test_description} =    Get All Cases Test Description    ${count}
+    FOR    ${description}    IN    @{test_description}
+        VAR    ${logs} =    ${description}[logs]
+        FOR    ${i}    ${log}    IN ENUMERATE    @{logs}
+            IF    $log.startswith("Case headers")
+                Log    Original log: ${log}
+                VAR    ${new_log} =
+                ...    Case headers {'map-headers': 'I am here'} body 'Not set' cookies {} path parameters {}
+                Log    Modified log: ${new_log}
+                Set List Value    ${logs}    ${i}    ${new_log}
+            END
+        END
+    END
+    RETURN    ${test_description}

@@ -107,3 +107,55 @@ class AuthExtension:
 Then with all API calls, will have
 [basic auth](https://en.wikipedia.org/wiki/Basic_access_authentication) set in the
 headers for all calls made to your API endpoint.
+
+## Schemathesis hook support
+Library supports extending Schemathesis by defining hooks. Hooks allows users to customize how
+Schemathesis generates test data, validates responses, and handles requests through hooks, custom
+checks, and data generation strategies. For more details about Schemathesis hooks, refer to
+Schemathesis extending documentation: https://schemathesis.readthedocs.io/en/stable/guides/extending/
+
+Example if there need to add custom header in each request, then it is possible to import library
+with hook:
+
+```robotframework
+*** Settings ***
+Variables           authentication.py
+Library             SchemathesisLibrary
+...                     url=http://127.0.0.1/openapi.json
+...                     hook=${CURDIR}/hook_filter.py
+
+Test Template       Wrapper
+
+
+*** Test Cases ***
+All Tests
+    Wrapper    test_case_1
+
+
+*** Keywords ***
+Wrapper
+    [Arguments]    ${case}
+    Call And Validate    ${case}    auth=${BASIC_AUTH_TUPLE}
+
+```
+
+And when hook_filter.py looks like:
+
+```python
+import schemathesis
+
+
+global_count_count = 0
+
+
+@schemathesis.hook
+def filter_query(ctx, query) -> bool:
+    method = ctx.operation.method.lower().strip()
+    if method == "put":
+        global global_count_count
+        global_count_count += 1
+        if global_count_count > 2:
+            return False
+    return True
+```
+Then only two test with `PUT` request are generated.

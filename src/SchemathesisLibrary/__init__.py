@@ -71,7 +71,7 @@ class SchemathesisLibrary(DynamicCore):
     ROBOT_LISTENER_API_VERSION = 3
     ROBOT_LIBRARY_SCOPE = "TEST SUITE"
 
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         *,
         headers: "dict[str, Any]|None" = None,
@@ -79,6 +79,7 @@ class SchemathesisLibrary(DynamicCore):
         path: "Path|None" = None,
         url: "str|None" = None,
         auth: str | None = None,
+        hook: str | None = None,
     ) -> None:
         """The SchemathesisLibrary can be initialized with the following arguments:
 
@@ -88,6 +89,7 @@ class SchemathesisLibrary(DynamicCore):
         | ``path`` | Path to the OpenAPI schema file. Using either ``path`` or ``url`` is mandatory. |
         | ``url`` | URL where the OpenAPI schema can be downloaded. |
         | ``auth`` | Optional authentication class to be used passed for Schemathesis authentication when test cases are executed. |
+        | ``hook`` | Optional Schemathesis hook https://schemathesis.readthedocs.io/en/stable/guides/extending/. |
 
         The ``headers`` argument is only needed when the schema is downloaded from a URL and there is need to pass example
         authentication headers to the endpoint. The ``headers`` is not used in the API calls are made during test execution.
@@ -104,10 +106,21 @@ class SchemathesisLibrary(DynamicCore):
         See example from
         [https://github.com/aaltat/robotframework-schemathesis?tab=readme-ov-file##dynamic-token-authentication|README.md]
         file
+
+        The ``hook`` argument can be used to specify Schemathesis hooks to modify the generated test cases. The hooks
+        implementation must follow the Schemathesis documentation:
+        https://schemathesis.readthedocs.io/en/stable/guides/extending/ Hooks importing follows same rules as importing
+        [https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#specifying-library-to-import|test libraries]
+        in Robot Framework. Multiple hooks can be specified by separating them with semicolon (;).
         """
         self.ROBOT_LIBRARY_LISTENER = self
         SchemathesisReader.options = Options(
-            headers=headers, max_examples=max_examples, path=path, url=url, auth=auth
+            headers=headers,
+            max_examples=max_examples,
+            path=path,
+            url=url,
+            auth=auth,
+            hook=hook,
         )
         self.data_driver = DataDriver(reader_class=SchemathesisReader)
         DynamicCore.__init__(self, [])
