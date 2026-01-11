@@ -1,9 +1,8 @@
 *** Settings ***
 Variables           authentication.py
 Library    SchemathesisLibrary
-...    path=${CURDIR}/../specs/openapi.json
-...    max_examples=5
-...    auth=${CURDIR}/AuthExtension.py
+...    url=http://127.0.0.1/openapi.json
+...    headers=${BASIC_AUTH_HEADERS}
 
 Test Template       Wrapper
 
@@ -17,9 +16,8 @@ All Tests
 Wrapper
     [Arguments]    ${case}
     IF    ${{'${case.path}'.startswith('/user')}}
-        VAR    &{headers} =    key1=value1    key2=value2
+        VAR    &{headers} =    &{BASIC_AUTH_HEADERS}
     ELSE
         VAR    &{headers} =
     END
-    ${r} =    Call And Validate    ${case}    base_url=http://127.0.0.1/    headers=${headers}
-    Log    ${r.json()}
+    Call And Validate    ${case}    headers=${headers}
