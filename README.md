@@ -108,7 +108,7 @@ Then with all API calls, will have
 [basic auth](https://en.wikipedia.org/wiki/Basic_access_authentication) set in the
 headers for all calls made to your API endpoint.
 
-## Schemathesis hook support
+# Schemathesis hook support
 Library supports extending Schemathesis by defining hooks. Hooks allows users to customize how
 Schemathesis generates test data, validates responses, and handles requests through hooks, custom
 checks, and data generation strategies. For more details about Schemathesis hooks, refer to
