@@ -1,9 +1,9 @@
 *** Settings ***
 Variables           authentication.py
-Library    SchemathesisLibrary
-...    url=http://127.0.0.1/openapi.json
-...    max_examples=4
-...    headers=${BASIC_AUTH_HEADERS}
+Library             SchemathesisLibrary
+...                     url=http://127.0.0.1/openapi.json
+...                     max_examples=4
+...                     headers=${BASIC_AUTH_HEADERS}
 
 Test Template       Wrapper
 
