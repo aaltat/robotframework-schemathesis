@@ -75,7 +75,7 @@ class SchemathesisLibrary(DynamicCore):
         self,
         *,
         headers: "dict[str, Any]|None" = None,
-        max_examples: int = 5,
+        max_examples: int = 100,
         path: "Path|None" = None,
         url: "str|None" = None,
         auth: str | None = None,
