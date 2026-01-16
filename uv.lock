@@ -1413,11 +1413,11 @@ wheels = [
 
 [[package]]
 name = "robotframework-pythonlibcore"
-version = "4.4.1"
+version = "4.5.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/71/89/5dc8c8186c897ee4b7d0b2631ebc90e679e8c8f04ea85505f96ad38aad64/robotframework-pythonlibcore-4.4.1.tar.gz", hash = "sha256:2d695b2ea906f5815179643e29182466675e682d82c5fa9d1009edfae2f84b16", size = 12835, upload-time = "2024-04-05T22:27:12.049Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/53/24/f85366679f4ee63d5534cad009ad466f0d038a72dad4ffd91802004c2758/robotframework_pythonlibcore-4.5.0.tar.gz", hash = "sha256:54ad47c592b2959bffe865e006fd4517f3c46dfb9df5b68a3f335ab842ab065e", size = 14254, upload-time = "2026-01-16T14:42:40.311Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ac/64/47d8403c7c0af89b46461640a2f67e49a5778062b8dd6eb3e128aa3c50cc/robotframework_pythonlibcore-4.4.1-py2.py3-none-any.whl", hash = "sha256:e0517129522aaa039eb2a28fd3d9720b7a0be0b90d0cbcb153a6c8016bb9e973", size = 12452, upload-time = "2024-04-05T22:27:10.353Z" },
+    { url = "https://files.pythonhosted.org/packages/a0/1d/3d14b45ff63b8c710bda8ad6b7c9e7e55272e38ce890a4442804fd768ca1/robotframework_pythonlibcore-4.5.0-py3-none-any.whl", hash = "sha256:4c220c5b890e754747d780c1ea32d056dbaf4045fd0dbacca508b5b4f6761daf", size = 19970, upload-time = "2026-01-16T14:42:38.927Z" },
 ]
 
 [[package]]
