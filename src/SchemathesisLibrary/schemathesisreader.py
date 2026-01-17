@@ -21,8 +21,9 @@ from hypothesis import HealthCheck, Phase, Verbosity, given, settings
 from hypothesis import strategies as st
 from robot.api import logger
 from robot.utils.importer import Importer  # type: ignore
-from schemathesis import Case, openapi
+from schemathesis import Case, openapi, GenerationMode
 from schemathesis.core.result import Ok
+from schemathesis.config import SchemathesisConfig
 
 
 @dataclass
@@ -45,11 +46,15 @@ class SchemathesisReader(AbstractReaderClass):
         path = self.options.path
         if path and not Path(path).is_file():
             raise ValueError(f"Provided path '{path}' is not a valid file.")
+
+        # Try loading configuration file
+        config, generation_mode = self._load_config()
+
         if path:
-            schema = openapi.from_path(path)
+            schema = openapi.from_path(path, config=config)
         elif url:
             headers = self.options.headers or {}
-            schema = openapi.from_url(url, headers=headers)
+            schema = openapi.from_url(url, headers=headers, config=config)
         else:
             raise ValueError("Either 'url' or 'path' must be provided to SchemathesisLibrary.")
         all_cases: list[TestCaseData] = []
@@ -59,11 +64,33 @@ class SchemathesisReader(AbstractReaderClass):
         self._import_hooks()
         for op in schema.get_all_operations():
             if isinstance(op, Ok):
-                # NOTE: (dd): `as_strategy` also accepts GenerationMode
-                #             It could be used to produce positive / negative tests
-                strategy = op.ok().as_strategy().map(from_case)  # type: ignore
+                strategy = op.ok().as_strategy(generation_mode=generation_mode).map(from_case)  # type: ignore
                 add_examples(strategy, all_cases, self.options.max_examples)  # type: ignore
         return all_cases
+
+    def _load_config(self) -> tuple[SchemathesisConfig, GenerationMode]:
+        """Load Schemathesis config and extract settings."""
+        config = SchemathesisConfig.discover()
+        generation_mode = GenerationMode.POSITIVE
+
+        if config.config_path:
+            logger.info(f"Config file path: {config.config_path}")
+
+            if config.projects.default.generation:
+                # Update max_examples if present in config
+                if config.projects.default.generation.max_examples is not None:
+                    self.options.max_examples = config.projects.default.generation.max_examples
+                    logger.info(f"Using max_examples from config: {self.options.max_examples}")
+
+                # Get generation mode from config
+                modes = config.projects.default.generation.modes
+                if modes:
+                    generation_mode = modes[0]
+                    logger.info(f"Using generation mode from config: {generation_mode}")
+        else:
+            logger.info("No schemathesis.toml config file found, using defaults")
+
+        return config, generation_mode
 
     def _import_hooks(self) -> None:
         if not self.options:
