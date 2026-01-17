@@ -112,6 +112,35 @@ class SchemathesisLibrary(DynamicCore):
         https://schemathesis.readthedocs.io/en/stable/guides/extending/ Hooks importing follows same rules as importing
         [https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#specifying-library-to-import|test libraries]
         in Robot Framework. Multiple hooks can be specified by separating them with semicolon (;).
+
+        = Configuration File =
+
+        SchemathesisLibrary automatically discovers and loads configuration from a ``schemathesis.toml`` file if present
+        in the project directory. The configuration file allows you to customize test data generation and other Schemathesis
+        settings without modifying the library initialization.
+
+        The library uses Schemathesis's
+        [https://schemathesis.readthedocs.io/en/stable/reference/configuration/|configuration file discovery]
+        mechanism to locate ``schemathesis.toml`` in the current directory or parent directories (stopping at .git folder
+        or filesystem root).
+
+        Configuration options that are automatically applied:
+
+        - ``max-examples``: If specified in ``[project.generation]``, overrides the ``max_examples`` parameter passed to the library
+        - ``mode``: Generation mode (``positive``, ``negative``, or ``all``) controls whether valid or invalid test data is generated
+
+        Example ``schemathesis.toml``:
+        | [[project]]
+        | title = "My API"
+        |
+        | [project.generation]
+        | mode = "positive"      # Generate only valid test cases
+        | max-examples = 5       # Generate 5 test cases per operation
+
+        For complete configuration options, see:
+        https://schemathesis.readthedocs.io/en/stable/reference/configuration/
+
+        If no configuration file is found, the library uses default values (POSITIVE mode and max_examples from library initialization).
         """
         self.ROBOT_LIBRARY_LISTENER = self
         SchemathesisReader.options = Options(
