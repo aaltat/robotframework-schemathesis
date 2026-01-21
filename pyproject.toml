@@ -100,7 +100,8 @@ ignore = [
     "ANN401",
     "E501",
     "TRY003",
-    "N999"
+    "N999",
+    "S101"
 ]
 
 [tool.ruff.format]
