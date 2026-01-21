@@ -21,9 +21,9 @@ from hypothesis import HealthCheck, Phase, Verbosity, given, settings
 from hypothesis import strategies as st
 from robot.api import logger
 from robot.utils.importer import Importer  # type: ignore
-from schemathesis import Case, openapi, GenerationMode
-from schemathesis.core.result import Ok
+from schemathesis import Case, GenerationMode, openapi
 from schemathesis.config import SchemathesisConfig
+from schemathesis.core.result import Ok
 
 
 @dataclass
