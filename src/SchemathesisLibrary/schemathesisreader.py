@@ -46,10 +46,7 @@ class SchemathesisReader(AbstractReaderClass):
         path = self.options.path
         if path and not Path(path).is_file():
             raise ValueError(f"Provided path '{path}' is not a valid file.")
-
-        # Try loading configuration file
         config, generation_mode = self._load_config()
-
         if path:
             schema = openapi.from_path(path, config=config)
         elif url:
@@ -69,27 +66,20 @@ class SchemathesisReader(AbstractReaderClass):
         return all_cases
 
     def _load_config(self) -> tuple[SchemathesisConfig, GenerationMode]:
-        """Load Schemathesis config and extract settings."""
         config = SchemathesisConfig.discover()
         generation_mode = GenerationMode.POSITIVE
-
-        if config.config_path:
+        if self.options is None:
+            return config, generation_mode
+        if config.config_path and config.projects.default.generation:
             logger.info(f"Config file path: {config.config_path}")
-
-            if config.projects.default.generation:
-                # Update max_examples if present in config
-                if config.projects.default.generation.max_examples is not None:
-                    self.options.max_examples = config.projects.default.generation.max_examples
-                    logger.info(f"Using max_examples from config: {self.options.max_examples}")
-
-                # Get generation mode from config
-                modes = config.projects.default.generation.modes
-                if modes:
-                    generation_mode = modes[0]
-                    logger.info(f"Using generation mode from config: {generation_mode}")
+            if config.projects.default.generation.max_examples is not None:
+                self.options.max_examples = config.projects.default.generation.max_examples
+                logger.info(f"Using max_examples from config: {self.options.max_examples}")
+            if modes := config.projects.default.generation.modes:
+                generation_mode = modes[0]
+                logger.info(f"Using first generation mode from config: {generation_mode}")
         else:
             logger.info("No schemathesis.toml config file found, using defaults")
-
         return config, generation_mode
 
     def _import_hooks(self) -> None:
