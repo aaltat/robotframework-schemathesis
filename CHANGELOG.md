@@ -2,6 +2,73 @@
 
 <!-- version list -->
 
+## v2.1.0 (2026-01-23)
+
+### Chores
+
+- Add atest for config file
+  ([`cc5b410`](https://github.com/aaltat/robotframework-schemathesis/commit/cc5b410187e3d9914cc58e9fc6a015a6d646fb0b))
+
+- Refacor coverage report creation
+  ([`3f27887`](https://github.com/aaltat/robotframework-schemathesis/commit/3f278879ecf5972edaccafc4c6428e132678433d))
+
+- Refactor utest and config loading
+  ([`8980a83`](https://github.com/aaltat/robotframework-schemathesis/commit/8980a830bbf4f76d270d18524cf3a7bdc8e5f5ee))
+
+- Remove S101 rule ignore
+  ([`2aa8547`](https://github.com/aaltat/robotframework-schemathesis/commit/2aa854782cce0f29d2c0fd5dec7aa33990425bd2))
+
+- **deps**: Bump robotframework-pythonlibcore from 4.4.1 to 4.5.0
+  ([`6072ea3`](https://github.com/aaltat/robotframework-schemathesis/commit/6072ea39831979dcf1a0416d3baf7d3880dc77d5))
+
+- **deps**: Bump schemathesis from 4.8.0 to 4.9.0
+  ([`4e77f2f`](https://github.com/aaltat/robotframework-schemathesis/commit/4e77f2f340b4888e3bbb0fa30e0dadff1ca4431e))
+
+- **deps**: Bump schemathesis from 4.9.0 to 4.9.1
+  ([`2b66c02`](https://github.com/aaltat/robotframework-schemathesis/commit/2b66c0238ea25e9e75f62adb2d308d3ed925458a))
+
+- **deps**: Bump schemathesis from 4.9.1 to 4.9.2
+  ([`fa3f987`](https://github.com/aaltat/robotframework-schemathesis/commit/fa3f987d84329b9c68d5b74029567b270701184a))
+
+- **deps**: Bump schemathesis from 4.9.2 to 4.9.3
+  ([`c3d9d62`](https://github.com/aaltat/robotframework-schemathesis/commit/c3d9d62e9b743ece7a121c7323853056d0f479fc))
+
+- **deps**: Bump schemathesis from 4.9.3 to 4.9.4
+  ([`cad0315`](https://github.com/aaltat/robotframework-schemathesis/commit/cad031591c3fc24f518350ac2c7cfd56056600ad))
+
+- **deps**: Bump urllib3 from 2.5.0 to 2.6.3
+  ([`858e32d`](https://github.com/aaltat/robotframework-schemathesis/commit/858e32d7f7b82bfd81a89e8a645a0f8a2eedd751))
+
+- **deps**: Bump werkzeug from 3.1.3 to 3.1.5
+  ([`122b064`](https://github.com/aaltat/robotframework-schemathesis/commit/122b0647206cd012eca62bb6966bacd1c17efce1))
+
+- **deps-dev**: Bump ruff from 0.14.11 to 0.14.13
+  ([`aba5e93`](https://github.com/aaltat/robotframework-schemathesis/commit/aba5e93610fd02985e546f8d1c283b597fb6b58b))
+
+- **deps-dev**: Bump ruff from 0.14.13 to 0.14.14
+  ([`fd1f58b`](https://github.com/aaltat/robotframework-schemathesis/commit/fd1f58b99f64259cd009bd33035297de5655a721))
+
+### Continuous Integration
+
+- Run utest in CI
+  ([`821ef4e`](https://github.com/aaltat/robotframework-schemathesis/commit/821ef4e023a7e600d02f73cca7841670b4138cf3))
+
+### Documentation
+
+- Make hook heading as major
+  ([`ac56951`](https://github.com/aaltat/robotframework-schemathesis/commit/ac56951614b66d2e87dcb0ccb68d8aa3fb5e867e))
+
+### Features
+
+- Add configuration file discovery
+  ([`5d4b29c`](https://github.com/aaltat/robotframework-schemathesis/commit/5d4b29c1c1f8dbc6b0cba2d44255a592a22944b7))
+
+### Testing
+
+- Add unit tests for config reader
+  ([`e7931ab`](https://github.com/aaltat/robotframework-schemathesis/commit/e7931ab6759df88161d26e4fc024e490c27702e9))
+
+
 ## v2.0.0 (2026-01-11)
 
 ### Bug Fixes
