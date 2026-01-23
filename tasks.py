@@ -155,9 +155,12 @@ def spec_file(ctx):
 @task
 def utest(ctx):
     """Run unit tests."""
+    marker = 90
+    print("*" * marker)
+    print("Running unit tests with coverage...")
     ctx.run("uv run coverage run -m pytest -v utest")
     ctx.run("uv run coverage html")
-
+    print("*" * marker)
 
 @task(pre=[test_app, spec_file, utest])
 def atest(ctx, suite: str | None = None):
