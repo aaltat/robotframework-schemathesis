@@ -159,7 +159,7 @@ def utest(ctx):
     print("*" * marker)
     print("Running unit tests with coverage...")
     ctx.run("uv run coverage run -m pytest -v utest")
-    ctx.run("uv run coverage html")
+    ctx.run("uv run coverage html --omit='utest/*'")
     print("*" * marker)
 
 @task(pre=[test_app, spec_file, utest])
