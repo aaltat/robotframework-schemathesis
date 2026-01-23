@@ -162,6 +162,7 @@ def utest(ctx):
     ctx.run("uv run coverage html --omit='utest/*'")
     print("*" * marker)
 
+
 @task(pre=[test_app, spec_file, utest])
 def atest(ctx, suite: str | None = None):
     """Run acceptance tests."""
