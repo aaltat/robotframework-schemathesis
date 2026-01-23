@@ -152,7 +152,14 @@ def spec_file(ctx):
     print(f"Test app open api spec file {local_filename} downloaded successfully.")
 
 
-@task(pre=[test_app, spec_file])
+@task
+def utest(ctx):
+    """Run unit tests."""
+    ctx.run("uv run coverage run -m pytest -v utest")
+    ctx.run("uv run coverage html")
+
+
+@task(pre=[test_app, spec_file, utest])
 def atest(ctx, suite: str | None = None):
     """Run acceptance tests."""
     args = [

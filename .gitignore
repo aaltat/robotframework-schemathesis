@@ -22,3 +22,7 @@ atest/specs
 
 # VS Code
 .vscode/
+
+# coverage
+.coverage
+htmlcov/
