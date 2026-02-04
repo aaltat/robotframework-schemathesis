@@ -293,7 +293,7 @@ class SchemathesisLibrary(DynamicCore):
         headers: "dict[str, Any]|None" = None,
     ) -> None:
         body = case.body if not isinstance(case.body, NotSet) else "Not set"
-        case_headers = headers if headers else case.headers
+        case_headers = headers or case.headers
         self.debug(
             f"Case headers {case_headers!r} body {body!r} "
             f"cookies {case.cookies!r} path parameters {case.path_parameters!r}"
