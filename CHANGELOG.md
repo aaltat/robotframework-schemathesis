@@ -2,6 +2,31 @@
 
 <!-- version list -->
 
+## v2.2.0 (2026-02-05)
+
+### Chores
+
+- Ruff update
+  ([`7ad8249`](https://github.com/aaltat/robotframework-schemathesis/commit/7ad8249ff0e1ee05b17cd21f4988df255ec12e34))
+
+- **deps**: Bump python-multipart from 0.0.20 to 0.0.22
+  ([`b410533`](https://github.com/aaltat/robotframework-schemathesis/commit/b410533033073b3e439d0fb3ba067ad124738cd0))
+
+- **deps**: Bump schemathesis from 4.9.4 to 4.9.5
+  ([`358f26e`](https://github.com/aaltat/robotframework-schemathesis/commit/358f26e92be05e38beb03c92d312e59c62e0611b))
+
+- **deps-dev**: Bump coverage from 7.13.1 to 7.13.2
+  ([`111b0f6`](https://github.com/aaltat/robotframework-schemathesis/commit/111b0f6d013e0e7e3a41e3aeea3f57b2befcb324))
+
+- **deps-dev**: Bump coverage from 7.13.2 to 7.13.3
+  ([`85d6d1e`](https://github.com/aaltat/robotframework-schemathesis/commit/85d6d1e9d62fca3755bb8271dadcb0f255b5c5ff))
+
+### Features
+
+- Support external session object
+  ([`f7c00e5`](https://github.com/aaltat/robotframework-schemathesis/commit/f7c00e5d148bf8ba4cc31e0be4b937b657d432ec))
+
+
 ## v2.1.0 (2026-01-23)
 
 ### Chores
