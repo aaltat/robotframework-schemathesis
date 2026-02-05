@@ -14,6 +14,7 @@
 from typing import TYPE_CHECKING, Any
 
 from DataDriver import DataDriver  # type: ignore
+from requests.sessions import Session
 from robot.api import logger
 from robot.api.deco import keyword
 from robot.result.model import TestCase as ResultTestCase  # type: ignore
@@ -168,6 +169,7 @@ class SchemathesisLibrary(DynamicCore):
         base_url: str | None = None,
         headers: dict[str, Any] | None = None,
         auth: tuple[str, str] | Any | None = None,
+        session: Session | None = None,
     ) -> Response:
         """Call and validate a Schemathesis case.
 
@@ -176,12 +178,42 @@ class SchemathesisLibrary(DynamicCore):
         | ``base_url`` | Optional base URL to override the one defined in the schema. Need mostly when schema is read from a file. |
         | ``headers``  | Optional HTTP headers to be added when calling the API endpoint. |
         | ``auth``     | Optional authentication to be used when calling the case. |
-
+        | ``session``  | Optional request session to be used when calling the case. |
         ``auth`` can be any authentication supported by
         [https://www.python-httpx.org/advanced/authentication/|httpx authentication].
         Example a tuple containing username and password for basic authentication or
         and instance of
         [https://www.python-httpx.org/advanced/authentication/#digest-authentication|Digest authentication]
+
+        ``session`` can be used to pass a pre-configured HTTP session and it must be an instance of
+        [https://requests.readthedocs.io/en/latest/user/advanced/#session-objects|requests.session.Session].
+        If, example, session is created by using `RequestsLibrary`, then current session can be obtained
+        by following way from python code:
+        | from robot.libraries.BuiltIn import BuiltIn
+        |
+        | def get_request_session():
+        |     request_library = BuiltIn().get_library_instance("RequestsLibrary")
+        |     return request_library._cache.current
+
+        Then this can be used in test case like:
+        | *** Settings ***
+        | Library             RequestsLibrary
+        | Library             SchemathesisLibrary
+        | ...                     url=http://127.0.0.1/openapi.json
+        | Library             ${CURDIR}/request_session.py
+        | Test Template       Wrapper
+        |
+        | *** Test Cases ***
+        | All Tests
+        |     Wrapper    test_case_1
+        |
+        | *** Keywords ***
+        | Wrapper
+        |     [Arguments]    ${case}
+        |     Create Session    session    http://127.0.0.1/
+        |     ${session} =    Get Request Session
+        |     Call And Validate    ${case}    headers=&{BASIC_AUTH_HEADERS}    session=${session}
+
 
         Returns a
         [https://schemathesis.readthedocs.io/en/stable/reference/python/#schemathesis.Response|Schemathesis Response]
@@ -197,7 +229,9 @@ class SchemathesisLibrary(DynamicCore):
         headers = self._dot_dict_to_dict(headers) if headers else None
         self.info(f"Case: {case.path} | {case.method} | {case.path_parameters}")
         self._log_case(case, headers)
-        response = case.call_and_validate(base_url=base_url, headers=headers, auth=auth)
+        if session:
+            self.info("Using provided session for the request.")
+        response = case.call_and_validate(base_url=base_url, headers=headers, auth=auth, session=session)
         self._log_request(response)
         self.debug(f"Response: {response.headers} | {response.status_code} | {response.text}")
         return response
@@ -210,6 +244,7 @@ class SchemathesisLibrary(DynamicCore):
         base_url: str | None = None,
         headers: dict[str, Any] | None = None,
         auth: tuple[str, str] | Any | None = None,
+        session: Session | None = None,
     ) -> Response:
         """Call a Schemathesis case without validation.
 
@@ -218,12 +253,15 @@ class SchemathesisLibrary(DynamicCore):
         | ``base_url`` | Optional base URL to override the one defined in the schema. Need mostly when schema is read from a file. |
         | ``headers``  | Optional HTTP headers to be added when calling the API endpoint. |
         | ``auth``     | Optional authentication to be used when calling the case. |
+        | ``session``  | Optional request session to be used when calling the case. |
 
         ``auth`` can be any authentication supported by
         [https://www.python-httpx.org/advanced/authentication/|httpx authentication].
         Example a tuple containing username and password for basic authentication or
         and instance of
         [https://www.python-httpx.org/advanced/authentication/#digest-authentication|Digest authentication]
+
+        See `Call And Validate` keyword for example of using ``session`` argument.
 
         Returns a
         [https://schemathesis.readthedocs.io/en/stable/reference/python/#schemathesis.Response|Schemathesis Response]
@@ -241,7 +279,9 @@ class SchemathesisLibrary(DynamicCore):
         headers = self._dot_dict_to_dict(headers) if headers else None
         self.info(f"Calling case: {case.path} | {case.method} | {case.path_parameters}")
         self._log_case(case)
-        response = case.call(base_url=base_url, headers=headers, auth=auth)
+        if session:
+            self.info("Using provided session for the request.")
+        response = case.call(base_url=base_url, headers=headers, auth=auth, session=session)
         self._log_request(response)
         return response
 
