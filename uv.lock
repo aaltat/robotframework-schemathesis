@@ -1520,6 +1520,19 @@ wheels = [
 ]
 
 [[package]]
+name = "robotframework-requests"
+version = "0.9.7"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "requests" },
+    { name = "robotframework" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/61/e2/b17b940985e7b35f53767d908897870fcf4e143a2a7c2da76d152e4abc4c/robotframework-requests-0.9.7.tar.gz", hash = "sha256:c2a2839813e1dc6b299e7d336314c9982c225c5b7e001ec893dc3555c6a95740", size = 19404, upload-time = "2024-04-07T22:48:08.471Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/cd/18/03ef4d1132f50b55220af5308db91e1cc5481b8b063cac5fafa625b00f64/robotframework_requests-0.9.7-py3-none-any.whl", hash = "sha256:96315066318778cbcf5523cdb6175f5a0b8fec33275030a20dade3a3d98aeca2", size = 21055, upload-time = "2024-04-07T22:48:06.617Z" },
+]
+
+[[package]]
 name = "robotframework-robocop"
 version = "7.2.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1559,6 +1572,7 @@ dev = [
     { name = "mypy" },
     { name = "pytest" },
     { name = "requests" },
+    { name = "robotframework-requests" },
     { name = "robotframework-robocop" },
     { name = "ruff" },
     { name = "types-requests" },
@@ -1580,6 +1594,7 @@ dev = [
     { name = "mypy", specifier = ">=1.19.1" },
     { name = "pytest", specifier = ">=9.0.1" },
     { name = "requests", specifier = ">=2.32.5" },
+    { name = "robotframework-requests", specifier = ">=0.9.7" },
     { name = "robotframework-robocop", specifier = ">=7.2.0" },
     { name = "ruff", specifier = "==0.15.0" },
     { name = "types-requests", specifier = ">=2.32.4.20250913" },
