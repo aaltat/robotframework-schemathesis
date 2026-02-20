@@ -1583,7 +1583,7 @@ wheels = [
 
 [[package]]
 name = "robotframework-robocop"
-version = "8.0.0"
+version = "8.1.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jinja2" },
@@ -1595,12 +1595,12 @@ dependencies = [
     { name = "robotframework" },
     { name = "tomli", marker = "python_full_version < '3.11'" },
     { name = "tomli-w" },
-    { name = "typer-slim" },
+    { name = "typer" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d7/8f/5e67124badcfe72e382a3a4d49ae385ac07c28c41dbe3f23efe64ca5125b/robotframework_robocop-8.0.0.tar.gz", hash = "sha256:74e379fce9c8c6986140b868e73850c5338e353b952198693e24f6630e2219ca", size = 973855, upload-time = "2026-02-11T14:03:47.56Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f4/da/abfb9ee808c814cc553a94cf3f25aac0b866683b8bef5ae78544619947f5/robotframework_robocop-8.1.1.tar.gz", hash = "sha256:47fcca15042d2d9adbc086542a58c1c6cf058c9a0e29bf38edf0ebc60e63e845", size = 974174, upload-time = "2026-02-20T13:53:08.293Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4c/56/5fd4a4474d4dbf2059a1561137e815aa758a1d877d31db14563f1f592c3a/robotframework_robocop-8.0.0-py3-none-any.whl", hash = "sha256:f7fff98967756382180fac8f57a39c78955cabc777d3be4a80c24bbaaabb55cb", size = 326585, upload-time = "2026-02-11T14:03:48.731Z" },
+    { url = "https://files.pythonhosted.org/packages/58/8b/b7d3bda0d17391d9194f51508c9c1afc9a6f8f5cbdd9e8caf1133e38750f/robotframework_robocop-8.1.1-py3-none-any.whl", hash = "sha256:c12babd1d85534176add86bf5a5607838e2521e190269acbd4f2df0e9b1aea84", size = 326405, upload-time = "2026-02-20T13:53:07.097Z" },
 ]
 
 [[package]]
@@ -1974,19 +1974,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/8f/28/7c85c8032b91dbe79725b6f17d2fffc595dff06a35c7a30a37bef73a1ab4/typer-0.20.0.tar.gz", hash = "sha256:1aaf6494031793e4876fb0bacfa6a912b551cf43c1e63c800df8b1a866720c37", size = 106492, upload-time = "2025-10-20T17:03:49.445Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/78/64/7713ffe4b5983314e9d436a90d5bd4f63b6054e2aca783a3cfc44cb95bbf/typer-0.20.0-py3-none-any.whl", hash = "sha256:5b463df6793ec1dca6213a3cf4c0f03bc6e322ac5e16e13ddd622a889489784a", size = 47028, upload-time = "2025-10-20T17:03:47.617Z" },
-]
-
-[[package]]
-name = "typer-slim"
-version = "0.20.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "click" },
-    { name = "typing-extensions" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/8e/45/81b94a52caed434b94da65729c03ad0fb7665fab0f7db9ee54c94e541403/typer_slim-0.20.0.tar.gz", hash = "sha256:9fc6607b3c6c20f5c33ea9590cbeb17848667c51feee27d9e314a579ab07d1a3", size = 106561, upload-time = "2025-10-20T17:03:46.642Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/5e/dd/5cbf31f402f1cc0ab087c94d4669cfa55bd1e818688b910631e131d74e75/typer_slim-0.20.0-py3-none-any.whl", hash = "sha256:f42a9b7571a12b97dddf364745d29f12221865acef7a2680065f9bb29c7dc89d", size = 47087, upload-time = "2025-10-20T17:03:44.546Z" },
 ]
 
 [[package]]
