@@ -33,14 +33,14 @@ jobs:
         run: |
           uv run inv atest
       - name: Upload runner test results
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: atest-result-runner-python-3.13
           path: atest/output_runner/
       - name: Upload library test results
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: atest-result-library-python-3.13
           path: atest/output_library/
