@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v2.3.1 (2026-03-15)
+
+### Bug Fixes
+
+- Write cURL properly in KW name
+  ([`4561a51`](https://github.com/aaltat/robotframework-schemathesis/commit/4561a512a8c3271d41a0fe9216e7f19879572676))
+
+
 ## v2.3.0 (2026-03-15)
 
 ### Chores
