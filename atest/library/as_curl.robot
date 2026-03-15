@@ -15,6 +15,6 @@ All Tests
 *** Keywords ***
 Wrapper
     [Arguments]    ${case}
-    ${curl} =    As Curl    ${case}
+    ${curl} =    As cURL    ${case}
     Should Contain    ${curl}    curl
     Should Contain    ${curl}    http://127.0.0.1/
