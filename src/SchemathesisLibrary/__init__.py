@@ -321,6 +321,25 @@ class SchemathesisLibrary(DynamicCore):
         case.validate_response(response=response, transport_kwargs=transport_kwargs)
         self.info("Response validation passed.")
 
+    @keyword
+    def as_curl(self, case: Case) -> str:
+        """Convert a Schemathesis case to a cURL command.
+
+        | Argument   | Description |
+        | ``case``     | The Schemathesis case to be converted. |
+
+        Returns a string containing the cURL command that can be used to execute the same request as the case.
+
+        Example:
+        | ${curl_command} =    `As Curl`    ${case}
+        | Log    ${curl_command}
+        """
+        self.info(f"Converting case to cURL: {case.path} | {case.method} | {case.path_parameters}")
+        self._log_case(case)
+        curl_command = case.as_curl_command()
+        self.debug(f"Generated cURL command: {curl_command}")
+        return curl_command
+
     def info(self, message: str) -> None:
         logger.info(message)
 
