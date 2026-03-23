@@ -57,7 +57,7 @@ jobs:
           ls -l dist/
           uv publish
         if: steps.release.outputs.released == 'true'
-      - uses: EndBug/add-and-commit@v9
+      - uses: EndBug/add-and-commit@v10
         name: Save version
         with:
           add: "['pyproject.toml', 'uv.lock', 'src/SchemathesisLibrary/__init__.py']"
@@ -71,7 +71,7 @@ jobs:
           uv run inv docs
           uv run inv old-version-docs --version ${{ steps.release.outputs.version }}
         if: steps.release.outputs.released == 'true'
-      - uses: EndBug/add-and-commit@v9
+      - uses: EndBug/add-and-commit@v10
         name: Save keyword documentation
         with:
           add: "['docs/SchemathesisLibrary.html', 'docs/versions/SchemathesisLibrary-${{ steps.release.outputs.version }}.html', 'docs/versions/index.md']"
