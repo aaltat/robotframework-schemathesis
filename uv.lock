@@ -1506,7 +1506,7 @@ wheels = [
 
 [[package]]
 name = "robotframework-robocop"
-version = "8.2.6"
+version = "8.2.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jinja2" },
@@ -1521,9 +1521,9 @@ dependencies = [
     { name = "typer" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/7a/9f/2de0ec02a37c3d3184df34f97fe5153601789f730362580332304097f5d5/robotframework_robocop-8.2.6.tar.gz", hash = "sha256:db1bdb127044677cc5397e0c1d90126b17858fb40bbc3460920e67968f43892b", size = 976749, upload-time = "2026-04-13T08:43:06.292Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/17/c3/834b8a94d9407dc185e7bb6473469f020a08cce030e6743024ca53131d85/robotframework_robocop-8.2.7.tar.gz", hash = "sha256:f72b9cc72ec3c6677eabd52487fa82f5db611b79aad75f826610165c9238a003", size = 976896, upload-time = "2026-04-14T07:28:44.675Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/36/36/ee4efa789320da8a60f6f21789b8f3f45a73e6ee2114cc50bc70f72b2f49/robotframework_robocop-8.2.6-py3-none-any.whl", hash = "sha256:2a4de7f53adaab14d9190a0bf4286c9f364274f07ba7464cefd4c9739bfd035b", size = 327009, upload-time = "2026-04-13T08:43:08.191Z" },
+    { url = "https://files.pythonhosted.org/packages/c5/ef/8ce3c1c8e80363804e8b50ff739c9f0c4398aa075e9b687a38e97171d96d/robotframework_robocop-8.2.7-py3-none-any.whl", hash = "sha256:5f994dcaa289ad6ac5863c616f0507f181891bba8c40b670e92a37c322bce863", size = 327017, upload-time = "2026-04-14T07:28:46.303Z" },
 ]
 
 [[package]]
