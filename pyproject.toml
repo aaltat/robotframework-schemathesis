@@ -18,16 +18,16 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "coverage>=7.13.1",
-    "fastapi[standard]>=0.128.0",
-    "invoke>=2.2.1",
-    "mypy>=1.19.1",
-    "pytest>=9.0.1",
-    "requests>=2.32.5",
+    "coverage>=7.13.5",
+    "fastapi[standard]>=0.136.1",
+    "invoke>=3.0.3",
+    "mypy>=1.20.2",
+    "pytest>=9.0.3",
+    "requests>=2.33.1",
     "robotframework-requests>=0.9.7",
-    "robotframework-robocop>=7.2.0",
+    "robotframework-robocop>=8.2.7",
     "ruff==0.15.12",
-    "types-requests>=2.32.4.20250913",
+    "types-requests>=2.33.0.20260503",
 ]
 
 [tool.semantic_release.settings]
