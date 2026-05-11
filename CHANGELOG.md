@@ -2,6 +2,31 @@
 
 <!-- version list -->
 
+## v2.3.3 (2026-05-11)
+
+### Bug Fixes
+
+- Raise schemathesis minimum version
+  ([`5d99d8e`](https://github.com/aaltat/robotframework-schemathesis/commit/5d99d8e64a6f6a334480e3647f977871333a0f26))
+
+### Chores
+
+- **deps**: Bump python-multipart from 0.0.26 to 0.0.27
+  ([`ec697db`](https://github.com/aaltat/robotframework-schemathesis/commit/ec697db87ed00102f815d27ea17d23320295829b))
+
+- **deps**: Bump schemathesis from 4.17.0 to 4.18.0
+  ([`5483560`](https://github.com/aaltat/robotframework-schemathesis/commit/54835600b9b20709867ce4351f679d1b727806bb))
+
+- **deps**: Bump urllib3 from 2.6.3 to 2.7.0
+  ([`4eede52`](https://github.com/aaltat/robotframework-schemathesis/commit/4eede52b8fc3cf95fefc7ea2fc7d81e6d0707f5d))
+
+- **deps-dev**: Bump mypy from 1.20.2 to 2.0.0
+  ([`ac0f2c3`](https://github.com/aaltat/robotframework-schemathesis/commit/ac0f2c3de3440cf377e0096fc7ff012169d604f2))
+
+- **deps-dev**: Bump types-requests
+  ([`8d5a7ce`](https://github.com/aaltat/robotframework-schemathesis/commit/8d5a7ce131e6ea2593f000a6135ddf5e7666dc1f))
+
+
 ## v2.3.2 (2026-05-05)
 
 ### Bug Fixes
