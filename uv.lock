@@ -1667,10 +1667,9 @@ wheels = [
 
 [[package]]
 name = "robotframework-robocop"
-version = "8.2.10"
+version = "8.2.11"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "click" },
     { name = "jinja2" },
     { name = "msgpack" },
     { name = "pathspec" },
@@ -1683,9 +1682,9 @@ dependencies = [
     { name = "typer" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b0/00/4946596fa9a3769ba5278b947ed4b6f86a858e697fa1238872af0cc6906c/robotframework_robocop-8.2.10.tar.gz", hash = "sha256:cf46382166a53e6cc30b16059debb1d31f8ebb740a504b7f9ddbab89acd3fb9a", size = 979349, upload-time = "2026-06-05T09:32:33.655Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/bc/94/3199da6aaa7092411288764d20f108c612f75db008efa72ae672ddc4bb53/robotframework_robocop-8.2.11.tar.gz", hash = "sha256:bb948ca28f917f37ea19d7a0824a1a527df576cb93af688a46f0943b0902f6b3", size = 979667, upload-time = "2026-06-12T08:04:38.225Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/6a/e1/16d4aa6b41276a94fe18bbe2aae497e29164b9e40ec20580d68a074a3b03/robotframework_robocop-8.2.10-py3-none-any.whl", hash = "sha256:8cd37b51a90e96ff86cbf2639d47aad1a492553e6df633eb20b5c417c04e65b9", size = 327247, upload-time = "2026-06-05T09:32:35.102Z" },
+    { url = "https://files.pythonhosted.org/packages/ab/6f/db28cc10d2556ab025124b43c7285802d6c3b2f41b65566a71ad992cdd2c/robotframework_robocop-8.2.11-py3-none-any.whl", hash = "sha256:704b5c358903a74861574a6aa1ccac582b1cd1e3f76e0ec5d0eb000545edd18d", size = 327304, upload-time = "2026-06-12T08:04:36.722Z" },
 ]
 
 [[package]]
@@ -2045,17 +2044,17 @@ wheels = [
 
 [[package]]
 name = "typer"
-version = "0.20.0"
+version = "0.26.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "click" },
+    { name = "annotated-doc" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
     { name = "rich" },
     { name = "shellingham" },
-    { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/8f/28/7c85c8032b91dbe79725b6f17d2fffc595dff06a35c7a30a37bef73a1ab4/typer-0.20.0.tar.gz", hash = "sha256:1aaf6494031793e4876fb0bacfa6a912b551cf43c1e63c800df8b1a866720c37", size = 106492, upload-time = "2025-10-20T17:03:49.445Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/5e/ed/ef06584ccdd5c410df0837951ecd7e15d9a6144ea1bd4c73cecab1a89891/typer-0.26.7.tar.gz", hash = "sha256:e314a34c617e419c091b2830dda3ea1f257134ff593061a8f5b9717ab8dddb3a", size = 201709, upload-time = "2026-06-03T07:18:06.843Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/78/64/7713ffe4b5983314e9d436a90d5bd4f63b6054e2aca783a3cfc44cb95bbf/typer-0.20.0-py3-none-any.whl", hash = "sha256:5b463df6793ec1dca6213a3cf4c0f03bc6e322ac5e16e13ddd622a889489784a", size = 47028, upload-time = "2025-10-20T17:03:47.617Z" },
+    { url = "https://files.pythonhosted.org/packages/24/25/2201973529af2c954de0bb725323c3aaed6d7f0ceee8f550dec9185df013/typer-0.26.7-py3-none-any.whl", hash = "sha256:5c87cfbc5d34491c5346ebf49c23e18d56ccb863268d3a8d592b26087c2f5e58", size = 122456, upload-time = "2026-06-03T07:18:05.732Z" },
 ]
 
 [[package]]
