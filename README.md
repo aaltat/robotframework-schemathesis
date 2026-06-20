@@ -159,3 +159,26 @@ def filter_query(ctx, query) -> bool:
     return True
 ```
 Then only two test with `PUT` request are generated.
+
+## Pabot Support
+
+[Pabot](https://pabot.org/) is a parallel executor for Robot Framework tests, and
+`SchemathesisLibrary` supports it.
+
+However, there's a crucial point to consider. Because `SchemathesisLibrary` uses
+[DataDriver](https://github.com/Snooz82/robotframework-datadriver) to generate
+tests dynamically, you cannot use Schemathesis's built-in parallel execution
+feature (`--workers` option).
+
+When using Pabot, you are responsible for organizing your test suites to avoid
+generating the same tests in multiple parallel processes. A good strategy might be to
+split your test into different suites, where each suite targets a specific scenario.
+
+For example, you could create separate suites for:
+-   A user that is not found in the system.
+-   A user that is found and has valid credentials.
+-   A user that is found but has invalid credentials.
+
+This approach ensures that each Pabot process works on a unique set of tests. Since
+every API and system is different, a universal rule for structuring suites is not
+possible, but this scenario-based division might be good starting point.

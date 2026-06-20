@@ -166,10 +166,13 @@ def utest(ctx):
 @task(pre=[test_app, spec_file, utest])
 def atest(ctx, suite: str | None = None):
     """Run acceptance tests."""
+
     args = [
         "uv",
         "run",
-        "robot",
+        "pabot",
+        "--ordering",
+        "atest/test/pabotsuitenames",
         "--loglevel",
         "DEBUG:INFO",
         "--pythonpath",

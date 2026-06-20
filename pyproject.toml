@@ -25,6 +25,7 @@ dev = [
     "mypy>=2.1.0",
     "pytest>=9.1.1",
     "requests>=2.34.2",
+    "robotframework-pabot>=5.2.2",
     "robotframework-requests>=0.9.7",
     "robotframework-robocop>=8.3.2",
     "ruff==0.15.18",
