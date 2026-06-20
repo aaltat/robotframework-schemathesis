@@ -39,10 +39,10 @@ Run Suite
     ...    run
     ...    rebot
     ...    --log
-    ...    ${LIBRARY_OUTPUT_DIR_BASE}/log.html
+    ...    ${library_output_dir}/log.html
     ...    --report
-    ...    ${LIBRARY_OUTPUT_DIR_BASE}/report.html
-    ...    ${LIBRARY_OUTPUT_DIR_BASE}${/}**${/}*.xml
+    ...    ${library_output_dir}/report.html
+    ...    ${library_output_dir}${/}output.xml
     ${result} =    Run Process    @{rebot_args}    cwd=${LIBRARY_PYTHON_PATH}
     Log    ${result.stdout}
     Log    ${result.stderr}

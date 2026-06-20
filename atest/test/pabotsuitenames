@@ -1,0 +1,27 @@
+--suite Test.All Cases
+#WAIT
+--suite Test.All Cases Auth
+#WAIT
+--suite Test.All Cases Auth In Call And Validate
+#WAIT
+--suite Test.All Cases Auth In Call And Validate Separetly
+#WAIT
+--suite Test.All Cases Call And Validate Response
+#WAIT
+--suite Test.All Cases From File
+#WAIT
+--suite Test.As Curl
+#WAIT
+--suite Test.Default Max Cases
+#WAIT
+--suite Test.Hooks Filter
+#WAIT
+--suite Test.Hooks Map
+#WAIT
+--suite Test.Hooks Map And Flatmap
+#WAIT
+--suite Test.No Path Or Url
+#WAIT
+--suite Test.Session
+#WAIT
+--suite Test.Config File
