@@ -21,6 +21,7 @@ dev = [
     "coverage>=7.14.1",
     "fastapi[standard]>=0.138.0",
     "invoke>=3.0.3",
+    "msgpack>=1.2.1", # Remove when robotframework-robocop updates to msgpack>=1.2.1
     "mypy>=2.1.0",
     "pytest>=9.1.1",
     "requests>=2.34.2",
