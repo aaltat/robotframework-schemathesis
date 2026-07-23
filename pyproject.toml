@@ -27,7 +27,7 @@ dev = [
     "robotframework-pabot>=5.2.2",
     "robotframework-requests>=0.9.7",
     "robotframework-robocop>=8.3.2",
-    "ruff==0.15.22",
+    "ruff==0.16.0",
 ]
 
 [tool.semantic_release.settings]
