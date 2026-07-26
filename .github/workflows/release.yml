@@ -67,9 +67,11 @@ jobs:
         if: steps.release.outputs.released == 'true'
       - name: Create keyword documentation
         run: |
-          uv run inv docs --set-version ${{ steps.release.outputs.version }}
-          uv run inv docs
-          uv run inv old-version-docs --version ${{ steps.release.outputs.version }}
+          echo Remove --pre flag when robotframework 7.5.0 is released
+          uv pip install --upgrade --pre robotframework
+          uv run --no-sync inv docs --set-version ${{ steps.release.outputs.version }}
+          uv run --no-sync inv docs
+          uv run --no-sync inv old-version-docs --version ${{ steps.release.outputs.version }}
         if: steps.release.outputs.released == 'true'
       - uses: EndBug/add-and-commit@v10
         name: Save keyword documentation

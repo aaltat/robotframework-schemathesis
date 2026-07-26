@@ -38,7 +38,10 @@ jobs:
         run: uv run inv lint
 
       - name: Create libdoc
-        run: uv run inv docs
+        run: |
+          echo Remove --pre flag when robotframework 7.5.0 is released
+          uv pip install --upgrade --pre robotframework
+          uv run  --no-sync inv docs
 
       - name: Upload libdoc
         uses: actions/upload-artifact@v7
