@@ -38,7 +38,9 @@ jobs:
         run: uv run inv lint
 
       - name: Create libdoc
-        run: uv run inv docs
+        run: |
+          uv pip install --upgrade --pre robotframework
+          uv run inv docs
 
       - name: Upload libdoc
         uses: actions/upload-artifact@v7

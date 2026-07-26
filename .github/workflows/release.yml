@@ -67,6 +67,7 @@ jobs:
         if: steps.release.outputs.released == 'true'
       - name: Create keyword documentation
         run: |
+          uv pip install --upgrade --pre robotframework
           uv run inv docs --set-version ${{ steps.release.outputs.version }}
           uv run inv docs
           uv run inv old-version-docs --version ${{ steps.release.outputs.version }}
