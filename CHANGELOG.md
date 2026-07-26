@@ -2,6 +2,84 @@
 
 <!-- version list -->
 
+## v2.5.0 (2026-07-26)
+
+### Bug Fixes
+
+- Bump schemathesis to 4.24.3
+  ([`69a9a6b`](https://github.com/aaltat/robotframework-schemathesis/commit/69a9a6b914c3f4d1a27599c4154203d3e5ca2b67))
+
+### Chores
+
+- Update dev deps
+  ([`33db65b`](https://github.com/aaltat/robotframework-schemathesis/commit/33db65b02a422ba629b8ab39a517c3a96912dd61))
+
+- **deps**: Bump actions/checkout from 6 to 7
+  ([`6b433e8`](https://github.com/aaltat/robotframework-schemathesis/commit/6b433e838faa54c2a0ad06a60c65377c7d5d4614))
+
+- **deps**: Bump actions/setup-python from 6 to 7
+  ([`f27c946`](https://github.com/aaltat/robotframework-schemathesis/commit/f27c946e47aa510b2d84fb76943cc499d7b275fc))
+
+- **deps**: Bump python-semantic-release/python-semantic-release
+  ([`083fd99`](https://github.com/aaltat/robotframework-schemathesis/commit/083fd999735e3fb8dd79f1966e41f55fee58febd))
+
+- **deps**: Bump schemathesis from 4.21.10 to 4.22.0
+  ([`9dc1840`](https://github.com/aaltat/robotframework-schemathesis/commit/9dc1840abbb21a5f07b4dde65eae7242b0fc9a75))
+
+- **deps**: Bump schemathesis from 4.22.0 to 4.22.2
+  ([`0405bba`](https://github.com/aaltat/robotframework-schemathesis/commit/0405bba3f1b3fbcab97ccdb05c9b51296441617c))
+
+- **deps**: Bump schemathesis from 4.22.2 to 4.22.3
+  ([`f815e70`](https://github.com/aaltat/robotframework-schemathesis/commit/f815e70540374e9a95edb593c297a2ba1c638fbb))
+
+- **deps**: Bump schemathesis from 4.22.3 to 4.22.4
+  ([`f58da5e`](https://github.com/aaltat/robotframework-schemathesis/commit/f58da5e50cceee132b1c95fa69ab0bc074a1d014))
+
+- **deps**: Bump schemathesis from 4.23.0 to 4.24.0
+  ([`86717a1`](https://github.com/aaltat/robotframework-schemathesis/commit/86717a1d18c296ba44183bf5ec6546640a3fb473))
+
+- **deps**: Bump schemathesis from 4.24.0 to 4.24.1
+  ([`3ce8ae3`](https://github.com/aaltat/robotframework-schemathesis/commit/3ce8ae347b64fbcac07261fe8ff9ab25225e8006))
+
+- **deps**: Bump schemathesis from 4.24.1 to 4.24.2
+  ([`8c7a8bf`](https://github.com/aaltat/robotframework-schemathesis/commit/8c7a8bf55920deb8c9ba9406a0a2225aa47adb3e))
+
+- **deps-dev**: Bump coverage from 7.14.1 to 7.14.3
+  ([`73f1272`](https://github.com/aaltat/robotframework-schemathesis/commit/73f12724e4cc85f92a955f7ffdb0b6211efefae9))
+
+- **deps-dev**: Bump coverage from 7.14.3 to 7.15.0
+  ([`65f0b42`](https://github.com/aaltat/robotframework-schemathesis/commit/65f0b420938b717c24fcaa2b9e9de51b318bde0c))
+
+- **deps-dev**: Bump coverage from 7.15.0 to 7.15.1
+  ([`9e63d73`](https://github.com/aaltat/robotframework-schemathesis/commit/9e63d73f4411669cf9ec527c292c215041cda5da))
+
+- **deps-dev**: Bump coverage from 7.15.1 to 7.15.2
+  ([`763aee5`](https://github.com/aaltat/robotframework-schemathesis/commit/763aee53bcce76ce973894ac59fb8000d61a0ba4))
+
+- **deps-dev**: Bump mypy from 2.1.0 to 2.2.0
+  ([`dc1f4dd`](https://github.com/aaltat/robotframework-schemathesis/commit/dc1f4dd33137baeffa53a61cc08d1b2e27bef7cc))
+
+- **deps-dev**: Bump mypy from 2.2.0 to 2.3.0
+  ([`9cc75dc`](https://github.com/aaltat/robotframework-schemathesis/commit/9cc75dc0e6c46e79097cc0a9765cfa57758e99e4))
+
+- **deps-dev**: Bump ruff from 0.15.18 to 0.15.19
+  ([`b71de66`](https://github.com/aaltat/robotframework-schemathesis/commit/b71de666ae7a61bb4aa6e55bbc3c6163ceb277db))
+
+- **deps-dev**: Bump ruff from 0.15.19 to 0.15.20
+  ([`fce7dcd`](https://github.com/aaltat/robotframework-schemathesis/commit/fce7dcdc884f2993bd8ff7db20631ca624c8337c))
+
+- **deps-dev**: Bump ruff from 0.15.20 to 0.15.21
+  ([`ce8e441`](https://github.com/aaltat/robotframework-schemathesis/commit/ce8e441a7ffc07b67efc2ee22f43bd1242602406))
+
+- **deps-dev**: Bump ruff from 0.15.22 to 0.16.0
+  ([`fe2306f`](https://github.com/aaltat/robotframework-schemathesis/commit/fe2306fe5904d41ab750bb00875ef38d6ed99d48))
+
+### Features
+
+- Conver documentaiton to markdown style with RF 7.5
+  ([`6991e5a`](https://github.com/aaltat/robotframework-schemathesis/commit/6991e5ab91a4dcc4312cf5316a43ae34f7d58acf))
+
+
 ## v2.4.0 (2026-06-20)
 
 ### Bug Fixes
