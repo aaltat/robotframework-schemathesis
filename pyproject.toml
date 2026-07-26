@@ -18,8 +18,8 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "coverage>=7.14.1",
-    "fastapi[standard]>=0.138.0",
+    "coverage>=7.15.2",
+    "fastapi[standard]>=0.140.0",
     "invoke>=3.0.3",
     "mypy>=2.1.0",
     "pytest>=9.1.1",
