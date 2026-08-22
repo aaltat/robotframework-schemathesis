@@ -37,7 +37,7 @@ if TYPE_CHECKING:
 
     from schemathesis.config import SanitizationConfig
 
-__version__ = "2.5.0"
+__version__ = "2.6.0"
 
 
 class SchemathesisLibrary(DynamicCore):
