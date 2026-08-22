@@ -11,10 +11,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from copy import deepcopy
 from typing import TYPE_CHECKING, Any
 
 from DataDriver import DataDriver  # type: ignore
 from requests.sessions import Session
+from requests.structures import CaseInsensitiveDict
 from robot.api import logger
 from robot.api.deco import keyword
 from robot.result.model import TestCase as ResultTestCase  # type: ignore
@@ -24,12 +26,15 @@ from robot.utils.dotdict import DotDict  # type: ignore
 from robotlibcore import DynamicCore  # type: ignore
 from schemathesis import Case
 from schemathesis.core import NotSet
+from schemathesis.core.output.sanitization import sanitize_url, sanitize_value
 from schemathesis.core.transport import Response
 
 from .schemathesisreader import Options, SchemathesisReader
 
 if TYPE_CHECKING:
     from pathlib import Path
+
+    from schemathesis.config import SanitizationConfig
 
 __version__ = "2.5.0"
 
@@ -49,6 +54,29 @@ class SchemathesisLibrary(DynamicCore):
     [Case](https://schemathesis.readthedocs.io/en/stable/reference/python/#schemathesis.Case)
     object. The `Call And Validate` keyword can be used to call and validate
     the case. The keyword will log the request and response details.
+
+    # Logging And Sanitization
+
+    Keywords log the request and response details, and credentials in those details are
+    replaced with ``[Filtered]`` before anything is written to the Robot Framework log.
+    Headers, cookies, path parameters, structured request bodies and the request URL are
+    all sanitized.
+
+    Which values count as sensitive is decided by Schemathesis, not by this library, and
+    the rules are the same ones the ``schemathesis`` command line tool uses. Matching is
+    done on the name of the value, both against a list of well known names such as
+    ``Authorization`` and ``Cookie``, and against markers such as ``key``, ``token`` and
+    ``secret`` that are looked for anywhere in the name. This means that a header named
+    ``key1`` is filtered as well, because it contains the marker ``key``.
+
+    The names, the markers and the replacement text can be changed, and sanitization can
+    be turned off altogether, with the ``[output.sanitization]`` table in the
+    ``schemathesis.toml`` configuration file. See the Schemathesis
+    [configuration](https://schemathesis.readthedocs.io/en/stable/reference/configuration/)
+    documentation for the details.
+
+    Response bodies are **not** sanitized. If an endpoint returns a credential in its
+    response body, that credential is written to the log as is.
 
     Example:
     ```robotframework
@@ -256,15 +284,16 @@ class SchemathesisLibrary(DynamicCore):
             object. Can be used to further validate the response, example check specific headers or response
             body.
         """
-        logger.info(f"auth: {auth} {type(auth)}")
         headers = self._dot_dict_to_dict(headers) if headers else None
-        self.info(f"Case: {case.path} | {case.method} | {case.path_parameters}")
+        self.info(f"Case: {case.path} | {case.method} | {self._sanitize(case, case.path_parameters)}")
         self._log_case(case, headers)
         if session:
             self.info("Using provided session for the request.")
         response = case.call_and_validate(base_url=base_url, headers=headers, auth=auth, session=session)
-        self._log_request(response)
-        self.debug(f"Response: {response.headers} | {response.status_code} | {response.text}")
+        self._log_request(case, response)
+        self.debug(
+            f"Response: {self._sanitize(case, response.headers)} | {response.status_code} | {response.text}"
+        )
         return response
 
     @keyword
@@ -324,12 +353,12 @@ class SchemathesisLibrary(DynamicCore):
             or response body.
         """
         headers = self._dot_dict_to_dict(headers) if headers else None
-        self.info(f"Calling case: {case.path} | {case.method} | {case.path_parameters}")
+        self.info(f"Calling case: {case.path} | {case.method} | {self._sanitize(case, case.path_parameters)}")
         self._log_case(case)
         if session:
             self.info("Using provided session for the request.")
         response = case.call(base_url=base_url, headers=headers, auth=auth, session=session)
-        self._log_request(response)
+        self._log_request(case, response)
         return response
 
     @keyword
@@ -360,7 +389,7 @@ class SchemathesisLibrary(DynamicCore):
                 Example a tuple containing username and password for basic authentication or an instance of
                 [Digest authentication](https://www.python-httpx.org/advanced/authentication/#digest-authentication)
         """
-        self.info(f"Validating response: {response.status_code} | {response.headers}")
+        self.info(f"Validating response: {response.status_code} | {self._sanitize(case, response.headers)}")
         transport_kwargs: dict[str, Any] = {}
         if auth:
             transport_kwargs["auth"] = auth
@@ -396,7 +425,9 @@ class SchemathesisLibrary(DynamicCore):
         Returns:
             Returns a string containing the cURL command that can be used to execute the same request as the case.
         """
-        self.info(f"Converting case to cURL: {case.path} | {case.method} | {case.path_parameters}")
+        self.info(
+            f"Converting case to cURL: {case.path} | {case.method} | {self._sanitize(case, case.path_parameters)}"
+        )
         self._log_case(case)
         curl_command = case.as_curl_command()
         self.debug(f"Generated cURL command: {curl_command}")
@@ -416,15 +447,41 @@ class SchemathesisLibrary(DynamicCore):
         body = case.body if not isinstance(case.body, NotSet) else "Not set"
         case_headers = headers or case.headers
         self.debug(
-            f"Case headers {case_headers!r} body {body!r} "
-            f"cookies {case.cookies!r} path parameters {case.path_parameters!r}"
+            f"Case headers {self._sanitize(case, case_headers)!r} body {self._sanitize(case, body)!r} "
+            f"cookies {self._sanitize(case, case.cookies)!r} "
+            f"path parameters {self._sanitize(case, case.path_parameters)!r}"
         )
 
-    def _log_request(self, resposen: Response) -> None:
+    def _log_request(self, case: Case, response: Response) -> None:
         self.debug(
-            f"Request: {resposen.request.method} {resposen.request.url} "
-            f"headers: {resposen.request.headers!r} body: {resposen.request.body!r}"
+            f"Request: {response.request.method} {self._sanitize_url(case, response.request.url)} "
+            f"headers: {self._sanitize(case, response.request.headers)!r} "
+            f"body: {self._sanitize(case, response.request.body)!r}"
         )
+
+    def _sanitization_config(self, case: Case) -> "SanitizationConfig|None":
+        config = case.operation.schema.config.output.sanitization
+        return config if config.enabled else None
+
+    def _sanitize(self, case: Case, value: Any) -> Any:
+        """Return a sanitized copy of ``value``.
+
+        Sanitization happens on a copy on purpose: ``sanitize_value`` replaces values in
+        place, and sanitizing the case itself would strip the credentials off the request
+        that is about to be sent.
+        """
+        config = self._sanitization_config(case)
+        if config is None or not isinstance(value, dict | list | CaseInsensitiveDict):
+            return value
+        sanitized = deepcopy(value)
+        sanitize_value(sanitized, config=config)
+        return sanitized
+
+    def _sanitize_url(self, case: Case, url: "str|None") -> "str|None":
+        config = self._sanitization_config(case)
+        if config is None or url is None:
+            return url
+        return sanitize_url(url, config=config)
 
     def _dot_dict_to_dict(self, dot_dict: dict[str, Any]) -> dict[str, Any]:
         if isinstance(dot_dict, DotDict):
