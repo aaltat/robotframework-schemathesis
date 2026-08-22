@@ -57,6 +57,28 @@ Wrapper
 
 ```
 
+# Strict mode
+
+Not every operation in a schema can be turned into test cases. Schemathesis skips an
+operation it can not parse, for example one that refers to a component that does not
+exist in the schema, and that operation is never tested.
+
+By default the library raises an error that names every operation it could not parse,
+and the suite does not run. Import the library with `strict=False` to skip those
+operations instead, test the rest of the schema, and get a warning in the log that names
+what was skipped:
+
+```robotframework
+*** Settings ***
+Library             SchemathesisLibrary    url=http://127.0.0.1/openapi.json    strict=False
+```
+
+Use `strict=False` knowingly. The skipped operations are not tested, the suite still
+passes, and the only sign that your coverage shrank is a warning in the log.
+
+Regardless of `strict`, the library always raises an error when the schema produces no
+test cases at all, because a suite without test cases passes without testing anything.
+
 # Authentication
 
 ## Dynamic token authentication

@@ -18,7 +18,7 @@ wheels/
 # Robot Framework
 atest/output_library
 atest/output_runner
-atest/specs
+atest/specs/test-app/
 
 # VS Code
 .vscode/

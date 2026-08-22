@@ -22,7 +22,7 @@ from robot.libdoc import libdoc
 
 ROOT_DIR = Path(__file__).parent
 ATEST_OUTPUT_DIR = ROOT_DIR / "atest" / "output_runner"
-SPEC_FOLDER = ROOT_DIR / "atest" / "specs"
+SPEC_FOLDER = ROOT_DIR / "atest" / "specs" / "test-app"
 ATEST_OUTPUT_DIR_LIB = ROOT_DIR / "atest" / "output_library"
 DIST_DIR = ROOT_DIR / "dist"
 DOCKER_IMAGE = "schemathesis-library-test"

@@ -23,6 +23,7 @@ from robot.api import logger
 from robot.utils.importer import Importer  # type: ignore
 from schemathesis import Case, GenerationMode, openapi
 from schemathesis.config import SchemathesisConfig
+from schemathesis.core.errors import InvalidSchema
 from schemathesis.core.result import Ok
 
 
@@ -34,6 +35,7 @@ class Options:
     url: str | None = None
     auth: str | None = None
     hook: str | None = None
+    strict: bool = True
 
 
 class SchemathesisReader(AbstractReaderClass):
@@ -59,11 +61,47 @@ class SchemathesisReader(AbstractReaderClass):
             import_extensions(self.options.auth)
             logger.info(f"Using auth extension from: {self.options.auth}")
         self._import_hooks()
+        operation_count = 0
+        invalid_operations: list[str] = []
         for op in schema.get_all_operations():
+            operation_count += 1
             if isinstance(op, Ok):
                 strategy = op.ok().as_strategy(generation_mode=generation_mode).map(from_case)  # type: ignore
                 add_examples(strategy, all_cases, self.options.max_examples)  # type: ignore
+            else:
+                invalid_operations.append(_describe_invalid_operation(op.err()))
+        self._handle_invalid_operations(invalid_operations)
+        self._ensure_test_cases_were_generated(all_cases, operation_count, len(invalid_operations))
         return all_cases
+
+    def _ensure_test_cases_were_generated(
+        self, all_cases: list[TestCaseData], operation_count: int, invalid_count: int
+    ) -> None:
+        """A run without test cases passes without testing anything, so it is always an error.
+
+        The cause decides what the user has to go and look at, so it is part of the message.
+        """
+        if all_cases:
+            return
+        if operation_count == 0:
+            reason = (
+                "the schema contains no operations. Check the [[project.operations]] filters in "
+                "schemathesis.toml and the filter hooks given with the hook argument."
+            )
+        elif invalid_count == operation_count:
+            reason = "no part of the schema could be parsed."
+        else:
+            reason = "the schema was parsed, but no test case was generated from it."
+        raise ValueError(f"No test cases were generated: {reason}")
+
+    def _handle_invalid_operations(self, invalid_operations: list[str]) -> None:
+        if not invalid_operations:
+            return
+        details = "\n".join(f"- {operation}" for operation in invalid_operations)
+        message = f"Failed to parse these parts of the schema:\n{details}"
+        if self.options is None or self.options.strict:
+            raise ValueError(f"{message}\nUse strict=False to skip parts that can not be parsed.")
+        logger.warn(f"{message}\nParts of the schema that can not be parsed are not tested.")
 
     def _load_config(self) -> tuple[SchemathesisConfig, GenerationMode]:
         config = SchemathesisConfig.discover()
@@ -90,6 +128,12 @@ class SchemathesisReader(AbstractReaderClass):
         for hook in self.options.hook.split(";"):
             logger.info(f"Using hook extension from: {hook}")
             import_extensions(hook)
+
+
+def _describe_invalid_operation(error: InvalidSchema) -> str:
+    method = error.method.upper() if error.method else "UNKNOWN METHOD"
+    path = error.path or "unknown path"
+    return f"{method} {path}: {error.message}"
 
 
 def from_case(case: Case) -> TestCaseData:
