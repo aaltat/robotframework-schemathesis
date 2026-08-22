@@ -29,9 +29,10 @@ Get All Cases Test Description
 
     VAR    @{logs} =
     ...    Case: /items/{item_id} | PUT | {'item_id': *}
-    ...    Case headers {} body {'name': *, 'price': *} cookies {} path parameters {'item_id': *}
+    ...    Case headers {} body {*'name': *} cookies {} path parameters {'item_id': *}
+    ...    Case headers {} body {*'price': *} cookies {} path parameters {'item_id': *}
     ...    Response: {'date': *, 'server': *, 'content-length': *, 'content-type': *} | 200 | {"item_name":*,"item_id":*,"price":*}
-    ...    Request: PUT http://127.0.0.1/items/* headers: {'User-Agent': 'schemathesis*', 'Accept-Encoding': 'gzip, *', 'Accept': '*', 'Connection': 'keep-alive', 'X-Schemathesis-TestCaseId': '*', 'Content-Type': 'application/json', 'Content-Length': '*'} body: b'{"name": *, "price": *}'
+    ...    Request: PUT http://127.0.0.1/items/* headers: {'User-Agent': 'schemathesis*', 'Accept-Encoding': 'gzip, *', 'Accept': '*', 'Connection': 'keep-alive', 'X-Schemathesis-TestCaseId': '*', 'Content-Type': 'application/json', 'Content-Length': '*'} body: b'{*"name": *}'
     VAR    &{test} =
     ...    name=PUT /items/{item_id}
     ...    count=${count}
