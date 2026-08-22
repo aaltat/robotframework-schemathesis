@@ -233,3 +233,38 @@ def test_not_strict_warns_about_operations_that_can_not_be_parsed(
     warning = mock_logger.warn.call_args.args[0]
     assert "GET /bad" in warning
     assert "Unresolvable reference" in warning
+
+
+EMPTY_SCHEMA = """{
+  "openapi": "3.0.0",
+  "info": {"title": "Empty", "version": "1.0.0"},
+  "paths": {}
+}"""
+
+
+@pytest.fixture
+def empty_schema(tmp_path: Path) -> Path:
+    schema = tmp_path / "empty.json"
+    schema.write_text(EMPTY_SCHEMA)
+    return schema
+
+
+def test_raises_when_the_schema_has_no_operations(mock_reader_config: Mock, empty_schema: Path) -> None:
+    reader = SchemathesisReader(mock_reader_config)
+    reader.options = Options(max_examples=1, path=empty_schema)
+
+    with pytest.raises(ValueError, match="schema contains no operations"):
+        reader.get_data_from_source()
+
+
+def test_raises_when_no_operation_could_be_parsed(mock_reader_config: Mock, tmp_path: Path) -> None:
+    """Not being strict must not turn a completely unusable schema into a passing run."""
+    schema = tmp_path / "all_broken.json"
+    schema.write_text(
+        BROKEN_SCHEMA.replace('"/good": {"get": {"responses": {"200": {"description": "ok"}}}},', "")
+    )
+    reader = SchemathesisReader(mock_reader_config)
+    reader.options = Options(max_examples=1, path=schema, strict=False)
+
+    with pytest.raises(ValueError, match="none of the 1 operations"):
+        reader.get_data_from_source()
