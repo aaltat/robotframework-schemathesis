@@ -53,9 +53,9 @@ Get All Cases Test Description
 
     VAR    @{logs} =
     ...    Case: /user/{userid} | GET | {'userid': *}
-    ...    Case headers {'Authorization': 'Basic *'* body 'Not set' cookies {} path parameters {'userid': *}
+    ...    Case headers {'Authorization': '[Filtered]'* body 'Not set' cookies {} path parameters {'userid': *}
     ...    Response: {'date': *, 'server': *, 'content-length': *, 'content-type': *'application/json'*} | 200 | {"username":"joulu","full_name":"Joulu Pukki","email":"joulu.pukki@korvatuntiri.fi","user_id":*}
-    ...    Request: GET http://127.0.0.1/user/* headers: {'User-Agent': 'schemathesis*', 'Accept-Encoding': 'gzip, *', 'Accept': '*', 'Connection': *, 'Authorization': 'Basic am91bHU6cHVra2k=', 'X-Schemathesis-TestCaseId': '*'} body: None
+    ...    Request: GET http://127.0.0.1/user/* headers: {'User-Agent': 'schemathesis*', 'Accept-Encoding': 'gzip, *', 'Accept': '*', 'Connection': *, 'Authorization': '[Filtered]', 'X-Schemathesis-TestCaseId': '*'} body: None
     VAR    &{test} =
     ...    name=GET /user/{userid} -
     ...    count=${count}
@@ -85,7 +85,7 @@ Get All Cases Test Description With Set Headers
                 IF    $log.startswith("Case headers")
                     Log    Original log: ${log}
                     VAR    ${new_log} =
-                    ...    Case headers {'key1': 'value1', 'key2': 'value2'} body 'Not set' cookies {} path parameters {'userid': *}
+                    ...    Case headers {'key1': '[Filtered]', 'key2': '[Filtered]'} body 'Not set' cookies {} path parameters {'userid': *}
                     Log    Modified log: ${new_log}
                     Set List Value    ${logs}    ${i}    ${new_log}
                 END
