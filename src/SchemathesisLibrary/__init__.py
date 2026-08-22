@@ -146,7 +146,7 @@ class SchemathesisLibrary(DynamicCore):
                 in Robot Framework. Multiple hooks can be specified by separating them with semicolon (;).
             strict:
                 Whether a problem that would silently reduce test coverage is an error. Defaults to
-                ``True``. See the [Strict Mode] section for details.
+                ``True``. See the Strict Mode section below for details.
 
 
         ``path`` and ``url`` are mutually exclusive, only one of them should be used to specify the OpenAPI schema location.

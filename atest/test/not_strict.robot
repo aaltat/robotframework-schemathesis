@@ -11,5 +11,5 @@ Check Only Operations That Can Be Parsed Are Tested
 
 Check Warning About Operations That Can Not Be Parsed
     VAR    @{logs} =
-    ...    *Failed to parse 1 of 2 operations in the schema*GET /bad*Operations that can not be parsed are not tested*
+    ...    *Failed to parse these parts of the schema*GET /bad*Parts of the schema that can not be parsed are not tested*
     Check Suite With Logs    ${LIBRARY_OUTPUT_XML}    ${logs}

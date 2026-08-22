@@ -149,7 +149,7 @@ def test_log_request_leaves_a_body_without_secrets_as_it_is(
 
     library._log_request(_case(), _response(body=b'{"name": "joulu", "price": 1}'))
 
-    assert "body: b'{\"name\": \"joulu\", \"price\": 1}'" in logged[0]
+    assert 'body: b\'{"name": "joulu", "price": 1}\'' in logged[0]
 
 
 def test_log_request_leaves_a_body_that_is_not_json_as_it_is(

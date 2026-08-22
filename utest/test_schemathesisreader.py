@@ -205,7 +205,7 @@ def test_strict_is_the_default(mock_reader_config: Mock, broken_schema: Path) ->
     reader = SchemathesisReader(mock_reader_config)
     reader.options = Options(max_examples=1, path=broken_schema)
 
-    with pytest.raises(ValueError, match=r"Failed to parse 1 of 2 operations"):
+    with pytest.raises(ValueError, match=r"Failed to parse these parts of the schema"):
         reader.get_data_from_source()
 
 
@@ -266,5 +266,5 @@ def test_raises_when_no_operation_could_be_parsed(mock_reader_config: Mock, tmp_
     reader = SchemathesisReader(mock_reader_config)
     reader.options = Options(max_examples=1, path=schema, strict=False)
 
-    with pytest.raises(ValueError, match="none of the 1 operations"):
+    with pytest.raises(ValueError, match="no part of the schema could be parsed"):
         reader.get_data_from_source()
