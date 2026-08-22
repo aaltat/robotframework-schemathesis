@@ -110,6 +110,7 @@ class SchemathesisLibrary(DynamicCore):
         url: "str|None" = None,
         auth: str | None = None,
         hook: str | None = None,
+        strict: bool = True,
     ) -> None:
         """
         Arguments:
@@ -142,6 +143,9 @@ class SchemathesisLibrary(DynamicCore):
                 rules as importing
                 [test libraries](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#specifying-library-to-import)
                 in Robot Framework. Multiple hooks can be specified by separating them with semicolon (;).
+            strict:
+                Whether a problem that would silently reduce test coverage is an error. Defaults to
+                ``True``. See the [Strict Mode] section for details.
 
 
         ``path`` and ``url`` are mutually exclusive, only one of them should be used to specify the OpenAPI schema location.
@@ -178,6 +182,40 @@ class SchemathesisLibrary(DynamicCore):
 
         If no configuration file is found, the library uses default values (POSITIVE mode and max_examples from
         library initialization.
+
+        # Strict Mode
+
+        Not every operation in a schema can be turned into test cases. An operation is skipped by
+        Schemathesis when it can not be parsed, for example when it refers to a component that does
+        not exist in the schema, or when one of its parameters is malformed. Such an operation is
+        never tested.
+
+        This is what the ``strict`` argument is about. With the default ``strict=True`` the library
+        raises an error that names every operation it could not parse, and the suite does not run.
+        With ``strict=False`` the operations are skipped, a warning that names them is written to the
+        log, and the rest of the schema is tested as usual.
+
+        ```robotframework
+        *** Settings ***
+        Library             SchemathesisLibrary
+        ...                     url=http://127.0.0.1/openapi.json
+        ...                     strict=False
+        ```
+
+        Choose ``strict=False`` when you knowingly work against a schema that has parts you can not
+        fix, and you would rather test the parts that do work. Be aware of what it costs: the skipped
+        operations are not tested, the suite still passes, and the only sign that your coverage
+        shrank is a warning in the log. That is why the default is ``True``.
+
+        ``strict`` has no effect on the case where nothing at all could be generated. If the schema
+        produces no test cases whatsoever, the library always raises an error, because a suite
+        without test cases passes without testing anything.
+
+        Raises:
+            ValueError: When the schema can not be turned into test cases, either because an
+                operation could not be parsed and ``strict`` is ``True``, or because no test cases
+                were generated at all. The error is raised when the suite starts, not when the
+                library is imported.
         """
         self.ROBOT_LIBRARY_LISTENER = self
         SchemathesisReader.options = Options(
@@ -187,6 +225,7 @@ class SchemathesisLibrary(DynamicCore):
             url=url,
             auth=auth,
             hook=hook,
+            strict=strict,
         )
         self.data_driver = DataDriver(reader_class=SchemathesisReader)
         DynamicCore.__init__(self, [])

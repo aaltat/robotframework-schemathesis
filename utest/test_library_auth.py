@@ -45,9 +45,7 @@ def test_call_and_validate_does_not_forward_auth_when_it_is_not_given(
     assert "auth" not in case.call_and_validate.call_args.kwargs
 
 
-def test_call_and_validate_forwards_auth_when_it_is_given(
-    library: SchemathesisLibrary, case: Mock
-) -> None:
+def test_call_and_validate_forwards_auth_when_it_is_given(library: SchemathesisLibrary, case: Mock) -> None:
     library.call_and_validate(case, auth=AUTH)
 
     assert case.call_and_validate.call_args.kwargs["auth"] == AUTH
@@ -61,9 +59,7 @@ def test_call_and_validate_forwards_auth_objects(library: SchemathesisLibrary, c
     assert case.call_and_validate.call_args.kwargs["auth"] is auth
 
 
-def test_call_does_not_forward_auth_when_it_is_not_given(
-    library: SchemathesisLibrary, case: Mock
-) -> None:
+def test_call_does_not_forward_auth_when_it_is_not_given(library: SchemathesisLibrary, case: Mock) -> None:
     library.call(case)
 
     assert "auth" not in case.call.call_args.kwargs

@@ -25,3 +25,7 @@
 --suite Test.Session
 #WAIT
 --suite Test.Config File
+#WAIT
+--suite Test.Strict
+#WAIT
+--suite Test.Not Strict
