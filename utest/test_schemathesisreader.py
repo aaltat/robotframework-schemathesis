@@ -171,3 +171,65 @@ def test_get_data_from_source_raises_value_error_when_no_path_or_url(mock_reader
         pytest.raises(ValueError, match="Either 'url' or 'path' must be provided"),
     ):
         reader.get_data_from_source()
+
+
+BROKEN_SCHEMA = """{
+  "openapi": "3.0.0",
+  "info": {"title": "Broken", "version": "1.0.0"},
+  "paths": {
+    "/good": {"get": {"responses": {"200": {"description": "ok"}}}},
+    "/bad": {"get": {"parameters": [{"$ref": "#/components/parameters/DoesNotExist"}],
+             "responses": {"200": {"description": "ok"}}}}
+  }
+}"""
+
+
+@pytest.fixture
+def broken_schema(tmp_path: Path) -> Path:
+    schema = tmp_path / "broken.json"
+    schema.write_text(BROKEN_SCHEMA)
+    return schema
+
+
+def test_strict_raises_when_an_operation_can_not_be_parsed(
+    mock_reader_config: Mock, broken_schema: Path
+) -> None:
+    reader = SchemathesisReader(mock_reader_config)
+    reader.options = Options(max_examples=1, path=broken_schema, strict=True)
+
+    with pytest.raises(ValueError, match=r"GET /bad"):
+        reader.get_data_from_source()
+
+
+def test_strict_is_the_default(mock_reader_config: Mock, broken_schema: Path) -> None:
+    reader = SchemathesisReader(mock_reader_config)
+    reader.options = Options(max_examples=1, path=broken_schema)
+
+    with pytest.raises(ValueError, match=r"Failed to parse 1 of 2 operations"):
+        reader.get_data_from_source()
+
+
+def test_not_strict_skips_operations_that_can_not_be_parsed(
+    mock_reader_config: Mock, broken_schema: Path
+) -> None:
+    reader = SchemathesisReader(mock_reader_config)
+    reader.options = Options(max_examples=1, path=broken_schema, strict=False)
+
+    cases = reader.get_data_from_source()
+
+    assert len(cases) == 1
+    assert "GET /good" in cases[0].test_case_name
+
+
+@patch("src.SchemathesisLibrary.schemathesisreader.logger")
+def test_not_strict_warns_about_operations_that_can_not_be_parsed(
+    mock_logger: Mock, mock_reader_config: Mock, broken_schema: Path
+) -> None:
+    reader = SchemathesisReader(mock_reader_config)
+    reader.options = Options(max_examples=1, path=broken_schema, strict=False)
+
+    reader.get_data_from_source()
+
+    warning = mock_logger.warn.call_args.args[0]
+    assert "GET /bad" in warning
+    assert "Unresolvable reference" in warning
