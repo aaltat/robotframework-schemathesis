@@ -120,7 +120,7 @@ class SchemathesisLibrary(DynamicCore):
                 authentication headers to the endpoint. The ``headers`` is not used in the API calls are made during
                 test execution.
             max_examples:
-                Maximum number of examples to generate for each operation. Default is 5.
+                Maximum number of examples to generate for each operation. Default is 100.
             path:
                 Path to the OpenAPI schema file. Using either ``path`` or ``url`` is mandatory.
             url:
