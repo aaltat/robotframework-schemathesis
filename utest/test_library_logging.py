@@ -34,6 +34,15 @@ def _case(*, enabled: bool = True) -> Mock:
     return case
 
 
+def _response(*, body: object = None) -> Mock:
+    response = Mock()
+    response.request.method = "POST"
+    response.request.url = "http://127.0.0.1/login"
+    response.request.headers = CaseInsensitiveDict({"Content-Type": "application/json"})
+    response.request.body = body
+    return response
+
+
 @pytest.fixture
 def library() -> SchemathesisLibrary:
     return SchemathesisLibrary(url="http://127.0.0.1/openapi.json")
@@ -115,3 +124,51 @@ def test_log_request_does_not_leak_credentials(library: SchemathesisLibrary, mon
     assert "s3cr3t" not in logged[0]
     assert FILTERED in logged[0]
     assert response.request.headers["Authorization"] == SECRET
+
+
+def test_log_request_sanitizes_a_json_body(library: SchemathesisLibrary, monkeypatch: Any) -> None:
+    """The body on the wire is bytes, so it has to be parsed before it can be sanitized."""
+    logged: list[str] = []
+    monkeypatch.setattr(library, "debug", logged.append)
+    case = _case()
+    response = _response(body=b'{"password": "hunter2", "name": "joulu"}')
+
+    library._log_request(case, response)
+
+    assert "hunter2" not in logged[0]
+    assert FILTERED in logged[0]
+    assert "joulu" in logged[0]
+
+
+def test_log_request_leaves_a_body_without_secrets_as_it_is(
+    library: SchemathesisLibrary, monkeypatch: Any
+) -> None:
+    """Untouched bodies keep the exact form they were sent in."""
+    logged: list[str] = []
+    monkeypatch.setattr(library, "debug", logged.append)
+
+    library._log_request(_case(), _response(body=b'{"name": "joulu", "price": 1}'))
+
+    assert "body: b'{\"name\": \"joulu\", \"price\": 1}'" in logged[0]
+
+
+def test_log_request_leaves_a_body_that_is_not_json_as_it_is(
+    library: SchemathesisLibrary, monkeypatch: Any
+) -> None:
+    logged: list[str] = []
+    monkeypatch.setattr(library, "debug", logged.append)
+
+    library._log_request(_case(), _response(body=b"<xml>not json</xml>"))
+
+    assert "<xml>not json</xml>" in logged[0]
+
+
+def test_log_request_honours_disabled_sanitization_for_the_body(
+    library: SchemathesisLibrary, monkeypatch: Any
+) -> None:
+    logged: list[str] = []
+    monkeypatch.setattr(library, "debug", logged.append)
+
+    library._log_request(_case(enabled=False), _response(body=b'{"password": "hunter2"}'))
+
+    assert "hunter2" in logged[0]

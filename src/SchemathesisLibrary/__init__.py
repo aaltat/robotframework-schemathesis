@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import json
 from copy import deepcopy
 from typing import TYPE_CHECKING, Any
 
@@ -59,8 +60,8 @@ class SchemathesisLibrary(DynamicCore):
 
     Keywords log the request and response details, and credentials in those details are
     replaced with ``[Filtered]`` before anything is written to the Robot Framework log.
-    Headers, cookies, path parameters, structured request bodies and the request URL are
-    all sanitized.
+    Headers, cookies, path parameters, JSON request bodies and the request URL are all
+    sanitized. A request body in some other format can not be inspected and is logged as it is.
 
     Which values count as sensitive is decided by Schemathesis, not by this library, and
     the rules are the same ones the ``schemathesis`` command line tool uses. Matching is
@@ -497,7 +498,7 @@ class SchemathesisLibrary(DynamicCore):
         self.debug(
             f"Request: {response.request.method} {self._sanitize_url(case, response.request.url)} "
             f"headers: {self._sanitize(case, response.request.headers)!r} "
-            f"body: {self._sanitize(case, response.request.body)!r}"
+            f"body: {self._sanitize_body(case, response.request.body)!r}"
         )
 
     def _auth_kwargs(self, auth: "tuple[str, str]|Any|None") -> dict[str, Any]:
@@ -526,6 +527,27 @@ class SchemathesisLibrary(DynamicCore):
         sanitized = deepcopy(value)
         sanitize_value(sanitized, config=config)
         return sanitized
+
+    def _sanitize_body(self, case: Case, body: Any) -> Any:
+        """Return a sanitized copy of a serialized request body.
+
+        The body of the request that went out is bytes or a string, so it has to be parsed
+        back into a structure before the values in it can be replaced. A body that is not
+        JSON can not be inspected and is returned untouched, and so is a body that holds
+        nothing sensitive, which keeps it in the exact form it was sent in.
+        """
+        if not isinstance(body, str | bytes):
+            return self._sanitize(case, body)
+        if self._sanitization_config(case) is None:
+            return body
+        try:
+            parsed = json.loads(body)
+        except (ValueError, TypeError):
+            return body
+        if not isinstance(parsed, dict | list):
+            return body
+        sanitized = self._sanitize(case, parsed)
+        return body if sanitized == parsed else json.dumps(sanitized)
 
     def _sanitize_url(self, case: Case, url: "str|None") -> "str|None":
         config = self._sanitization_config(case)
