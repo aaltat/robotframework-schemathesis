@@ -289,7 +289,8 @@ class SchemathesisLibrary(DynamicCore):
         self._log_case(case, headers)
         if session:
             self.info("Using provided session for the request.")
-        response = case.call_and_validate(base_url=base_url, headers=headers, auth=auth, session=session)
+        auth_kwargs = self._auth_kwargs(auth)
+        response = case.call_and_validate(base_url=base_url, headers=headers, session=session, **auth_kwargs)
         self._log_request(case, response)
         self.debug(
             f"Response: {self._sanitize(case, response.headers)} | {response.status_code} | {response.text}"
@@ -357,7 +358,8 @@ class SchemathesisLibrary(DynamicCore):
         self._log_case(case)
         if session:
             self.info("Using provided session for the request.")
-        response = case.call(base_url=base_url, headers=headers, auth=auth, session=session)
+        auth_kwargs = self._auth_kwargs(auth)
+        response = case.call(base_url=base_url, headers=headers, session=session, **auth_kwargs)
         self._log_request(case, response)
         return response
 
@@ -458,6 +460,15 @@ class SchemathesisLibrary(DynamicCore):
             f"headers: {self._sanitize(case, response.request.headers)!r} "
             f"body: {self._sanitize(case, response.request.body)!r}"
         )
+
+    def _auth_kwargs(self, auth: "tuple[str, str]|Any|None") -> dict[str, Any]:
+        """Only forward ``auth`` when it is set.
+
+        ``auth`` is not a named argument of the Schemathesis ``Case`` methods, it ends up in
+        their ``**kwargs`` and overwrites whatever the transport resolved. Forwarding ``None``
+        therefore silently drops the authentication an auth provider assigned to the case.
+        """
+        return {} if auth is None else {"auth": auth}
 
     def _sanitization_config(self, case: Case) -> "SanitizationConfig|None":
         config = case.operation.schema.config.output.sanitization
