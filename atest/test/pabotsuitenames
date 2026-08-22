@@ -29,3 +29,5 @@
 --suite Test.Strict
 #WAIT
 --suite Test.Not Strict
+#WAIT
+--suite Test.No Cases

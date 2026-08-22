@@ -71,7 +71,28 @@ class SchemathesisReader(AbstractReaderClass):
             else:
                 invalid_operations.append(_describe_invalid_operation(op.err()))
         self._handle_invalid_operations(invalid_operations, operation_count)
+        self._ensure_test_cases_were_generated(all_cases, operation_count, len(invalid_operations))
         return all_cases
+
+    def _ensure_test_cases_were_generated(
+        self, all_cases: list[TestCaseData], operation_count: int, invalid_count: int
+    ) -> None:
+        """A run without test cases passes without testing anything, so it is always an error.
+
+        The cause decides what the user has to go and look at, so it is part of the message.
+        """
+        if all_cases:
+            return
+        if operation_count == 0:
+            reason = (
+                "the schema contains no operations. Check the [[project.operations]] filters in "
+                "schemathesis.toml and the filter hooks given with the hook argument."
+            )
+        elif invalid_count == operation_count:
+            reason = f"none of the {operation_count} operations in the schema could be parsed."
+        else:
+            reason = f"{operation_count} operations were found, but no test case was generated from them."
+        raise ValueError(f"No test cases were generated: {reason}")
 
     def _handle_invalid_operations(self, invalid_operations: list[str], operation_count: int) -> None:
         if not invalid_operations:
