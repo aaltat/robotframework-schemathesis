@@ -70,7 +70,7 @@ class SchemathesisReader(AbstractReaderClass):
                 add_examples(strategy, all_cases, self.options.max_examples)  # type: ignore
             else:
                 invalid_operations.append(_describe_invalid_operation(op.err()))
-        self._handle_invalid_operations(invalid_operations, operation_count)
+        self._handle_invalid_operations(invalid_operations)
         self._ensure_test_cases_were_generated(all_cases, operation_count, len(invalid_operations))
         return all_cases
 
@@ -89,22 +89,19 @@ class SchemathesisReader(AbstractReaderClass):
                 "schemathesis.toml and the filter hooks given with the hook argument."
             )
         elif invalid_count == operation_count:
-            reason = f"none of the {operation_count} operations in the schema could be parsed."
+            reason = "no part of the schema could be parsed."
         else:
-            reason = f"{operation_count} operations were found, but no test case was generated from them."
+            reason = "the schema was parsed, but no test case was generated from it."
         raise ValueError(f"No test cases were generated: {reason}")
 
-    def _handle_invalid_operations(self, invalid_operations: list[str], operation_count: int) -> None:
+    def _handle_invalid_operations(self, invalid_operations: list[str]) -> None:
         if not invalid_operations:
             return
         details = "\n".join(f"- {operation}" for operation in invalid_operations)
-        message = (
-            f"Failed to parse {len(invalid_operations)} of {operation_count} "
-            f"operations in the schema:\n{details}"
-        )
+        message = f"Failed to parse these parts of the schema:\n{details}"
         if self.options is None or self.options.strict:
-            raise ValueError(f"{message}\nUse strict=False to skip operations that can not be parsed.")
-        logger.warn(f"{message}\nOperations that can not be parsed are not tested.")
+            raise ValueError(f"{message}\nUse strict=False to skip parts that can not be parsed.")
+        logger.warn(f"{message}\nParts of the schema that can not be parsed are not tested.")
 
     def _load_config(self) -> tuple[SchemathesisConfig, GenerationMode]:
         config = SchemathesisConfig.discover()
