@@ -2,6 +2,97 @@
 
 <!-- version list -->
 
+## v2.6.0 (2026-08-22)
+
+### Bug Fixes
+
+- Fail the run when no test cases are generated
+  ([`7b89757`](https://github.com/aaltat/robotframework-schemathesis/commit/7b89757f900a5d896fbbc92c175f3cad99f50c7b))
+
+- Only pass auth to Schemathesis when it is set
+  ([`8e1ac95`](https://github.com/aaltat/robotframework-schemathesis/commit/8e1ac9553ae6ec2ec124153fc67cea8a149246ff))
+
+- Sanitize credentials in log messages
+  ([`3fddebc`](https://github.com/aaltat/robotframework-schemathesis/commit/3fddebc7041b2d747269da0637903d287940b60b))
+
+- Sanitize credentials in the logged request body
+  ([`d34c732`](https://github.com/aaltat/robotframework-schemathesis/commit/d34c732684d26620b9cd406bc40ff8cae4b94bc1))
+
+- Stop reporting a misleading count of unparsed operations
+  ([`178820d`](https://github.com/aaltat/robotframework-schemathesis/commit/178820d0e22d0a518d0ec5b1b46637864360aed9))
+
+### Chores
+
+- To see different libdoc styles
+  ([`984b00a`](https://github.com/aaltat/robotframework-schemathesis/commit/984b00a830b26e746695a0e900e7844dea1ff0f0))
+
+- **deps**: Bump EndBug/add-and-commit from 10 to 11
+  ([`b98527c`](https://github.com/aaltat/robotframework-schemathesis/commit/b98527c036b0ead771d7eb8aee73490e9685e066))
+
+- **deps-dev**: Bump coverage from 7.15.2 to 7.15.3
+  ([`6bfd5a0`](https://github.com/aaltat/robotframework-schemathesis/commit/6bfd5a0c008fc5360d74860d97e5aa8309ae1a1e))
+
+- **deps-dev**: Bump coverage from 7.15.3 to 7.15.4
+  ([`70021bd`](https://github.com/aaltat/robotframework-schemathesis/commit/70021bdf798332583e9ad651463cd74b88825e21))
+
+- **deps-dev**: Bump markdown from 3.10.2 to 3.10.3
+  ([`6e6f8ed`](https://github.com/aaltat/robotframework-schemathesis/commit/6e6f8ed488c47b16c81b1917f9e341be9aa1f745))
+
+- **deps-dev**: Bump mypy from 2.3.0 to 2.3.1
+  ([`5708d52`](https://github.com/aaltat/robotframework-schemathesis/commit/5708d5211eab9864c342e8134c029b61190a367a))
+
+- **deps-dev**: Bump robotframework-robocop from 8.3.2 to 8.5.0
+  ([`726b95f`](https://github.com/aaltat/robotframework-schemathesis/commit/726b95f2c61838fb639d44ce630f8a4c519780ba))
+
+- **deps-dev**: Bump robotframework-robocop from 8.5.0 to 8.6.0
+  ([`634277d`](https://github.com/aaltat/robotframework-schemathesis/commit/634277dc6f786040b86a6088ad8c3390b15f43d4))
+
+- **deps-dev**: Bump robotframework-robocop from 8.6.0 to 8.8.0
+  ([`9e95107`](https://github.com/aaltat/robotframework-schemathesis/commit/9e951075a7e5f16848a952a78e85a0d5387ce7db))
+
+- **deps-dev**: Bump ruff from 0.16.0 to 0.16.1
+  ([`f8a4e61`](https://github.com/aaltat/robotframework-schemathesis/commit/f8a4e61e9fbeef017c567a5a243147559eb26d37))
+
+- **deps-dev**: Bump ruff from 0.16.1 to 0.16.2
+  ([`69322c3`](https://github.com/aaltat/robotframework-schemathesis/commit/69322c3f0a8f5de85458535df4fb215727985695))
+
+- **deps-dev**: Bump ruff from 0.16.2 to 0.16.3
+  ([`8e19990`](https://github.com/aaltat/robotframework-schemathesis/commit/8e199906f1b1aa5a418799d6c32256133b42a790))
+
+### Documentation
+
+- Add ADR and glossary for strict mode
+  ([`76095d1`](https://github.com/aaltat/robotframework-schemathesis/commit/76095d10e9bfdcac26d41832e7773d110e8c01a9))
+
+- Correct max_examples default value in documentation
+  ([`7a9f8e6`](https://github.com/aaltat/robotframework-schemathesis/commit/7a9f8e67a361ae213d33921775000f99cc399d54))
+
+- Recreate libdoc docs with rf 7.5b2
+  ([`83b6b80`](https://github.com/aaltat/robotframework-schemathesis/commit/83b6b80ce94b48a6c6d1867599f29e2a368c8a01))
+
+- Recreate libdoc version docs with rf 7.5b2
+  ([`ced254d`](https://github.com/aaltat/robotframework-schemathesis/commit/ced254de9a0826421e452a7d6eba94a87ff98e80))
+
+### Features
+
+- Add strict argument to fail on operations that cannot be parsed
+  ([`e1ffa4a`](https://github.com/aaltat/robotframework-schemathesis/commit/e1ffa4a4c8dfbb0a3c480dc8ff5aa98c258dfa9a))
+
+- Update schemathesis>=4.25.0
+  ([`ffc496c`](https://github.com/aaltat/robotframework-schemathesis/commit/ffc496c5ad67d7250b72b88b5655128a62b7cac0))
+
+### Testing
+
+- Escape the square brackets in the sanitized log expectations
+  ([`60df310`](https://github.com/aaltat/robotframework-schemathesis/commit/60df3109e0ec76f8cd9f597b2b3349a1b5233f2a))
+
+- Move downloaded test app schema under specs/test-app
+  ([`9f6d602`](https://github.com/aaltat/robotframework-schemathesis/commit/9f6d60203c3bb16b5977bb2f5ad0af7145267133))
+
+- Stop expecting a fixed property order in generated bodies
+  ([`2e05ea9`](https://github.com/aaltat/robotframework-schemathesis/commit/2e05ea9fd99d1bb77bc9e88762f1e745bf0e2447))
+
+
 ## v2.5.0 (2026-07-26)
 
 ### Bug Fixes
