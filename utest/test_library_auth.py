@@ -15,6 +15,7 @@ from unittest.mock import Mock
 
 import pytest
 from requests.auth import HTTPDigestAuth
+from requests.structures import CaseInsensitiveDict
 from schemathesis.config._output import SanitizationConfig
 
 from src.SchemathesisLibrary import SchemathesisLibrary
@@ -33,6 +34,11 @@ def case() -> Mock:
     case.operation.schema.config.output.sanitization = SanitizationConfig()
     for response in (case.call_and_validate.return_value, case.call.return_value):
         response.request.url = "http://127.0.0.1/user/1"
+        response.request.headers = CaseInsensitiveDict()
+        response.request.body = None
+        response.status_code = 200
+        response.headers = {}
+        response.text_lossy = lambda: ""
     return case
 
 

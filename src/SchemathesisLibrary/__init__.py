@@ -33,6 +33,7 @@ from schemathesis.core.transport import Response
 from .schemathesisreader import Options, SchemathesisReader
 
 if TYPE_CHECKING:
+    from collections.abc import Sequence
     from pathlib import Path
 
     from schemathesis.config import SanitizationConfig
@@ -58,10 +59,25 @@ class SchemathesisLibrary(DynamicCore):
 
     # Logging And Sanitization
 
-    Keywords log the request and response details, and credentials in those details are
-    replaced with ``[Filtered]`` before anything is written to the Robot Framework log.
-    Headers, cookies, path parameters, JSON request bodies and the request URL are all
-    sanitized. A request body in some other format can not be inspected and is logged as it is.
+    Keywords log the request and the response at ``INFO`` level, so the log shows what a test
+    actually sent and got back without having to rerun the suite at ``DEBUG`` level. Logged are
+    the case that was generated, the request method, URL, headers, cookies and body, and the
+    response status code, headers, cookies and body.
+
+    Cookies are logged one by one rather than as the ``Cookie`` and ``Set-Cookie`` headers that
+    carry them. Those header names mark the whole header as sensitive, so it is written to the
+    log as ``[Filtered]``; sanitizing the cookies inside it separately keeps their names, and
+    keeps the value of every cookie that holds nothing sensitive.
+
+    Be aware of what that costs. A cookie is sanitized on its name like everything else, so a
+    session cookie named ``session`` or ``token`` is filtered, but one named ``sid`` matches no
+    marker and its value is written to the log as it is. Add the names your API uses to
+    ``[output.sanitization]`` in ``schemathesis.toml`` if that is not what you want.
+
+    Credentials in the logged details are replaced with ``[Filtered]`` before anything is written
+    to the Robot Framework log. Headers, cookies, path parameters, the request URL and JSON
+    request and response bodies are all sanitized. A body in some other format can not be
+    inspected and is logged as it is.
 
     Which values count as sensitive is decided by Schemathesis, not by this library, and
     the rules are the same ones the ``schemathesis`` command line tool uses. Matching is
@@ -76,8 +92,9 @@ class SchemathesisLibrary(DynamicCore):
     [configuration](https://schemathesis.readthedocs.io/en/stable/reference/configuration/)
     documentation for the details.
 
-    Response bodies are **not** sanitized. If an endpoint returns a credential in its
-    response body, that credential is written to the log as is.
+    Bodies are logged in full, they are not truncated. A suite that generates many cases against
+    an operation with large payloads writes all of it to ``output.xml``, which can make the file
+    big.
 
     Example:
     ```robotframework
@@ -330,12 +347,13 @@ class SchemathesisLibrary(DynamicCore):
         if session:
             self.info("Using provided session for the request.")
         auth_kwargs = self._auth_kwargs(auth)
-        response = case.call_and_validate(base_url=base_url, headers=headers, session=session, **auth_kwargs)
-        self._log_request(case, response)
-        self.debug(
-            f"Response: {self._sanitize(case, response.headers)} | {response.status_code} | {response.text}"
+        return case.call_and_validate(
+            base_url=base_url,
+            headers=headers,
+            session=session,
+            additional_checks=[self._log_exchange],
+            **auth_kwargs,
         )
-        return response
 
     @keyword
     def call(
@@ -395,12 +413,13 @@ class SchemathesisLibrary(DynamicCore):
         """
         headers = self._dot_dict_to_dict(headers) if headers else None
         self.info(f"Calling case: {case.path} | {case.method} | {self._sanitize(case, case.path_parameters)}")
-        self._log_case(case)
+        self._log_case(case, headers)
         if session:
             self.info("Using provided session for the request.")
         auth_kwargs = self._auth_kwargs(auth)
         response = case.call(base_url=base_url, headers=headers, session=session, **auth_kwargs)
         self._log_request(case, response)
+        self._log_response(case, response)
         return response
 
     @keyword
@@ -488,18 +507,73 @@ class SchemathesisLibrary(DynamicCore):
     ) -> None:
         body = case.body if not isinstance(case.body, NotSet) else "Not set"
         case_headers = headers or case.headers
-        self.debug(
+        self.info(
             f"Case headers {self._sanitize(case, case_headers)!r} body {self._sanitize(case, body)!r} "
             f"cookies {self._sanitize(case, case.cookies)!r} "
             f"path parameters {self._sanitize(case, case.path_parameters)!r}"
         )
 
     def _log_request(self, case: Case, response: Response) -> None:
-        self.debug(
+        cookie_header = response.request.headers.get("Cookie")
+        self.info(
             f"Request: {response.request.method} {self._sanitize_url(case, response.request.url)} "
             f"headers: {self._sanitize(case, response.request.headers)!r} "
+            f"cookies: {self._cookies(case, self._text(cookie_header).split(';') if cookie_header else [])!r} "
             f"body: {self._sanitize_body(case, response.request.body)!r}"
         )
+
+    def _log_exchange(self, ctx: Any, response: Response, case: Case) -> None:  # noqa: ARG002
+        """Log the request and the response, as a Schemathesis check.
+
+        The logging is registered as a check so that a test that failed gets a log too.
+        ``call_and_validate`` raises instead of returning when a check fails, and the failure
+        it raises carries no response, so logging after the call only ever describes the cases
+        that passed, which are the ones nobody needs to look at. A check runs whatever the
+        other checks make of the response, and it runs against the response that was actually
+        validated, the replayed one when a stale token had to be refreshed.
+        """
+        self._log_request(case, response)
+        self._log_response(case, response)
+
+    def _log_response(self, case: Case, response: Response) -> None:
+        """Log the response that came back.
+
+        The body is decoded leniently on purpose. ``Response.text`` raises on a payload that
+        is not valid text, and by the time this runs the request has been made and any checks
+        have already had their say, so a binary body must not be what turns a test red.
+        """
+        set_cookie = [self._text(value).split(";", 1)[0] for value in response.headers.get("set-cookie", [])]
+        self.info(
+            f"Response: {response.status_code} "
+            f"headers: {self._sanitize(case, response.headers)!r} "
+            f"cookies: {self._cookies(case, set_cookie)!r} "
+            f"body: {self._sanitize_body(case, response.text_lossy())!r}"
+        )
+
+    def _cookies(self, case: Case, pairs: "Sequence[str]") -> dict[str, str]:
+        """Return the cookies in ``name=value`` pairs taken off a cookie header.
+
+        Cookies travel inside a header whose name marks the whole thing as sensitive, so the
+        header itself is logged as ``[Filtered]`` and says nothing about what was sent. Taking
+        the cookies out of it and sanitizing them one by one keeps their names, and keeps the
+        value of every cookie whose name holds nothing sensitive.
+
+        The pairs are split by hand rather than handed to ``http.cookies``, which is built to
+        read cookies rather than to describe them: it stops at the first segment it can not
+        parse and drops everything after it, and it swallows a cookie whose name happens to be
+        an attribute name such as ``path``. Both are names a generated case can produce, and a
+        log that silently leaves out what was sent is worse than no log at all.
+        """
+        cookies = {}
+        for pair in pairs:
+            name, separator, value = pair.partition("=")
+            name = name.strip()
+            if separator and name:
+                cookies[name] = value.strip()
+        return self._sanitize(case, cookies)
+
+    def _text(self, value: "str|bytes") -> str:
+        return value.decode("utf-8", errors="replace") if isinstance(value, bytes) else value
 
     def _auth_kwargs(self, auth: "tuple[str, str]|Any|None") -> dict[str, Any]:
         """Only forward ``auth`` when it is set.
@@ -529,12 +603,12 @@ class SchemathesisLibrary(DynamicCore):
         return sanitized
 
     def _sanitize_body(self, case: Case, body: Any) -> Any:
-        """Return a sanitized copy of a serialized request body.
+        """Return a sanitized copy of a serialized request or response body.
 
-        The body of the request that went out is bytes or a string, so it has to be parsed
-        back into a structure before the values in it can be replaced. A body that is not
-        JSON can not be inspected and is returned untouched, and so is a body that holds
-        nothing sensitive, which keeps it in the exact form it was sent in.
+        A body that went over the wire is bytes or a string, so it has to be parsed back into
+        a structure before the values in it can be replaced. A body that is not JSON can not be
+        inspected and is returned untouched, and so is a body that holds nothing sensitive,
+        which keeps it in the exact form it was sent in.
         """
         if not isinstance(body, str | bytes):
             return self._sanitize(case, body)
