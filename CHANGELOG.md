@@ -2,6 +2,22 @@
 
 <!-- version list -->
 
+## v2.7.0 (2026-08-28)
+
+### Chores
+
+- **deps**: Bump schemathesis from 4.25.0 to 4.25.2
+  ([`7c2bace`](https://github.com/aaltat/robotframework-schemathesis/commit/7c2bace1166987278d9da66ab176aab0e2089138))
+
+- **deps-dev**: Bump ruff from 0.16.3 to 0.16.4
+  ([`7d04cd4`](https://github.com/aaltat/robotframework-schemathesis/commit/7d04cd48652889609d3c1bee9e7a5134b074928b))
+
+### Features
+
+- Log the request and the response at INFO level
+  ([`f5bf59b`](https://github.com/aaltat/robotframework-schemathesis/commit/f5bf59b531cb291dd2c1d4d9102bd8f56398dfe3))
+
+
 ## v2.6.0 (2026-08-22)
 
 ### Bug Fixes
