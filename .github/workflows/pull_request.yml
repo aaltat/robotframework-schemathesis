@@ -39,8 +39,7 @@ jobs:
 
       - name: Create libdoc
         run: |
-          echo Remove --pre flag when robotframework 7.5.0 is released
-          uv pip install --upgrade --pre robotframework
+          uv pip install --upgrade robotframework
           uv run  --no-sync inv docs
 
       - name: Upload libdoc
