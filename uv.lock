@@ -1438,15 +1438,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pytz"
-version = "2026.3.post1"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/fb/48/fb042503b6ca6cd271261dc559fd6432f7d8c713153e9ec5c591af4dfc1c/pytz-2026.3.post1.tar.gz", hash = "sha256:2211d3fcf9a797d3405cac96ac7f61d80e6a644f72a3309607282fe8a2010c5d", size = 319745, upload-time = "2026-07-25T15:12:07.385Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/0f/7b/39c34ca613b0b198cb866466651b26b045e2009864c5183c979a3b83f383/pytz-2026.3.post1-py2.py3-none-any.whl", hash = "sha256:dd95840dd199baea12d9cc096a1d452caa6596a1c1e4b5f3dbd1541855d5e815", size = 508283, upload-time = "2026-07-25T15:12:05.782Z" },
-]
-
-[[package]]
 name = "pyyaml"
 version = "6.0.3"
 source = { registry = "https://pypi.org/simple" }
@@ -1727,24 +1718,24 @@ wheels = [
 
 [[package]]
 name = "robotframework-robocop"
-version = "9.0.0"
+version = "9.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jinja2" },
     { name = "msgpack" },
     { name = "pathspec" },
     { name = "platformdirs" },
-    { name = "pytz" },
     { name = "rich" },
     { name = "robotframework" },
     { name = "tomli", marker = "python_full_version < '3.11'" },
     { name = "tomli-w" },
     { name = "typer" },
     { name = "typing-extensions" },
+    { name = "tzdata", marker = "sys_platform == 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/17/dc/96ab338c9f701ae26309943d92e77a4762feb2f8030c676e3caa8fa0be8b/robotframework_robocop-9.0.0.tar.gz", hash = "sha256:c176337e235a3ebf563bf7c064d6c2f890366133f8beccedf62152c2cb1a6009", size = 1160882, upload-time = "2026-08-26T13:02:11.489Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/21/a6/3dee138281a211bb44cff4f3e88a48a1a0e0b782f1746a46b2da1970fa87/robotframework_robocop-9.1.0.tar.gz", hash = "sha256:1204a8645a48eaba0a7779035a8af3419a681fa3d511b875f57856e5357fe749", size = 1162269, upload-time = "2026-09-25T13:27:26.532Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c2/bd/1635e4a15ee2b37ce759b98e63328cdb948ce53d8d699d417346e943b414/robotframework_robocop-9.0.0-py3-none-any.whl", hash = "sha256:f65e66803026b9e375f293c7a36c4c6bec05a79388785771cd18a8ce913ed8f5", size = 424895, upload-time = "2026-08-26T13:02:09.786Z" },
+    { url = "https://files.pythonhosted.org/packages/84/79/f09af3ae23819a03f790f4d3fc64a9f72a4672bfd06876f0c338093bff3f/robotframework_robocop-9.1.0-py3-none-any.whl", hash = "sha256:76fc06990f006a3d92d10fb23d1af2333a48b46716ab86dd8e9da960e9a02f1b", size = 425208, upload-time = "2026-09-25T13:27:24.894Z" },
 ]
 
 [[package]]
@@ -1972,6 +1963,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/55/e3/70399cb7dd41c10ac53367ae42139cf4b1ca5f36bb3dc6c9d33acdb43655/typing_inspection-0.4.2.tar.gz", hash = "sha256:ba561c48a67c5958007083d386c3295464928b01faa735ab8547c5692e87f464", size = 75949, upload-time = "2025-10-01T02:14:41.687Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/dc/9b/47798a6c91d8bdb567fe2698fe81e0c6b7cb7ef4d13da4114b41d239f65d/typing_inspection-0.4.2-py3-none-any.whl", hash = "sha256:4ed1cacbdc298c220f1bd249ed5287caa16f34d44ef4e9c3d0cbad5b521545e7", size = 14611, upload-time = "2025-10-01T02:14:40.154Z" },
+]
+
+[[package]]
+name = "tzdata"
+version = "2026.4"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/e4/31/3d74fa778a63b98b7374323befcc0be5ab3bd94afd4096a0124e7379152c/tzdata-2026.4.tar.gz", hash = "sha256:f1b8bd365d8d210c55353f4d7f8d6d8561c0ba50d704b700d195a9424bba0d79", size = 199350, upload-time = "2026-09-12T12:56:03.251Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f9/bc/8737e8d54cf51106118039b83f485a4783112fab49ea9d044b234978a46e/tzdata-2026.4-py2.py3-none-any.whl", hash = "sha256:c2169a8b0a7a5e9674da5a135ccdfb2b3e671b333ed9fed17b41f73c34476e81", size = 347494, upload-time = "2026-09-12T12:56:01.67Z" },
 ]
 
 [[package]]
