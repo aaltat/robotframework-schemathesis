@@ -1,11 +1,11 @@
 *** Settings ***
-Variables           authentication.py
-Library             SchemathesisLibrary
-...                     url=http://127.0.0.1/openapi.json
-...                     max_examples=5
-...                     hook=${CURDIR}/hook_filter.py
+Variables        authentication.py
+Library          SchemathesisLibrary
+...                  url=http://127.0.0.1/openapi.json
+...                  max_examples=5
+...                  hook=${CURDIR}/hook_filter.py
 
-Test Template       Wrapper
+Test Template    Wrapper
 
 
 *** Test Cases ***

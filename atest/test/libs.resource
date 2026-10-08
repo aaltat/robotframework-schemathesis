@@ -1,4 +1,4 @@
 *** Settings ***
-Library     Collections
-Library     Process
-Library     OperatingSystem
+Library    Collections
+Library    Process
+Library    OperatingSystem

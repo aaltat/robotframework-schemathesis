@@ -1,8 +1,8 @@
 *** Settings ***
-Library             SchemathesisLibrary    url=http://127.0.0.1/openapi.json    max_examples=5
-Variables           authentication.py
+Library          SchemathesisLibrary    url=http://127.0.0.1/openapi.json    max_examples=5
+Variables        authentication.py
 
-Test Template       Wrapper
+Test Template    Wrapper
 
 
 *** Test Cases ***

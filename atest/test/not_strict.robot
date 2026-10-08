@@ -1,7 +1,7 @@
 *** Settings ***
-Resource        runner.resource
+Resource       runner.resource
 
-Suite Setup     Run Suite
+Suite Setup    Run Suite
 
 
 *** Test Cases ***

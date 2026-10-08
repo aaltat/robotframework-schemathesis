@@ -1,11 +1,11 @@
 *** Settings ***
-Variables           authentication.py
-Library             SchemathesisLibrary
-...                     path=${CURDIR}/../specs/test-app/openapi.json
-...                     max_examples=5
-...                     auth=${CURDIR}/AuthExtension.py
+Variables        authentication.py
+Library          SchemathesisLibrary
+...                  path=${CURDIR}/../specs/test-app/openapi.json
+...                  max_examples=5
+...                  auth=${CURDIR}/AuthExtension.py
 
-Test Template       Wrapper
+Test Template    Wrapper
 
 
 *** Test Cases ***
