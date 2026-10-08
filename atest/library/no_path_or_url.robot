@@ -1,7 +1,7 @@
 *** Settings ***
-Library             SchemathesisLibrary
+Library          SchemathesisLibrary
 
-Test Template       Wrapper
+Test Template    Wrapper
 
 
 *** Test Cases ***

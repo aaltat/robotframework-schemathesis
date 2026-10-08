@@ -1,12 +1,12 @@
 *** Settings ***
-Library         os_wrapper.py
-Library         TestSuiteChecker.py
-Variables       variables.py
-Resource        libs.resource
+Library      os_wrapper.py
+Library      TestSuiteChecker.py
+Variables    variables.py
+Resource     libs.resource
 
 
 *** Variables ***
-${LIBRARY_OUTPUT_XML}       ${None}
+${LIBRARY_OUTPUT_XML}    ${None}
 
 
 *** Keywords ***

@@ -1,10 +1,10 @@
 *** Settings ***
-Library             SchemathesisLibrary
-...                     path=${CURDIR}/../specs/invalid_operation.json
-...                     max_examples=1
-...                     strict=False
+Library          SchemathesisLibrary
+...                  path=${CURDIR}/../specs/invalid_operation.json
+...                  max_examples=1
+...                  strict=False
 
-Test Template       Wrapper
+Test Template    Wrapper
 
 
 *** Test Cases ***

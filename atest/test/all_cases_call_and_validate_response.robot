@@ -1,8 +1,8 @@
 *** Settings ***
-Resource        runner.resource
-Resource        all_cases.resource
+Resource       runner.resource
+Resource       all_cases.resource
 
-Suite Setup     Run Suite
+Suite Setup    Run Suite
 
 
 *** Test Cases ***

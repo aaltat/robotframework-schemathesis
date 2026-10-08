@@ -1,8 +1,8 @@
 *** Settings ***
-Library             SchemathesisLibrary
-...                     path=${CURDIR}/../specs/empty.json
+Library          SchemathesisLibrary
+...                  path=${CURDIR}/../specs/empty.json
 
-Test Template       Wrapper
+Test Template    Wrapper
 
 
 *** Test Cases ***

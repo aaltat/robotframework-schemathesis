@@ -1,10 +1,10 @@
 *** Settings ***
-Library             SchemathesisLibrary
-...                     url=http://127.0.0.1/openapi.json
-...                     max_examples=5
-...                     auth=${CURDIR}/AuthExtension.py
+Library          SchemathesisLibrary
+...                  url=http://127.0.0.1/openapi.json
+...                  max_examples=5
+...                  auth=${CURDIR}/AuthExtension.py
 
-Test Template       Wrapper
+Test Template    Wrapper
 
 
 *** Test Cases ***

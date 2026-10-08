@@ -1,9 +1,9 @@
 *** Settings ***
-Resource            runner.resource
-Resource            all_cases.resource
+Resource          runner.resource
+Resource          all_cases.resource
 
-Suite Setup         Set Configuration File And Run Suite
-Suite Teardown      Remove Configuration File
+Suite Setup       Set Configuration File And Run Suite
+Suite Teardown    Remove Configuration File
 
 
 *** Test Cases ***
