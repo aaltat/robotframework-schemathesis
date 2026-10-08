@@ -132,3 +132,5 @@
 [2.6.0](https://aaltat.github.io/robotframework-schemathesis/versions/SchemathesisLibrary-2.6.0.html)
 
 [2.7.0](https://aaltat.github.io/robotframework-schemathesis/versions/SchemathesisLibrary-2.7.0.html)
+
+[2.7.1](https://aaltat.github.io/robotframework-schemathesis/versions/SchemathesisLibrary-2.7.1.html)
