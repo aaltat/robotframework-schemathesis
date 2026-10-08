@@ -31,3 +31,7 @@
 --suite Test.Not Strict
 #WAIT
 --suite Test.No Cases
+#WAIT
+--suite Test.Validate Response From File
+#WAIT
+--suite Test.Validate Response Base Url

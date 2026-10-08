@@ -36,6 +36,7 @@ class Options:
     auth: str | None = None
     hook: str | None = None
     strict: bool = True
+    base_url: str | None = None
 
 
 class SchemathesisReader(AbstractReaderClass):
@@ -56,6 +57,8 @@ class SchemathesisReader(AbstractReaderClass):
             schema = openapi.from_url(url, headers=headers, config=config)
         else:
             raise ValueError("Either 'url' or 'path' must be provided to SchemathesisLibrary.")
+        if self.options.base_url:
+            schema.config.update(base_url=self.options.base_url)
         all_cases: list[TestCaseData] = []
         if self.options.auth:
             import_extensions(self.options.auth)

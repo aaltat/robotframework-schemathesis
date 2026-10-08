@@ -15,6 +15,14 @@ An operation Schemathesis could not turn into test cases, because of an unresolv
 reference or a malformed parameter for example. It is never tested, whatever happens next.
 _Avoid_: Invalid operation, broken endpoint, failed operation
 
+**Base URL**:
+Where requests for a case are sent, both the case itself and any extra requests checks make
+while validating its response. Set for the whole suite on library import, or for one keyword
+call; the keyword value wins when both are given. When validating a response without a keyword
+value, the base URL the response was actually sent to wins over the library value, so the
+checks' extra requests go to the same server that answered.
+_Avoid_: Host, endpoint URL, "server" as a synonym for the base URL
+
 **Case**:
 One generated request for one operation. Every case becomes exactly one Robot Framework
 test, and a case is what the `${case}` test argument holds.

@@ -268,3 +268,23 @@ def test_raises_when_no_operation_could_be_parsed(mock_reader_config: Mock, tmp_
 
     with pytest.raises(ValueError, match="no part of the schema could be parsed"):
         reader.get_data_from_source()
+
+
+GOOD_SCHEMA = """{
+  "openapi": "3.0.0",
+  "info": {"title": "Good", "version": "1.0.0"},
+  "paths": {"/good": {"get": {"responses": {"200": {"description": "ok"}}}}}
+}"""
+
+
+def test_base_url_tells_where_cases_of_a_file_loaded_schema_are_sent(
+    mock_reader_config: Mock, tmp_path: Path
+) -> None:
+    schema = tmp_path / "good.json"
+    schema.write_text(GOOD_SCHEMA)
+    reader = SchemathesisReader(mock_reader_config)
+    reader.options = Options(max_examples=1, path=schema, base_url="http://127.0.0.1:8000/api")
+
+    case = reader.get_data_from_source()[0].arguments["${case}"]
+
+    assert "http://127.0.0.1:8000/api/good" in case.as_curl_command()
