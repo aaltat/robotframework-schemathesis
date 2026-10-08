@@ -14,6 +14,7 @@
 import json
 from copy import deepcopy
 from typing import TYPE_CHECKING, Any
+from urllib.parse import urlparse, urlunparse
 
 from DataDriver import DataDriver  # type: ignore
 from requests.sessions import Session
@@ -129,6 +130,7 @@ class SchemathesisLibrary(DynamicCore):
         auth: str | None = None,
         hook: str | None = None,
         strict: bool = True,
+        base_url: str | None = None,
     ) -> None:
         """
         Arguments:
@@ -164,6 +166,10 @@ class SchemathesisLibrary(DynamicCore):
             strict:
                 Whether a problem that would silently reduce test coverage is an error. Defaults to
                 ``True``. See the Strict Mode section below for details.
+            base_url:
+                Optional base URL where requests are sent, overriding the servers declared in the
+                schema. Needed mostly when the schema is read from a file. A ``base_url`` given to a
+                keyword wins over this one. See the Base URL section below for details.
 
 
         ``path`` and ``url`` are mutually exclusive, only one of them should be used to specify the OpenAPI schema location.
@@ -200,6 +206,28 @@ class SchemathesisLibrary(DynamicCore):
 
         If no configuration file is found, the library uses default values (POSITIVE mode and max_examples from
         library initialization.
+
+        # Base URL
+
+        The base URL tells where requests are sent. A schema loaded with ``url`` gets it from the
+        servers the schema declares, or from the ``url`` itself, but a schema loaded with ``path``
+        often declares none. Then the base URL must be given, either for the whole suite with the
+        library ``base_url`` argument, or for one keyword call with the keyword ``base_url``
+        argument. When both are given, the keyword argument wins.
+
+        [Validate Response] also needs a base URL, because some checks send extra requests while
+        validating, example ``ignored_auth`` checks that the API refuses requests without
+        authentication. Unless the keyword is given a ``base_url``, it uses the base URL the response
+        was sent to, so the extra requests go to the same server that answered [Call]. If that can
+        not be told from the response, example because a redirect was followed, the library
+        ``base_url`` is used and a warning is logged. If there is no base URL at all, the keyword fails.
+
+        ```robotframework
+        *** Settings ***
+        Library             SchemathesisLibrary
+        ...                     path=${CURDIR}/openapi.json
+        ...                     base_url=http://127.0.0.1/
+        ```
 
         # Strict Mode
 
@@ -244,6 +272,7 @@ class SchemathesisLibrary(DynamicCore):
             auth=auth,
             hook=hook,
             strict=strict,
+            base_url=base_url,
         )
         self.data_driver = DataDriver(reader_class=SchemathesisReader)
         DynamicCore.__init__(self, [])
@@ -429,6 +458,7 @@ class SchemathesisLibrary(DynamicCore):
         response: Response,
         headers: dict[str, Any] | None = None,
         auth: tuple[str, str] | Any | None = None,
+        base_url: str | None = None,
     ) -> None:
         """Validate a Schemathesis response.
 
@@ -449,14 +479,25 @@ class SchemathesisLibrary(DynamicCore):
                 supported by [httpx authentication](https://www.python-httpx.org/advanced/authentication/).
                 Example a tuple containing username and password for basic authentication or an instance of
                 [Digest authentication](https://www.python-httpx.org/advanced/authentication/#digest-authentication)
+            base_url:
+                Optional base URL where the checks send the extra requests they make while validating,
+                example the requests without authentication made by the ``ignored_auth`` check. When not
+                given, the base URL the response was sent to is used, so there is rarely need to set it.
+                See the Base URL section in the library introduction for details.
+
+        Raises:
+            ValueError: When no base URL is known: it is not given, it can not be told from the
+                response and the schema declares no server.
         """
+        headers = self._dot_dict_to_dict(headers) if headers else None
         self.info(f"Validating response: {response.status_code} | {self._sanitize(case, response.headers)}")
         transport_kwargs: dict[str, Any] = {}
         if auth:
             transport_kwargs["auth"] = auth
         if headers:
             transport_kwargs["headers"] = headers
-        case.validate_response(response=response, transport_kwargs=transport_kwargs)
+        transport_kwargs["base_url"] = base_url or self._validation_base_url(case, response)
+        case.validate_response(response=response, headers=headers, transport_kwargs=transport_kwargs)
         self.info("Response validation passed.")
 
     @keyword(name="As cURL")
@@ -499,6 +540,9 @@ class SchemathesisLibrary(DynamicCore):
 
     def debug(self, message: str) -> None:
         logger.debug(message)
+
+    def warn(self, message: str) -> None:
+        logger.warn(message)
 
     def _log_case(
         self,
@@ -574,6 +618,46 @@ class SchemathesisLibrary(DynamicCore):
 
     def _text(self, value: "str|bytes") -> str:
         return value.decode("utf-8", errors="replace") if isinstance(value, bytes) else value
+
+    def _validation_base_url(self, case: Case, response: Response) -> str:
+        """Return the base URL the checks send their extra requests to.
+
+        The base URL the response was sent to comes first, so the extra requests go to the
+        same server that answered. When that can not be told, the base URL Schemathesis would
+        use otherwise is the fallback, which is the library ``base_url`` when one is given.
+        Without any base URL Schemathesis would fail with an error that tells to pass
+        ``base_url`` to ``Case.call``, which a Robot Framework user can not do.
+        """
+        base_url = self._response_base_url(case, response)
+        if base_url is not None:
+            return base_url
+        base_url = case.operation.schema.get_base_url()
+        response_url = self._sanitize_url(case, response.request.url)
+        if not urlparse(base_url).netloc:
+            raise ValueError(
+                f"Validate Response needs a base URL, but it could not be told from the response URL "
+                f"{response_url} and the schema declares no server: "
+                f"pass base_url= to the keyword or on library import."
+            )
+        self.warn(
+            f"Could not tell the base URL from the response URL {response_url}, using {base_url} instead."
+        )
+        return base_url
+
+    def _response_base_url(self, case: Case, response: Response) -> "str|None":
+        """Return the base URL the response was actually sent to.
+
+        Checks such as ``ignored_auth`` send extra requests while validating, and those must go to
+        the server that answered. The base URL is what is left of the request URL once the
+        operation path is cut off its end, so a server path prefix such as ``/api/v1`` is kept.
+        """
+        parsed = urlparse(self._text(response.request.url or ""))
+        path = case.formatted_path
+        if not parsed.netloc or not parsed.path.endswith(path):
+            return None
+        return urlunparse(
+            parsed._replace(path=parsed.path.removesuffix(path), params="", query="", fragment="")
+        )
 
     def _auth_kwargs(self, auth: "tuple[str, str]|Any|None") -> dict[str, Any]:
         """Only forward ``auth`` when it is set.
