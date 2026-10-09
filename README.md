@@ -79,6 +79,33 @@ passes, and the only sign that your coverage shrank is a warning in the log.
 Regardless of `strict`, the library always raises an error when the schema produces no
 test cases at all, because a suite without test cases passes without testing anything.
 
+# Generation mode
+
+Like Schemathesis, the library sends both valid and invalid data by default, and the test
+name tells which, for example `POST /items - negative - 5mK2pQ`. A test with invalid data
+fails when the API answers with a status the schema does not document, or when the
+[`negative_data_rejection`](https://schemathesis.readthedocs.io/en/stable/reference/checks/#negative_data_rejection) check fails: the API
+accepted the data, or rejected it with a status the check does not expect.
+
+Both settings below go in `schemathesis.toml` in the directory you run `robot` in, or in a
+parent directory. To send only valid data:
+
+```toml
+[generation]
+mode = "positive"
+```
+
+If your API rejects invalid data with a status the check does not expect, list every status
+it uses for invalid data:
+
+```toml
+[checks.negative_data_rejection]
+expected-statuses = [400, 418]
+```
+
+The [keyword documentation](https://aaltat.github.io/robotframework-schemathesis/SchemathesisLibrary.html)
+lists the other places the settings can go.
+
 # Authentication
 
 ## Dynamic token authentication
