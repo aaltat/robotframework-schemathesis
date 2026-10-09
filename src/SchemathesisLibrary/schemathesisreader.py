@@ -37,6 +37,7 @@ class Options:
     hook: str | None = None
     strict: bool = True
     base_url: str | None = None
+    tls_verify: bool | str | None = None
 
 
 class SchemathesisReader(AbstractReaderClass):
@@ -59,6 +60,8 @@ class SchemathesisReader(AbstractReaderClass):
             raise ValueError("Either 'url' or 'path' must be provided to SchemathesisLibrary.")
         if self.options.base_url:
             schema.config.update(base_url=self.options.base_url)
+        if self.options.tls_verify is not None:
+            schema.config.update(tls_verify=self.options.tls_verify)
         all_cases: list[TestCaseData] = []
         if self.options.auth:
             import_extensions(self.options.auth)

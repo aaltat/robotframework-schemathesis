@@ -131,6 +131,7 @@ class SchemathesisLibrary(DynamicCore):
         hook: str | None = None,
         strict: bool = True,
         base_url: str | None = None,
+        tls_verify: "bool|Path|None" = None,
     ) -> None:
         """
         Arguments:
@@ -170,6 +171,14 @@ class SchemathesisLibrary(DynamicCore):
                 Optional base URL where requests are sent, overriding the servers declared in the
                 schema. Needed mostly when the schema is read from a file. A ``base_url`` given to a
                 keyword wins over this one. See the Base URL section below for details.
+            tls_verify:
+                ``False`` turns off TLS certificate verification, ``True`` turns it on, and a path
+                to a CA bundle file verifies with that bundle. The argument wins over ``tls-verify``
+                in ``schemathesis.toml``. Without the argument the file applies, and with neither,
+                verification is on. Applies to [Call] and [Call And Validate], with or
+                without a ``session``, and to the extra requests checks send in [Validate Response].
+                Schemathesis ignores ``verify`` on a ``session``, so set it here. Example:
+                ``Library    SchemathesisLibrary    url=https://localhost/openapi.json    tls_verify=False``
 
 
         ``path`` and ``url`` are mutually exclusive, only one of them should be used to specify the OpenAPI schema location.
@@ -273,6 +282,7 @@ class SchemathesisLibrary(DynamicCore):
             hook=hook,
             strict=strict,
             base_url=base_url,
+            tls_verify=tls_verify if tls_verify is None or isinstance(tls_verify, bool) else str(tls_verify),
         )
         self.data_driver = DataDriver(reader_class=SchemathesisReader)
         DynamicCore.__init__(self, [])
@@ -364,6 +374,9 @@ class SchemathesisLibrary(DynamicCore):
                     ...    headers=&{BASIC_AUTH_HEADERS}
                     ...    session=${session}
                 ```
+
+                Schemathesis ignores ``verify`` on the session. Use the library ``tls_verify``
+                argument to turn off TLS certificate verification.
 
         Returns:
             [Schemathesis Response](https://schemathesis.readthedocs.io/en/stable/reference/python/#schemathesis.Response)
