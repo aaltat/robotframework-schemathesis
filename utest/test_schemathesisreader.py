@@ -12,19 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from pathlib import Path
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
 import pytest
 from schemathesis import GenerationMode
-from schemathesis.config import SchemathesisConfig
-from schemathesis.core.result import Ok
 
 from src.SchemathesisLibrary.schemathesisreader import Options, SchemathesisReader
 
 DEFAULT_MAX_EXAMPLES = 100
-CONFIG_MAX_EXAMPLES_50 = 50
-CONFIG_MAX_EXAMPLES_750 = 750
-# CONFIG_MAX_EXAMPLES_100 = 100
 
 
 @pytest.fixture
@@ -46,104 +41,78 @@ def mock_reader_config() -> Mock:
     return mock_config
 
 
-@patch("src.SchemathesisLibrary.schemathesisreader.SchemathesisConfig.discover")
-def test_load_config_no_config_file_uses_defaults(mock_discover: Mock, mock_reader_config: Mock) -> None:
-    mock_config = Mock(spec=SchemathesisConfig)
-    mock_config.config_path = None
-    mock_discover.return_value = mock_config
+CONFIGURED_SCHEMA = """{
+  "openapi": "3.0.0",
+  "info": {"title": "Configured API", "version": "1.0.0"},
+  "paths": {"/items": {"get": {
+    "parameters": [{"name": "id", "in": "query", "required": true, "schema": {"type": "integer"}}],
+    "responses": {"200": {"description": "ok"}}
+  }}}
+}"""
+
+
+@pytest.fixture
+def configured_schema(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
+    monkeypatch.chdir(tmp_path)
+    schema = tmp_path / "configured.json"
+    schema.write_text(CONFIGURED_SCHEMA)
+    return schema
+
+
+def generate_modes(mock_reader_config: Mock, schema: Path, max_examples: int = 50) -> list[GenerationMode]:
     reader = SchemathesisReader(mock_reader_config)
-    reader.options = Options(max_examples=DEFAULT_MAX_EXAMPLES)
-
-    config, generation_mode = reader._load_config()
-    assert config == mock_config
-    assert generation_mode == GenerationMode.POSITIVE
-    assert reader.options.max_examples == DEFAULT_MAX_EXAMPLES
+    reader.options = Options(max_examples=max_examples, path=schema)
+    return [case.arguments["${case}"]._meta.generation.mode for case in reader.get_data_from_source()]
 
 
-@patch("src.SchemathesisLibrary.schemathesisreader.SchemathesisConfig.discover")
-def test_load_config_with_max_examples_in_config(mock_discover: Mock, mock_reader_config: Mock) -> None:
-    mock_config = Mock(spec=SchemathesisConfig)
-    mock_config.config_path = Path("schemathesis.toml")
-    mock_generation = Mock()
-    mock_generation.max_examples = CONFIG_MAX_EXAMPLES_50
-    mock_generation.modes = None
-    mock_config.projects.default.generation = mock_generation
-    mock_discover.return_value = mock_config
-    reader = SchemathesisReader(mock_reader_config)
-    reader.options = Options(max_examples=DEFAULT_MAX_EXAMPLES)
-
-    config, generation_mode = reader._load_config()
-    assert config == mock_config
-    assert generation_mode == GenerationMode.POSITIVE
-    assert reader.options.max_examples == CONFIG_MAX_EXAMPLES_50
+NAMED_PROJECT = '[[project]]\ntitle = "Configured API"\n\n[project.generation]\n'
 
 
-@patch("src.SchemathesisLibrary.schemathesisreader.SchemathesisConfig.discover")
-def test_load_config_with_generation_mode_in_config(mock_discover: Mock, mock_reader_config: Mock) -> None:
-    mock_config = Mock(spec=SchemathesisConfig)
-    mock_config.config_path = Path("schemathesis.toml")
-    mock_generation = Mock()
-    mock_generation.max_examples = None
-    mock_generation.modes = [GenerationMode.NEGATIVE]
-    mock_config.projects.default.generation = mock_generation
-    mock_discover.return_value = mock_config
-    reader = SchemathesisReader(mock_reader_config)
-    reader.options = Options(max_examples=DEFAULT_MAX_EXAMPLES)
+@pytest.mark.parametrize(
+    ("config", "max_examples", "expected"),
+    [
+        (None, 5, 5),
+        ("generation.max-examples = 3\n", DEFAULT_MAX_EXAMPLES, 3),
+        (NAMED_PROJECT + "max-examples = 3\n", DEFAULT_MAX_EXAMPLES, 3),
+    ],
+    ids=["library-argument", "config", "named-project"],
+)
+def test_max_examples(
+    mock_reader_config: Mock, configured_schema: Path, config: str | None, max_examples: int, expected: int
+) -> None:
+    if config is not None:
+        (configured_schema.parent / "schemathesis.toml").write_text(config)
 
-    config, generation_mode = reader._load_config()
-    assert config == mock_config
-    assert generation_mode == GenerationMode.NEGATIVE
-    assert reader.options.max_examples == DEFAULT_MAX_EXAMPLES  # Unchanged
-
-
-@patch("src.SchemathesisLibrary.schemathesisreader.SchemathesisConfig.discover")
-def test_load_config_with_both_max_examples_and_modes(mock_discover: Mock, mock_reader_config: Mock) -> None:
-    mock_config = Mock(spec=SchemathesisConfig)
-    mock_config.config_path = Path("schemathesis.toml")
-    mock_generation = Mock()
-    mock_generation.max_examples = CONFIG_MAX_EXAMPLES_750
-    mock_generation.modes = [GenerationMode.NEGATIVE, GenerationMode.POSITIVE]
-    mock_config.projects.default.generation = mock_generation
-    mock_discover.return_value = mock_config
-    reader = SchemathesisReader(mock_reader_config)
-    reader.options = Options(max_examples=DEFAULT_MAX_EXAMPLES)
-
-    config, generation_mode = reader._load_config()
-    assert config == mock_config
-    assert generation_mode == GenerationMode.NEGATIVE
-    assert reader.options.max_examples == CONFIG_MAX_EXAMPLES_750
+    assert len(generate_modes(mock_reader_config, configured_schema, max_examples)) == expected
 
 
-@patch("src.SchemathesisLibrary.schemathesisreader.SchemathesisConfig.discover")
-def test_load_config_with_empty_modes_list(mock_discover: Mock, mock_reader_config: Mock) -> None:
-    mock_config = Mock(spec=SchemathesisConfig)
-    mock_config.config_path = Path("schemathesis.toml")
-    mock_generation = Mock()
-    mock_generation.max_examples = None
-    mock_generation.modes = []
-    mock_config.projects.default.generation = mock_generation
-    mock_discover.return_value = mock_config
-    reader = SchemathesisReader(mock_reader_config)
-    reader.options = Options(max_examples=DEFAULT_MAX_EXAMPLES)
+@pytest.mark.parametrize(
+    ("config", "expected"),
+    [
+        (None, set(GenerationMode)),
+        ('generation.mode = "all"\n', set(GenerationMode)),
+        ('generation.mode = "positive"\n', {GenerationMode.POSITIVE}),
+        (NAMED_PROJECT + 'mode = "negative"\n', {GenerationMode.NEGATIVE}),
+    ],
+    ids=["default", "all", "positive", "named-project"],
+)
+def test_generation_mode(
+    mock_reader_config: Mock, configured_schema: Path, config: str | None, expected: set[GenerationMode]
+) -> None:
+    if config is not None:
+        (configured_schema.parent / "schemathesis.toml").write_text(config)
 
-    config, generation_mode = reader._load_config()
-    assert generation_mode == GenerationMode.POSITIVE
-    assert config == mock_config
+    assert set(generate_modes(mock_reader_config, configured_schema)) == expected
 
 
-@patch("src.SchemathesisLibrary.schemathesisreader.SchemathesisConfig.discover")
-def test_load_config_with_max_examples_zero(mock_discover: Mock, mock_reader_config: Mock) -> None:
-    mock_config = Mock(spec=SchemathesisConfig)
-    mock_config.config_path = Path("schemathesis.toml")
-    mock_generation = Mock()
-    mock_generation.max_examples = None
-    mock_generation.modes = None
-    mock_config.projects.default.generation = mock_generation
-    mock_discover.return_value = mock_config
-    reader = SchemathesisReader(mock_reader_config)
-    reader.options = Options(max_examples=DEFAULT_MAX_EXAMPLES)
-    reader._load_config()
-    assert reader.options.max_examples == DEFAULT_MAX_EXAMPLES  # Not updated because config value is None
+def test_operation_without_parameters_gets_its_only_case_once(
+    mock_reader_config: Mock, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    schema = tmp_path / "good.json"
+    schema.write_text(GOOD_SCHEMA)
+
+    assert generate_modes(mock_reader_config, schema, 10) == [GenerationMode.POSITIVE]
 
 
 def test_get_data_from_source_raises_value_error_when_options_not_set(mock_reader_config: Mock) -> None:

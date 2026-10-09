@@ -79,6 +79,21 @@ passes, and the only sign that your coverage shrank is a warning in the log.
 Regardless of `strict`, the library always raises an error when the schema produces no
 test cases at all, because a suite without test cases passes without testing anything.
 
+# Generation mode
+
+Like Schemathesis, the library sends both valid and invalid data by default. A test with
+invalid data fails unless the API rejects it with a 4xx status that the schema documents,
+such as 400 or 422. To send only valid data, put this in `schemathesis.toml` in the
+directory you run `robot` in, or in a parent directory:
+
+```toml
+[generation]
+mode = "positive"
+```
+
+The [keyword documentation](https://aaltat.github.io/robotframework-schemathesis/SchemathesisLibrary.html)
+lists the other places the setting can go.
+
 # Authentication
 
 ## Dynamic token authentication
