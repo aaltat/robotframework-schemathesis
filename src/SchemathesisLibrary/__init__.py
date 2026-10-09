@@ -176,36 +176,35 @@ class SchemathesisLibrary(DynamicCore):
 
         # Configuration File
 
-        SchemathesisLibrary automatically discovers and loads configuration from a ``schemathesis.toml`` file if present
-        in the project directory. The configuration file allows you to customize test data generation and other Schemathesis
-        settings without modifying the library initialization.
+        The library reads ``schemathesis.toml`` from the directory you run ``robot`` in. Without one
+        there, it searches parent directories up to your repository root or the filesystem root.
 
-        The library uses Schemathesis's
-        [configuration file discovery](https://schemathesis.readthedocs.io/en/stable/reference/configuration/)
-        mechanism to locate ``schemathesis.toml`` in the current directory or parent directories (stopping at .git folder
-        or filesystem root).
+        See the Schemathesis
+        [configuration](https://schemathesis.readthedocs.io/en/stable/reference/configuration/) documentation
+        for all options; settings such as ``base-url`` and ``checks`` apply too.
 
-        Configuration options that are automatically applied:
+        You set how many test cases you get, and what kind, with two settings:
 
-        - ``max-examples``: If specified in ``[project.generation]``, overrides the ``max_examples`` parameter passed to the library
-        - ``mode``: Generation mode (``positive``, ``negative``, or ``all``) controls whether valid or invalid test data is generated
+        - ``max-examples``: test cases per operation, across all modes. Overrides the library
+          ``max_examples`` argument.
+        - ``mode``: ``positive`` sends valid data, ``negative`` invalid data, ``all`` both. Defaults to
+          ``all`` with or without the file, as in Schemathesis. A test with invalid data fails unless the
+          API rejects it with a 4xx status that the schema documents, such as 400 or 422. Set
+          ``mode = "positive"`` to send only valid requests.
 
-        Example schemathesis.toml:
+        Put them at the top level, in a ``[[project]]`` block whose ``title`` matches the schema
+        ``info.title``, or in ``[[operations]]`` for selected operations:
+
         ```toml
-        [[project]]
-        title = "My API"
+        [generation]
+        max-examples = 5
 
-        [project.generation]
-        mode = "positive"      # Generate only valid test cases
-        max-examples = 5       # Generate 5 test cases per operation
+        [[operations]]
+        include-path = "/users"
+
+        [operations.generation]
+        mode = "positive"
         ```
-
-        For complete configuration options, see schemathesis
-        [configuration](https://schemathesis.readthedocs.io/en/stable/reference/configuration/)
-        documentation.
-
-        If no configuration file is found, the library uses default values (POSITIVE mode and max_examples from
-        library initialization.
 
         # Base URL
 
