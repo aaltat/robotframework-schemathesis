@@ -50,6 +50,11 @@ class SchemathesisReader(AbstractReaderClass):
         if path and not Path(path).is_file():
             raise ValueError(f"Provided path '{path}' is not a valid file.")
         config, generation_mode = self._load_config()
+        # Schema loading dispatches `before_load_schema` / `after_load_schema`; hooks must be registered first.
+        if self.options.auth:
+            import_extensions(self.options.auth)
+            logger.info(f"Using auth extension from: {self.options.auth}")
+        self._import_hooks()
         if path:
             schema = openapi.from_path(path, config=config)
         elif url:
@@ -60,10 +65,6 @@ class SchemathesisReader(AbstractReaderClass):
         if self.options.base_url:
             schema.config.update(base_url=self.options.base_url)
         all_cases: list[TestCaseData] = []
-        if self.options.auth:
-            import_extensions(self.options.auth)
-            logger.info(f"Using auth extension from: {self.options.auth}")
-        self._import_hooks()
         operation_count = 0
         invalid_operations: list[str] = []
         for op in schema.get_all_operations():

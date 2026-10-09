@@ -16,6 +16,8 @@
 #WAIT
 --suite Test.Hooks Filter
 #WAIT
+--suite Test.Hooks Load Schema
+#WAIT
 --suite Test.Hooks Map
 #WAIT
 --suite Test.Hooks Map And Flatmap
