@@ -3,4 +3,5 @@ import schemathesis
 
 @schemathesis.hook
 def before_load_schema(ctx, raw_schema) -> None:
-    raw_schema["paths"] = {"/items/{item_id}": {"delete": raw_schema["paths"]["/items/{item_id}"]["delete"]}}
+    path = "/items/{item_id}"
+    raw_schema["paths"] = {path: {"delete": raw_schema["paths"][path]["delete"]}}

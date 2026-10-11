@@ -51,11 +51,7 @@ class SchemathesisReader(AbstractReaderClass):
         if path and not Path(path).is_file():
             raise ValueError(f"Provided path '{path}' is not a valid file.")
         config, generation_mode = self._load_config()
-        # Schema loading dispatches `before_load_schema` / `after_load_schema`; hooks must be registered first.
-        if self.options.auth:
-            import_extensions(self.options.auth)
-            logger.info(f"Using auth extension from: {self.options.auth}")
-        self._import_hooks()
+        self._import_extensions()
         if path:
             schema = openapi.from_path(path, config=config)
         elif url:
@@ -130,9 +126,17 @@ class SchemathesisReader(AbstractReaderClass):
             logger.info("No schemathesis.toml config file found, using defaults")
         return config, generation_mode
 
-    def _import_hooks(self) -> None:
+    def _import_extensions(self) -> None:
+        """Import auth and hook extensions, which register themselves as a side effect of the import.
+
+        Must run before the schema is loaded, because loading dispatches the
+        `before_load_schema` and `after_load_schema` hooks.
+        """
         if not self.options:
             return
+        if self.options.auth:
+            import_extensions(self.options.auth)
+            logger.info(f"Using auth extension from: {self.options.auth}")
         if not self.options.hook:
             return
         for hook in self.options.hook.split(";"):

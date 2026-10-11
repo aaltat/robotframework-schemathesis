@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from collections.abc import Iterator
 from pathlib import Path
 from unittest.mock import MagicMock, Mock, patch
 
@@ -18,6 +19,7 @@ import pytest
 from schemathesis import GenerationMode
 from schemathesis.config import SchemathesisConfig
 from schemathesis.core.result import Ok
+from schemathesis.hooks import GLOBAL_HOOK_DISPATCHER
 
 from src.SchemathesisLibrary.schemathesisreader import Options, SchemathesisReader
 
@@ -288,3 +290,40 @@ def test_base_url_tells_where_cases_of_a_file_loaded_schema_are_sent(
     case = reader.get_data_from_source()[0].arguments["${case}"]
 
     assert "http://127.0.0.1:8000/api/good" in case.as_curl_command()
+
+
+LOAD_SCHEMA_HOOKS = """import schemathesis
+
+
+@schemathesis.hook
+def before_load_schema(ctx, raw_schema) -> None:
+    raw_schema["paths"]["/added"] = {"get": {"responses": {"200": {"description": "ok"}}}}
+
+
+@schemathesis.hook
+def after_load_schema(ctx, schema) -> None:
+    schema.config.update(base_url="http://after-load-schema.example")
+"""
+
+
+@pytest.fixture
+def load_schema_hooks(tmp_path: Path) -> Iterator[Path]:
+    hooks = tmp_path / "load_schema_hooks.py"
+    hooks.write_text(LOAD_SCHEMA_HOOKS)
+    yield hooks
+    GLOBAL_HOOK_DISPATCHER.unregister_all()
+
+
+def test_load_schema_hooks_run_when_the_schema_is_loaded(
+    mock_reader_config: Mock, tmp_path: Path, load_schema_hooks: Path
+) -> None:
+    """Hooks register on import, so they must be imported before the schema is loaded."""
+    schema = tmp_path / "good.json"
+    schema.write_text(GOOD_SCHEMA)
+    reader = SchemathesisReader(mock_reader_config)
+    reader.options = Options(max_examples=1, path=schema, hook=str(load_schema_hooks))
+
+    cases = [data.arguments["${case}"] for data in reader.get_data_from_source()]
+
+    assert {case.path for case in cases} == {"/good", "/added"}
+    assert all("http://after-load-schema.example" in case.as_curl_command() for case in cases)
