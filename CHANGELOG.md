@@ -2,6 +2,22 @@
 
 <!-- version list -->
 
+## v2.8.2 (2026-10-11)
+
+### Bug Fixes
+
+- Import hooks before loading the schema
+  ([`28c44aa`](https://github.com/aaltat/robotframework-schemathesis/commit/28c44aa2ccb6bff739c774b81ea3db2fdf1566e8))
+
+- Quote atest-lib arguments so suite names with spaces work
+  ([`468bc92`](https://github.com/aaltat/robotframework-schemathesis/commit/468bc929d15214b8a833b5d9ad9824cba581dac1))
+
+### Testing
+
+- Add tls_verify acceptance tests against a self-signed HTTPS test app
+  ([`b6d01dc`](https://github.com/aaltat/robotframework-schemathesis/commit/b6d01dc4e59ae8e98e725776b2e2e4e90fa42bdc))
+
+
 ## v2.8.1 (2026-10-11)
 
 ### Bug Fixes
