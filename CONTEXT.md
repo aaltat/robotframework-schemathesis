@@ -28,6 +28,12 @@ One generated request for one operation. Every case becomes exactly one Robot Fr
 test, and a case is what the `${case}` test argument holds.
 _Avoid_: Example, sample, test data row
 
+**Generation mode**:
+Whether a case carries valid data (positive) or invalid data (negative). Set with `mode` in
+`schemathesis.toml` to `positive`, `negative` or `all`; without it, the library generates
+cases in both modes, as in Schemathesis.
+_Avoid_: Test type, fuzzing mode
+
 **Strict**:
 Whether a condition that would otherwise silently reduce test coverage is an error rather
 than a warning. It never covers conditions that make the run meaningless, such as no test
