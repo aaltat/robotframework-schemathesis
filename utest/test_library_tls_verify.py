@@ -126,3 +126,49 @@ def test_tls_verify_given_in_robot_data_is_converted(
     library.call(case)
 
     assert sent[-1]["verify"] == expected
+
+
+@pytest.fixture
+def schema_downloads(monkeypatch: pytest.MonkeyPatch) -> list[dict[str, Any]]:
+    calls: list[dict[str, Any]] = []
+
+    def send(
+        _session: requests.Session, request: requests.PreparedRequest, **kwargs: Any
+    ) -> requests.Response:
+        calls.append(kwargs)
+        response = requests.Response()
+        response.status_code = 200
+        response.request = request
+        response.url = request.url or ""
+        response.headers["Content-Type"] = "application/json"
+        response._content = json.dumps(SCHEMA).encode()
+        return response
+
+    monkeypatch.setattr(requests.Session, "send", send)
+    return calls
+
+
+@pytest.mark.parametrize(
+    ("library_kwargs", "expected"),
+    [
+        ({}, True),
+        ({"tls_verify": False}, False),
+        ({"tls_verify": True}, True),
+        ({"tls_verify": Path("/etc/ssl/ca.pem")}, "/etc/ssl/ca.pem"),
+    ],
+    ids=["default", "disabled", "enabled", "ca-bundle"],
+)
+def test_tls_verify_reaches_schema_download_from_url(
+    tmp_path: Path,
+    schema_downloads: list[dict[str, Any]],
+    monkeypatch: pytest.MonkeyPatch,
+    library_kwargs: dict[str, Any],
+    expected: Any,
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    SchemathesisLibrary(url="https://localhost:48443/openapi.json", max_examples=1, **library_kwargs)
+    reader_config = Mock(kwargs={}, list_separator=",")
+
+    SchemathesisReader(reader_config).get_data_from_source()
+
+    assert schema_downloads[0]["verify"] == expected
