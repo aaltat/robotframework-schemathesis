@@ -23,6 +23,14 @@ value, the base URL the response was actually sent to wins over the library valu
 checks' extra requests go to the same server that answered.
 _Avoid_: Host, endpoint URL, "server" as a synonym for the base URL
 
+**TLS verification**:
+Whether requests check the server's TLS certificate, and against which CA bundle. Set for the
+whole suite on library import with `tls_verify`; it wins over `tls-verify` in
+`schemathesis.toml`, and with neither, verification is on. Covers downloading the schema from
+`url`, every case request with or without a user supplied session, and the extra requests
+checks make. `tls-verify` in `schemathesis.toml` does not cover the schema download.
+_Avoid_: SSL verification, certificate check, "verify" as a synonym for TLS verification
+
 **Case**:
 One generated request for one operation. Every case becomes exactly one Robot Framework
 test, and a case is what the `${case}` test argument holds.

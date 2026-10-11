@@ -28,6 +28,7 @@ DIST_DIR = ROOT_DIR / "dist"
 DOCKER_IMAGE = "schemathesis-library-test"
 DOCKER_CONTAINER = "schemathesis-library-test-app"
 DOCKER_APP_URL = "http://127.0.0.1"
+DOCKER_APP_TLS_URL = "https://127.0.0.1:8443"
 
 
 @task
@@ -65,20 +66,26 @@ def stop(ctx):
 def test_app(ctx):
     """Build docker image and start the test app."""
     ctx.run(f"docker build -t {DOCKER_IMAGE} .")
-    ctx.run(f"docker run -d --name {DOCKER_CONTAINER} -p 80:80 {DOCKER_IMAGE}")
+    ctx.run(f"docker run -d --name {DOCKER_CONTAINER} -p 80:80 -p 8443:8443 {DOCKER_IMAGE}")
+    _wait_for_app(DOCKER_APP_URL)
+    # The HTTPS listener uses a self-signed certificate, so it can not be verified here.
+    _wait_for_app(DOCKER_APP_TLS_URL, verify=False)
+
+
+def _wait_for_app(url: str, verify: bool = True):
     try_count = 120
     for i in range(try_count):
         time.sleep(1)
         try:
-            response = requests.get(DOCKER_APP_URL)
+            response = requests.get(url, verify=verify)
             if response.status_code == 200:
-                print(f"Test app is running: {DOCKER_APP_URL}")
+                print(f"Test app is running: {url}")
                 break
             time.sleep(1)
         except requests.ConnectionError as error:
             print(f"Connection error: {error}")
         if i == try_count - 1:
-            raise RuntimeError("Test app did not start in time")
+            raise RuntimeError(f"Test app did not start in time: {url}")
 
 
 @task
