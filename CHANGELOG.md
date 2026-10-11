@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v2.8.1 (2026-10-11)
+
+### Bug Fixes
+
+- Apply tls_verify when downloading the schema from url
+  ([`567d062`](https://github.com/aaltat/robotframework-schemathesis/commit/567d062628987096e6c4b30ad3712cc1b7eea938))
+
+
 ## v2.8.0 (2026-10-11)
 
 ### Chores
