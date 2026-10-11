@@ -2,6 +2,22 @@
 
 <!-- version list -->
 
+## v2.8.0 (2026-10-11)
+
+### Chores
+
+- **deps**: Bump schemathesis from 4.29.2 to 4.29.3
+  ([`6243cdf`](https://github.com/aaltat/robotframework-schemathesis/commit/6243cdf773dd3fcbdbf9d945aed7ffffc695da23))
+
+- **deps**: Bump schemathesis from 4.29.3 to 4.29.4
+  ([`640840c`](https://github.com/aaltat/robotframework-schemathesis/commit/640840c628ded289ad3a15dbf72dcb2d58bf0424))
+
+### Features
+
+- Add tls_verify library argument
+  ([`20dcde9`](https://github.com/aaltat/robotframework-schemathesis/commit/20dcde90d45e515863d85e5d86474e9cea833f58))
+
+
 ## v2.7.1 (2026-10-08)
 
 ### Bug Fixes
