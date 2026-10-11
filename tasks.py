@@ -14,6 +14,7 @@
 from collections import defaultdict
 from pathlib import Path
 import shutil
+import shlex
 import time
 
 import requests
@@ -219,7 +220,7 @@ def atest_lib(ctx, suite: str | None = None):
     ATEST_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     ATEST_OUTPUT_DIR_LIB.mkdir(parents=True, exist_ok=True)
     print(f"Running {args}")
-    ctx.run(" ".join(args))
+    ctx.run(shlex.join(args))
 
 
 @task
