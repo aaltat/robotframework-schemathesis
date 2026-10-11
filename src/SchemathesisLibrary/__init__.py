@@ -175,8 +175,10 @@ class SchemathesisLibrary(DynamicCore):
                 ``False`` turns off TLS certificate verification, ``True`` turns it on, and a path
                 to a CA bundle file verifies with that bundle. The argument wins over ``tls-verify``
                 in ``schemathesis.toml``. Without the argument the file applies, and with neither,
-                verification is on. Applies to [Call] and [Call And Validate], with or
-                without a ``session``, and to the extra requests checks send in [Validate Response].
+                verification is on. Applies to downloading the schema from ``url``, to [Call] and
+                [Call And Validate], with or without a ``session``, and to the extra requests checks
+                send in [Validate Response]. ``tls-verify`` in ``schemathesis.toml`` does not apply
+                to downloading the schema.
                 Schemathesis ignores ``verify`` on a ``session``, so set it here. Example:
                 ``Library    SchemathesisLibrary    url=https://localhost/openapi.json    tls_verify=False``
 

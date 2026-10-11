@@ -55,7 +55,10 @@ class SchemathesisReader(AbstractReaderClass):
             schema = openapi.from_path(path, config=config)
         elif url:
             headers = self.options.headers or {}
-            schema = openapi.from_url(url, headers=headers, config=config)
+            tls_kwargs: dict[str, Any] = (
+                {} if self.options.tls_verify is None else {"verify": self.options.tls_verify}
+            )
+            schema = openapi.from_url(url, headers=headers, config=config, **tls_kwargs)
         else:
             raise ValueError("Either 'url' or 'path' must be provided to SchemathesisLibrary.")
         if self.options.base_url:
