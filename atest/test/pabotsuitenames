@@ -35,3 +35,7 @@
 --suite Test.Validate Response From File
 #WAIT
 --suite Test.Validate Response Base Url
+#WAIT
+--suite Test.Tls Verify
+#WAIT
+--suite Test.Tls Verify Not Set
