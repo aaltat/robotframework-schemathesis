@@ -31,6 +31,11 @@ dev = [
     "markdown>=3.10.2",
 ]
 
+[tool.coverage.run]
+branch = true
+parallel = true
+include = ["*/src/SchemathesisLibrary/*"]
+
 [tool.semantic_release.settings]
 allow_zero_version = true
 

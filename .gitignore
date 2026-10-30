@@ -25,4 +25,5 @@ atest/specs/test-app/
 
 # coverage
 .coverage
+.coverage.*
 htmlcov/
