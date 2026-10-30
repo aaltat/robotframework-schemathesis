@@ -30,6 +30,12 @@ DOCKER_IMAGE = "schemathesis-library-test"
 DOCKER_CONTAINER = "schemathesis-library-test-app"
 DOCKER_APP_URL = "http://127.0.0.1"
 DOCKER_APP_TLS_URL = "https://127.0.0.1:8443"
+# The library runs in Robot Framework processes started by pabot and by the runner suites,
+# with varying working directories. Coverage starts itself in each of those from this environment.
+COVERAGE_ENV = {
+    "COVERAGE_PROCESS_START": (ROOT_DIR / "pyproject.toml").as_posix(),
+    "COVERAGE_FILE": (ROOT_DIR / ".coverage").as_posix(),
+}
 
 
 @task
@@ -166,9 +172,21 @@ def utest(ctx):
     marker = 90
     print("*" * marker)
     print("Running unit tests with coverage...")
+    ctx.run("uv run coverage erase")
     ctx.run("uv run coverage run -m pytest -v utest")
-    ctx.run("uv run coverage html --omit='utest/*'")
+    _coverage_report(ctx)
     print("*" * marker)
+
+
+def _coverage_report(ctx, append: bool = False):
+    """Combine coverage data files, create HTML report and print summary to console.
+
+    Args:
+        append: Adds the data files to existing combined data, instead of replacing it.
+    """
+    ctx.run(f"uv run coverage combine{' --append' if append else ''}")
+    ctx.run("uv run coverage html")
+    ctx.run("uv run coverage report")
 
 
 @task(pre=[test_app, spec_file, utest])
@@ -194,7 +212,10 @@ def atest(ctx, suite: str | None = None):
     ATEST_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     ATEST_OUTPUT_DIR_LIB.mkdir(parents=True, exist_ok=True)
     print(f"Running {args}")
-    ctx.run(" ".join(args))
+    try:
+        ctx.run(" ".join(args), env=COVERAGE_ENV)
+    finally:
+        _coverage_report(ctx, append=True)
 
 
 @task(pre=[test_app, spec_file])
@@ -220,7 +241,11 @@ def atest_lib(ctx, suite: str | None = None):
     ATEST_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     ATEST_OUTPUT_DIR_LIB.mkdir(parents=True, exist_ok=True)
     print(f"Running {args}")
-    ctx.run(shlex.join(args))
+    ctx.run("uv run coverage erase")
+    try:
+        ctx.run(shlex.join(args), env=COVERAGE_ENV)
+    finally:
+        _coverage_report(ctx)
 
 
 @task

@@ -64,3 +64,10 @@ jobs:
         with:
           name: atest-result-library-${{ matrix.python-version }}
           path: atest/output_library/
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v7
+        if: always() && matrix.python-version == '3.13'
+        with:
+          name: coverage-report
+          path: htmlcov/
