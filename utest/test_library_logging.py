@@ -155,6 +155,16 @@ def test_log_request_sanitizes_a_json_body(library: SchemathesisLibrary, monkeyp
     assert "joulu" in logged[0]
 
 
+def test_log_request_keeps_a_sanitized_body_as_bytes(library: SchemathesisLibrary, monkeypatch: Any) -> None:
+    """Whether a body holds a secret must not change the form it is logged in."""
+    logged: list[str] = []
+    monkeypatch.setattr(library, "info", logged.append)
+
+    library._log_request(_case(), _response(body=b'{"name": "joulu", "Cookie": "hunter2"}'))
+
+    assert f'body: b\'{{"name": "joulu", "Cookie": "{FILTERED}"}}\'' in logged[0]
+
+
 def test_log_request_leaves_a_body_without_secrets_as_it_is(
     library: SchemathesisLibrary, monkeypatch: Any
 ) -> None:
