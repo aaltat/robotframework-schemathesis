@@ -64,6 +64,12 @@ The schema downloaded from the running test app into `atest/specs/test-app/`. It
 regenerated on every run and never committed.
 _Avoid_: Spec file, openapi.json
 
+**Broken app**:
+A second FastAPI app mounted at `/broken` in the test app, with its own schema at
+`/broken/openapi.json`. Each of its operations breaks that schema so that a Schemathesis check
+fails. It is kept out of the test app schema, so only the suites that ask for it run against it.
+_Avoid_: Bad API, failing endpoints
+
 **Hand written schema**:
 A schema committed directly in `atest/specs/`, written to exercise a case the test app
 cannot produce, such as an operation that cannot be parsed.
