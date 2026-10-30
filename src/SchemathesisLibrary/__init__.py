@@ -707,7 +707,8 @@ class SchemathesisLibrary(DynamicCore):
         A body that went over the wire is bytes or a string, so it has to be parsed back into
         a structure before the values in it can be replaced. A body that is not JSON can not be
         inspected and is returned untouched, and so is a body that holds nothing sensitive,
-        which keeps it in the exact form it was sent in.
+        which keeps it in the exact form it was sent in. A sanitized body keeps its type, so
+        that what a body holds does not change the form it is logged in.
         """
         if not isinstance(body, str | bytes):
             return self._sanitize(case, body)
@@ -720,7 +721,10 @@ class SchemathesisLibrary(DynamicCore):
         if not isinstance(parsed, dict | list):
             return body
         sanitized = self._sanitize(case, parsed)
-        return body if sanitized == parsed else json.dumps(sanitized)
+        if sanitized == parsed:
+            return body
+        serialized = json.dumps(sanitized)
+        return serialized.encode() if isinstance(body, bytes) else serialized
 
     def _sanitize_url(self, case: Case, url: "str|None") -> "str|None":
         config = self._sanitization_config(case)
