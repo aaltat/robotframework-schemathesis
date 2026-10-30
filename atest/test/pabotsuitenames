@@ -6,6 +6,10 @@
 #WAIT
 --suite Test.All Cases Auth In Call And Validate Separetly
 #WAIT
+--suite Test.All Cases Auth Provider
+#WAIT
+--suite Test.All Cases Auth Provider Call
+#WAIT
 --suite Test.All Cases Call And Validate Response
 #WAIT
 --suite Test.All Cases From File
