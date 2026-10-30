@@ -2,6 +2,62 @@
 
 <!-- version list -->
 
+## v3.0.0 (2026-10-30)
+
+### Bug Fixes
+
+- Keep the type of a sanitized body in the logs
+  ([`b71ae32`](https://github.com/aaltat/robotframework-schemathesis/commit/b71ae32ebce1a2bca9e9a4319506b7ef1bb02acc))
+
+### Chores
+
+- **deps**: Bump certifi from 2026.7.22 to 2026.10.19
+  ([`d87e307`](https://github.com/aaltat/robotframework-schemathesis/commit/d87e3079ecdc4682bbf8f7a2dc18e37c2858d218))
+
+- **deps**: Bump graphql-core from 3.2.11 to 3.2.12
+  ([`797969e`](https://github.com/aaltat/robotframework-schemathesis/commit/797969e69dc9cf8bfd4239259d454d247f3dce6e))
+
+- **deps**: Bump schemathesis from 4.29.4 to 4.30.1
+  ([`ab502a9`](https://github.com/aaltat/robotframework-schemathesis/commit/ab502a915327b725adf9bc2414a111888104097b))
+
+- **deps**: Raise schemathesis floor to 4.32.7
+  ([`fdbaab8`](https://github.com/aaltat/robotframework-schemathesis/commit/fdbaab874a6aec385e79f801ae4733da64090b7f))
+
+- **deps-dev**: Bump robotframework-robocop from 9.1.0 to 9.1.2
+  ([`94189f6`](https://github.com/aaltat/robotframework-schemathesis/commit/94189f64524d602a7838846dbae6da2a4f7376f5))
+
+- **deps-dev**: Bump ruff from 0.16.10 to 0.17.0
+  ([`1d0802b`](https://github.com/aaltat/robotframework-schemathesis/commit/1d0802b78d0d0d148ae2f73eda1002f6e0bc918e))
+
+- **deps-dev**: Bump ruff from 0.17.0 to 0.17.1
+  ([`7307dbd`](https://github.com/aaltat/robotframework-schemathesis/commit/7307dbda60aba9d698161e20540409010c89608a))
+
+- **deps-dev**: Bump ruff from 0.17.1 to 0.17.2
+  ([`6253099`](https://github.com/aaltat/robotframework-schemathesis/commit/62530991ef6e91204d18548f9e378ddf34c6f503))
+
+### Features
+
+- Require Python 3.11 or newer
+  ([`86e36b1`](https://github.com/aaltat/robotframework-schemathesis/commit/86e36b1b91bd2970e8c61a43b051696f38de93a2))
+
+### Refactoring
+
+- Import auth and hook extensions in one place before schema load
+  ([`e5eed23`](https://github.com/aaltat/robotframework-schemathesis/commit/e5eed23122e5dc054f7dc327f31d5add4c86a5f9))
+
+### Testing
+
+- Prove that a Schemathesis check failure fails a Robot test
+  ([`cbf2472`](https://github.com/aaltat/robotframework-schemathesis/commit/cbf2472dcec135a283d660b4febe52861665be1f))
+
+- Prove that an auth provider's Case._auth reaches the server
+  ([`4de7b4a`](https://github.com/aaltat/robotframework-schemathesis/commit/4de7b4ab4563b7ae24c632ac2e6197d1e253bca7))
+
+### Breaking Changes
+
+- Python 3.10 is no longer supported.
+
+
 ## v2.8.2 (2026-10-11)
 
 ### Bug Fixes
