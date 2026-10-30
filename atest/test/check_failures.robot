@@ -15,7 +15,7 @@ Wrong Content Type Fails The Test
     Check Test Failed    ${LIBRARY_OUTPUT_XML}    GET /wrong-content-type    *Undocumented Content-Type*
 
 Undocumented Status Code Fails The Test
-    Check Test Failed    ${LIBRARY_OUTPUT_XML}    GET /undocumented-status    *Undocumented HTTP status code*
+    Check Test Failed    ${LIBRARY_OUTPUT_XML}    GET /undocumented-status    *Undocumented status code*
 
 Missing Response Header Fails The Test
-    Check Test Failed    ${LIBRARY_OUTPUT_XML}    GET /missing-header    *Missing required headers*
+    Check Test Failed    ${LIBRARY_OUTPUT_XML}    GET /missing-header    *Missing required response headers*
