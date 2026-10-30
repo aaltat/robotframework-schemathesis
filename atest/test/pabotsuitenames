@@ -41,3 +41,5 @@
 --suite Test.Tls Verify
 #WAIT
 --suite Test.Tls Verify Not Set
+#WAIT
+--suite Test.Check Failures

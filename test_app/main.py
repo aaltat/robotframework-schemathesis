@@ -1,6 +1,7 @@
 from typing import Annotated, Union
 
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException, Response, status
+from fastapi.responses import JSONResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from pydantic import BaseModel
 
@@ -84,3 +85,46 @@ def get_user(credentials: Annotated[HTTPBasicCredentials, Depends(security)], us
         detail="Invalid credentials",
         headers={"WWW-Authenticate": "Basic"},
     )
+
+
+# Every operation of this app breaks its own schema, each one so that a different Schemathesis
+# check fails, although a response may fail other checks too. It is mounted, instead of adding the operations to the app above,
+# to keep them out of the test app schema that the other suites run against.
+broken_app = FastAPI()
+broken_app.title = "Broken API"
+broken_app.description = "This API does not follow its own schema"
+broken_app.version = "1.0.0"
+broken_app.openapi_version = "3.0.4"
+
+
+@broken_app.get("/server-error")
+def server_error() -> Root:
+    return Response(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@broken_app.get("/schema-violation")
+def schema_violation() -> Root:
+    return JSONResponse({"message": 1})
+
+
+@broken_app.get("/wrong-content-type")
+def wrong_content_type() -> Root:
+    return Response('{"message": "Hello World"}', media_type="text/plain")
+
+
+@broken_app.get("/undocumented-status")
+def undocumented_status() -> Root:
+    return JSONResponse({"message": "Hello World"}, status.HTTP_418_IM_A_TEAPOT)
+
+
+@broken_app.get(
+    "/missing-header",
+    responses={
+        200: {"headers": {"X-Request-Id": {"required": True, "schema": {"type": "string"}}}},
+    },
+)
+def missing_header() -> Root:
+    return Root(message="Hello World")
+
+
+app.mount("/broken", broken_app)
