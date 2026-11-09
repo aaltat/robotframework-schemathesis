@@ -25,6 +25,7 @@ ROOT_DIR = Path(__file__).parent
 ATEST_OUTPUT_DIR = ROOT_DIR / "atest" / "output_runner"
 SPEC_FOLDER = ROOT_DIR / "atest" / "specs" / "test-app"
 ATEST_OUTPUT_DIR_LIB = ROOT_DIR / "atest" / "output_library"
+ATEST_LIBRARY_DIR = ROOT_DIR / "atest" / "library"
 DIST_DIR = ROOT_DIR / "dist"
 DOCKER_IMAGE = "schemathesis-library-test"
 DOCKER_CONTAINER = "schemathesis-library-test-app"
@@ -228,14 +229,14 @@ def atest_lib(ctx, suite: str | None = None):
         "--loglevel",
         "DEBUG:INFO",
         "--pythonpath",
-        "./src",
+        (ROOT_DIR / "src").as_posix(),
         "--outputdir",
         ATEST_OUTPUT_DIR_LIB.as_posix(),
     ]
     if suite:
         args.append(f"--suite")
         args.append(suite)
-    args.append("atest/library")
+    args.append(ATEST_LIBRARY_DIR.as_posix())
     shutil.rmtree(ATEST_OUTPUT_DIR, ignore_errors=True)
     shutil.rmtree(ATEST_OUTPUT_DIR_LIB, ignore_errors=True)
     ATEST_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -243,7 +244,9 @@ def atest_lib(ctx, suite: str | None = None):
     print(f"Running {args}")
     ctx.run("uv run coverage erase")
     try:
-        ctx.run(shlex.join(args), env=COVERAGE_ENV)
+        # The library suites read schemathesis.toml from their own directory.
+        with ctx.cd(ATEST_LIBRARY_DIR):
+            ctx.run(shlex.join(args), env=COVERAGE_ENV)
     finally:
         _coverage_report(ctx)
 
