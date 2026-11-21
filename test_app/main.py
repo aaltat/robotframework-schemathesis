@@ -127,4 +127,14 @@ def missing_header() -> Root:
     return Root(message="Hello World")
 
 
+@broken_app.post(
+    "/accepts-invalid",
+    openapi_extra={
+        "requestBody": {"required": True, "content": {"application/json": {"schema": {"type": "integer"}}}},
+    },
+)
+def accepts_invalid() -> Root:
+    return Root(message="Hello World")
+
+
 app.mount("/broken", broken_app)

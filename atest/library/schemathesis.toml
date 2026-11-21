@@ -1,0 +1,2 @@
+# These suites check library mechanics, such as auth, hooks and logging, against valid requests.
+generation.mode = "positive"
