@@ -1717,7 +1717,7 @@ requires-dist = [
     { name = "robotframework", specifier = ">=7.2.2" },
     { name = "robotframework-datadriver", specifier = ">=1.11.2" },
     { name = "robotframework-pythonlibcore", specifier = ">=4.6.0" },
-    { name = "schemathesis", specifier = ">=4.32.7" },
+    { name = "schemathesis", specifier = ">=4.34.0" },
 ]
 
 [package.metadata.requires-dev]
