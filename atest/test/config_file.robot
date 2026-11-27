@@ -3,7 +3,11 @@ Resource          runner.resource
 Resource          all_cases.resource
 
 Suite Setup       Set Configuration File And Run Suite
-Suite Teardown    Remove Configuration File
+Suite Teardown    Remove Directory    ${CONFIG_DIR}    recursive=True
+
+
+*** Variables ***
+${CONFIG_DIR}    ${OUTPUT_DIR}${/}config_file
 
 
 *** Test Cases ***
@@ -17,10 +21,6 @@ Check All Cases
 
 *** Keywords ***
 Set Configuration File And Run Suite
-    Log    Create ${EXECDIR}/schemathesis.toml
-    Create File    ${EXECDIR}/schemathesis.toml
-    ...    generation.max-examples = 2
-    Run Suite
-
-Remove Configuration File
-    Remove File    ${EXECDIR}/schemathesis.toml
+    Create File    ${CONFIG_DIR}${/}schemathesis.toml
+    ...    [[project]]\ntitle = "Test API"\n\n[project.generation]\nmax-examples = 2\nmode = "positive"\n
+    Run Suite    cwd=${CONFIG_DIR}

@@ -198,17 +198,27 @@ class TestSuiteChecker:
 
     def check_test_failed(self, output_xml: str, operation: str, message_pattern: str):
         """Check that the tests of an operation failed, and that the failure report says why."""
-        all_tests = list(ExecutionResult(output_xml).suite.all_tests)
-        tests = [test for test in all_tests if test.name.startswith(f"{operation} - ")]
-        assert tests, f"Expected tests for '{operation}', but found: {[t.name for t in all_tests]}"
         should_match = BuiltIn().should_match
-        for test in tests:
+        for test in self._tests_starting_with(output_xml, operation):
             logger.info(f"Checking test '{test.name}': {test.status}: {test.message}")
             assert test.status == "FAIL", f"Expected '{test.name}' to fail, but it was {test.status}."
             should_match(test.message, message_pattern)
             assert "Reproduce with:" in test.message, (
                 f"Expected the whole failure report in '{test.name}', but it was: {test.message}"
             )
+
+    def check_test_passed(self, output_xml: str, operation: str):
+        """Check that the tests of an operation passed."""
+        for test in self._tests_starting_with(output_xml, operation):
+            assert test.status == "PASS", (
+                f"Expected '{test.name}' to pass, but it was {test.status}: {test.message}"
+            )
+
+    def _tests_starting_with(self, output_xml: str, name: str) -> list[TestCase]:
+        all_tests = list(ExecutionResult(output_xml).suite.all_tests)
+        tests = [test for test in all_tests if test.name.startswith(f"{name} - ")]
+        assert tests, f"Expected tests for '{name}', but found: {[t.name for t in all_tests]}"
+        return tests
 
     def _check_test_logs(
         self,

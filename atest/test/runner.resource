@@ -11,8 +11,12 @@ ${LIBRARY_OUTPUT_XML}    ${None}
 
 *** Keywords ***
 Run Suite
-    [Arguments]    ${rc: int}=0
+    [Documentation]    Runs the library suite from ``cwd``, where ``schemathesis.toml`` is discovered.
+    ...    The default is the library suite directory. ``rc=${None}`` skips checking the return code,
+    ...    which is the number of failed tests.
+    [Arguments]    ${rc: int | None}=0    ${cwd}=${None}
     ${library_suite} =    Get Suite Path    ${SUITE_SOURCE}
+    ${cwd} =    Evaluate    $cwd or str(pathlib.Path($library_suite).parent)    modules=pathlib
     ${library_output_dir} =    Get Suite Output Path    ${SUITE_SOURCE}    ${LIBRARY_OUTPUT_DIR_BASE}
     Log    ${LIBRARY_PYTHON_PATH}
     Log    ${library_output_dir}
@@ -30,10 +34,12 @@ Run Suite
     ...    --report
     ...    None
     ...    ${library_suite}
-    ${result} =    Run Process    uv    @{args}    cwd=${LIBRARY_PYTHON_PATH}
+    ${result} =    Run Process    uv    @{args}    cwd=${cwd}
     Log    ${result.stdout}
     Log    ${result.stderr}
-    Should Be Equal As Integers    ${result.rc}    ${rc}
+    IF    $rc is not None
+        Should Be Equal As Integers    ${result.rc}    ${rc}
+    END
     VAR    @{rebot_args} =
     ...    uv
     ...    run

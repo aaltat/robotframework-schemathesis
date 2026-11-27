@@ -47,3 +47,5 @@
 --suite Test.Tls Verify Not Set
 #WAIT
 --suite Test.Check Failures
+#WAIT
+--suite Test.Negative Cases

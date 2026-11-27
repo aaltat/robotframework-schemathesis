@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from dataclasses import dataclass
+from functools import partial
 from pathlib import Path
 from typing import Any
 
@@ -29,7 +30,7 @@ from schemathesis.core.result import Ok
 
 @dataclass
 class Options:
-    max_examples: int
+    max_examples: int | None = None
     headers: dict[str, Any] | None = None
     path: "Path|None" = None
     url: str | None = None
@@ -50,7 +51,7 @@ class SchemathesisReader(AbstractReaderClass):
         path = self.options.path
         if path and not Path(path).is_file():
             raise ValueError(f"Provided path '{path}' is not a valid file.")
-        config, generation_mode = self._load_config()
+        config = self._load_config()
         self._import_extensions()
         if path:
             schema = openapi.from_path(path, config=config)
@@ -72,8 +73,17 @@ class SchemathesisReader(AbstractReaderClass):
         for op in schema.get_all_operations():
             operation_count += 1
             if isinstance(op, Ok):
-                strategy = op.ok().as_strategy(generation_mode=generation_mode).map(from_case)  # type: ignore
-                add_examples(strategy, all_cases, self.options.max_examples)  # type: ignore
+                operation = op.ok()
+                generation = schema.config.generation_for(operation=operation, phase="fuzzing")
+                # Mapping after `one_of` makes Hypothesis repeat cases when a mode can not generate any
+                strategy = st.one_of(
+                    [
+                        operation.as_strategy(generation_mode=mode).map(partial(from_case, mode=mode))
+                        for mode in generation.modes
+                    ]
+                )
+                max_examples = self.options.max_examples or generation.max_examples or 100
+                add_examples(strategy, all_cases, max_examples)
             else:
                 invalid_operations.append(_describe_invalid_operation(op.err()))
         self._handle_invalid_operations(invalid_operations)
@@ -109,22 +119,13 @@ class SchemathesisReader(AbstractReaderClass):
             raise ValueError(f"{message}\nUse strict=False to skip parts that can not be parsed.")
         logger.warn(f"{message}\nParts of the schema that can not be parsed are not tested.")
 
-    def _load_config(self) -> tuple[SchemathesisConfig, GenerationMode]:
+    def _load_config(self) -> SchemathesisConfig:
         config = SchemathesisConfig.discover()
-        generation_mode = GenerationMode.POSITIVE
-        if self.options is None:
-            return config, generation_mode
-        if config.config_path and config.projects.default.generation:
+        if config.config_path:
             logger.info(f"Config file path: {config.config_path}")
-            if config.projects.default.generation.max_examples is not None:
-                self.options.max_examples = config.projects.default.generation.max_examples
-                logger.info(f"Using max_examples from config: {self.options.max_examples}")
-            if modes := config.projects.default.generation.modes:
-                generation_mode = modes[0]
-                logger.info(f"Using first generation mode from config: {generation_mode}")
         else:
             logger.info("No schemathesis.toml config file found, using defaults")
-        return config, generation_mode
+        return config
 
     def _import_extensions(self) -> None:
         """Import auth and hook extensions, which register themselves as a side effect of the import.
@@ -150,9 +151,9 @@ def _describe_invalid_operation(error: InvalidSchema) -> str:
     return f"{method} {path}: {error.message}"
 
 
-def from_case(case: Case) -> TestCaseData:
+def from_case(case: Case, mode: GenerationMode) -> TestCaseData:
     return TestCaseData(
-        test_case_name=f"{case.operation.label} - {case.id}",
+        test_case_name=f"{case.operation.label} - {mode.value} - {case.id}",
         arguments={"${case}": case},
     )
 

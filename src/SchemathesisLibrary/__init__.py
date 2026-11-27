@@ -124,7 +124,7 @@ class SchemathesisLibrary(DynamicCore):
         self,
         *,
         headers: "dict[str, Any]|None" = None,
-        max_examples: int = 100,
+        max_examples: int | None = None,
         path: "Path|None" = None,
         url: "str|None" = None,
         auth: str | None = None,
@@ -141,7 +141,9 @@ class SchemathesisLibrary(DynamicCore):
                 authentication headers to the endpoint. The ``headers`` is not used in the API calls are made during
                 test execution.
             max_examples:
-                Maximum number of examples to generate for each operation. Default is 100.
+                Number of test cases per operation, across all modes. The argument wins over
+                ``max-examples`` in ``schemathesis.toml``. Without the argument the file applies,
+                and with neither, 100.
             path:
                 Path to the OpenAPI schema file. Using either ``path`` or ``url`` is mandatory.
             url:
@@ -187,36 +189,39 @@ class SchemathesisLibrary(DynamicCore):
 
         # Configuration File
 
-        SchemathesisLibrary automatically discovers and loads configuration from a ``schemathesis.toml`` file if present
-        in the project directory. The configuration file allows you to customize test data generation and other Schemathesis
-        settings without modifying the library initialization.
+        The library reads ``schemathesis.toml`` from the directory you run ``robot`` in. Without one
+        there, it searches parent directories up to your repository root or the filesystem root.
 
-        The library uses Schemathesis's
-        [configuration file discovery](https://schemathesis.readthedocs.io/en/stable/reference/configuration/)
-        mechanism to locate ``schemathesis.toml`` in the current directory or parent directories (stopping at .git folder
-        or filesystem root).
+        See the Schemathesis
+        [configuration](https://schemathesis.readthedocs.io/en/stable/reference/configuration/) documentation
+        for all options; settings such as ``base-url`` and ``checks`` apply too.
 
-        Configuration options that are automatically applied:
+        You set how many test cases you get, and what kind, with two settings:
 
-        - ``max-examples``: If specified in ``[project.generation]``, overrides the ``max_examples`` parameter passed to the library
-        - ``mode``: Generation mode (``positive``, ``negative``, or ``all``) controls whether valid or invalid test data is generated
+        - ``max-examples``: test cases per operation, across all modes. The library
+          ``max_examples`` argument wins over it.
+        - ``mode``: ``positive`` sends valid data, ``negative`` invalid data, ``all`` both. Defaults to
+          ``all`` with or without the file, as in Schemathesis. The test name includes the mode, for
+          example ``POST /items - negative - 5mK2pQ``. A test with invalid data fails when the API
+          answers with a status the schema does not document, or when the
+          [negative_data_rejection](https://schemathesis.readthedocs.io/en/stable/reference/checks/#negative_data_rejection) check
+          fails: the API accepted the data, or rejected it with a status the check does not expect.
+          ``expected-statuses`` under ``[checks.negative_data_rejection]`` sets the
+          statuses the check expects. Set ``mode = "positive"`` to send only valid requests.
 
-        Example schemathesis.toml:
+        Put them at the top level, in a ``[[project]]`` block whose ``title`` matches the schema
+        ``info.title``, or in ``[[operations]]`` for selected operations:
+
         ```toml
-        [[project]]
-        title = "My API"
+        [generation]
+        max-examples = 5
 
-        [project.generation]
-        mode = "positive"      # Generate only valid test cases
-        max-examples = 5       # Generate 5 test cases per operation
+        [[operations]]
+        include-path = "/users"
+
+        [operations.generation]
+        mode = "positive"
         ```
-
-        For complete configuration options, see schemathesis
-        [configuration](https://schemathesis.readthedocs.io/en/stable/reference/configuration/)
-        documentation.
-
-        If no configuration file is found, the library uses default values (POSITIVE mode and max_examples from
-        library initialization.
 
         # Base URL
 
